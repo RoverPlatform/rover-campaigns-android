@@ -1,4 +1,4 @@
-package io.rover.app.debug
+package io.rover.campaigns.app.debug
 
 import android.app.Application
 import android.content.Intent

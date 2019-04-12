@@ -1,4 +1,4 @@
-package io.rover.app.debug
+package io.rover.campaigns.app.debug
 
 import android.Manifest
 import android.content.pm.PackageManager
