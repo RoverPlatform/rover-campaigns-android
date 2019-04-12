@@ -73,6 +73,7 @@ class NotificationCenterListViewModel(
                 update
                     .notifications
                     .filter { !it.isDeleted }
+                    .filter { it.isNotificationCenterEnabled }
                     .filter { it.expiresAt?.after(Date()) ?: true }
             }.doOnNext { notificationsReadyForDisplay ->
                 // side-effect, update the stable ids list map:
