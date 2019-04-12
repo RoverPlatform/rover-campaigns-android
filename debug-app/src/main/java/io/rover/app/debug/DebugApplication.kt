@@ -6,7 +6,6 @@ import com.google.firebase.iid.FirebaseInstanceId
 import io.rover.core.CoreAssembler
 import io.rover.core.Rover
 import io.rover.debug.DebugAssembler
-import io.rover.experiences.ExperiencesAssembler
 import io.rover.location.LocationAssembler
 import io.rover.notifications.NotificationsAssembler
 import io.rover.ticketmaster.TicketmasterAssembler
@@ -42,7 +41,6 @@ class DebugApplication : Application() {
                     tokenCallback(task.result?.token)
                 }
             },
-            ExperiencesAssembler(),
             LocationAssembler(),
             DebugAssembler(),
             TicketmasterAssembler()
