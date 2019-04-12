@@ -72,7 +72,7 @@ class NotificationsRepository(
     override fun events(): Publisher<NotificationsRepositoryInterface.Emission.Event> = epic.filterForSubtype()
 
     override fun refresh() {
-        actions.onNext(Action.Refresh())
+        actions.onNext(Action.Refresh)
     }
 
     override fun markRead(notification: Notification) {
@@ -80,7 +80,7 @@ class NotificationsRepository(
     }
 
     override fun markAllAsRead() {
-        actions.onNext(Action.MarkAllRead())
+        actions.onNext(Action.MarkAllRead)
     }
 
     override fun delete(notification: Notification) {
@@ -299,7 +299,7 @@ class NotificationsRepository(
         /**
          * User has requested a refresh.
          */
-        class Refresh : Action()
+        object Refresh : Action()
 
         /**
          * User has requested that a notification be marked as read.
@@ -314,7 +314,7 @@ class NotificationsRepository(
         /**
          * User has requested that all unread notifications be marked as read.
          */
-        class MarkAllRead: Action()
+        object MarkAllRead : Action()
 
         /**
          * Notifications arrived or fetched, and need to be merged in.
