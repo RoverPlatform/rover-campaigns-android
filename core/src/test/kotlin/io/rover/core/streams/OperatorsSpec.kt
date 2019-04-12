@@ -1,6 +1,7 @@
 package io.rover.core.streams
 
-import org.jetbrains.spek.api.Spek
+import org.spekframework.spek2.Spek
+
 
 class OperatorsSpec : Spek({
 //    given("a basic stream that emits one item and completes") {
