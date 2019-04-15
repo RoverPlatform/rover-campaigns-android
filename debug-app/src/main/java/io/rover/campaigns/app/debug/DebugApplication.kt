@@ -29,7 +29,6 @@ class DebugApplication : Application() {
                 accountToken = getString(R.string.rover_api_token),
                 application = this,
                 urlSchemes = listOf("rv-rover-labs-inc"),
-                associatedDomains = listOf("rover-labs-inc.rover.io"),
                 endpoint = "$roverBaseUrl/graphql"
             ),
             NotificationsAssembler(

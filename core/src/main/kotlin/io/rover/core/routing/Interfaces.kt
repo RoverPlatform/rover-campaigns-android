@@ -34,7 +34,7 @@ interface Route {
 
 interface LinkOpenInterface {
     /**
-     * Map a URI just received for a deep/universal link to an explicit, mapped intent.
+     * Map a URI just received for a deep link to an explicit, mapped intent.
      */
     fun localIntentForReceived(receivedUri: URI): List<Intent>
 }

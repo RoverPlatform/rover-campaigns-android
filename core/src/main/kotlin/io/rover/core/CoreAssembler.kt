@@ -103,20 +103,6 @@ class CoreAssembler @JvmOverloads constructor(
     private val urlSchemes: List<String>,
 
     /**
-     * Rover universal links are customized for each in this way:
-     *
-     * myapp.rover.io
-     *
-     * You must set an appropriate domain without spaces or special characters to be used in place
-     * of `myapp` above.  It must match the value in your Rover Settings.
-     *
-     * You should also consider adding the handler to the manifest.  While this is not needed for
-     * any Rover functionality to work, it is required for clickable universal links to work from
-     * anywhere else.
-     */
-    private val associatedDomains: List<String>,
-
-    /**
      * An ARGB int color (typical on Android) that is used when Rover is asked to present a website
      * within the app (hosted within a an Android [Custom
      * Tab](https://developer.chrome.com/multidevice/android/customtabs)).  In many cases it is
@@ -168,7 +154,7 @@ class CoreAssembler @JvmOverloads constructor(
                 }
             }
 
-            UrlSchemes(urlSchemes, associatedDomains)
+            UrlSchemes(urlSchemes)
         }
 
         container.register(Scope.Singleton, NetworkClient::class.java) { resolver ->
@@ -445,8 +431,7 @@ class CoreAssembler @JvmOverloads constructor(
 }
 
 data class UrlSchemes(
-    val schemes: List<String>,
-    val associatedDomains: List<String>
+    val schemes: List<String>
 )
 
 @Deprecated("Use .resolve(EventQueueServiceInterface::class.java)")
