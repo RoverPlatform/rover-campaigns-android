@@ -289,7 +289,7 @@ class NotificationsRepository(
     }
 
     companion object {
-        private const val STORAGE_CONTEXT_IDENTIFIER = "io.rover.rover.notification-storage"
+        private const val STORAGE_CONTEXT_IDENTIFIER = "notification-storage"
         private const val STORE_KEY = "local-notifications-cache"
 
         private const val MAX_NOTIFICATIONS_LIMIT = 100

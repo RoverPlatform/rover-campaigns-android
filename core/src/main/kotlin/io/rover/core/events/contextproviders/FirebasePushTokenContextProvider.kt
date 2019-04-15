@@ -68,7 +68,7 @@ class FirebasePushTokenContextProvider(
     }
 
     companion object {
-        private const val STORAGE_CONTEXT_IDENTIFIER = "io.rover.rover.fcm-push-context-provider"
+        private const val STORAGE_CONTEXT_IDENTIFIER = "fcm-push-context-provider"
         private const val TOKEN_KEY = "push-token"
         private const val TIMESTAMP_KEY = "timestamp"
     }

@@ -41,7 +41,7 @@ class UserInfo(
         }
 
     companion object {
-        private const val STORAGE_CONTEXT_IDENTIFIER = "io.rover.core.user-info"
+        private const val STORAGE_CONTEXT_IDENTIFIER = "user-info"
         private const val USER_INFO_KEY = "user-info"
     }
 }

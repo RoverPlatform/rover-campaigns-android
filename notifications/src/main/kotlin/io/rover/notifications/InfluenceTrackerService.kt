@@ -22,7 +22,7 @@ class InfluenceTrackerService(
     private val lifecycle: Lifecycle,
     private val influenceThresholdSeconds: Int = 60
     ) : InfluenceTrackerServiceInterface {
-    private val store = localStorage.getKeyValueStorageFor("influenced-opens")
+    private val store = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
 
     private var lastSeenNotificationAt: Long?
         get() = try { store["last-seen-notification-at"]?.toLong() } catch (numberFormatException: NumberFormatException) { null }
@@ -112,5 +112,9 @@ class InfluenceTrackerService(
 
             }
         )
+    }
+
+    companion object {
+        private const val STORAGE_CONTEXT_IDENTIFIER = "influenced-opens"
     }
 }

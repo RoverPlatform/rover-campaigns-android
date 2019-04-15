@@ -21,7 +21,7 @@ class TicketmasterManager(
     private val userInfo: UserInfoInterface,
     localStorage: LocalStorage
 ) : TicketmasterAuthorizer, SyncParticipant {
-    private val storage = localStorage.getKeyValueStorageFor("io.rover.ticketmaster.TicketmasterManager")
+    private val storage = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
 
     override fun setCredentials(backendNameOrdinal: Int, memberId: String?) {
 
@@ -97,6 +97,12 @@ class TicketmasterManager(
 
     enum class TicketmasterBackendName {
         HOST, ARCHTICS
+    }
+
+    companion object {
+        // TODO: implement migration
+        private const val LEGACY_STORAGE_CONTEXT_IDENTIFIER = "io.rover.core.platform.localstorage.io.rover.ticketmaster.TicketmasterManager"
+        private const val STORAGE_CONTEXT_IDENTIFIER = "ticketmaster"
     }
 }
 

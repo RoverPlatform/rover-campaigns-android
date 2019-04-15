@@ -107,7 +107,7 @@ class SessionStore(
     localStorage: LocalStorage,
     private val dateFormatting: DateFormattingInterface
 ) : SessionStoreInterface {
-    private val store = localStorage.getKeyValueStorageFor(STORAGE_IDENTIFIER)
+    private val store = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
 
     init {
         gc()
@@ -268,7 +268,7 @@ class SessionStore(
     }
 
     companion object {
-        const val STORAGE_IDENTIFIER = "io.rover.core.tracking.session-store"
-        const val CLEANUP_TIME = 3600 * 1000L // 1 hour.
+        private const val STORAGE_CONTEXT_IDENTIFIER = "session-store"
+        private const val CLEANUP_TIME = 3600 * 1000L // 1 hour.
     }
 }

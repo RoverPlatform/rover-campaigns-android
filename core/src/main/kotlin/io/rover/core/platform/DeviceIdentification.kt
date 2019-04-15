@@ -1,11 +1,9 @@
 package io.rover.core.platform
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
 import io.rover.core.logging.log
-import java.io.File
 import java.io.FileNotFoundException
 import java.util.UUID
 
@@ -28,9 +26,10 @@ class DeviceIdentification(
     private val applicationContext: Context,
     localStorage: LocalStorage
 ) : DeviceIdentificationInterface {
-    private val storageContextIdentifier = "io.rover.rover.device-identification"
+
+
     private val identifierKey = "identifier"
-    private val storage = localStorage.getKeyValueStorageFor(storageContextIdentifier)
+    private val storage = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
 
     override val installationIdentifier by lazy {
         // Further reading: https://developer.android.com/training/articles/user-data-ids.html
@@ -51,7 +50,6 @@ class DeviceIdentification(
         applicationContext.contentResolver, "bluetooth_name"
     )
 
-
     private fun getAndClearSdk1IdentifierIfPresent(): String? {
         val legacySharedPreferencesFile = "ROVER_SHARED_DEVICE"
         val legacySharedDevice = applicationContext.getSharedPreferences(legacySharedPreferencesFile, Context.MODE_PRIVATE)
@@ -71,5 +69,10 @@ class DeviceIdentification(
         }
 
         return legacyUdid
+    }
+
+    companion object {
+        private const val STORAGE_CONTEXT_IDENTIFIER = "device-identification"
+        private const val LEGACY_STORAGE_2X_CONTEXT_IDENTIFIER = "io.rover.core.platform.localstorage.io.rover.rover.device-identification"
     }
 }

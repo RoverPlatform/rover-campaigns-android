@@ -231,7 +231,7 @@ class EventQueueService(
     }
 
     companion object {
-        private const val STORAGE_CONTEXT_IDENTIFIER = "io.rover.rover.events-queue"
+        private const val STORAGE_CONTEXT_IDENTIFIER = "events-queue"
         private const val QUEUE_KEY = "queue"
 
         const val ROVER_NAMESPACE = "rover"

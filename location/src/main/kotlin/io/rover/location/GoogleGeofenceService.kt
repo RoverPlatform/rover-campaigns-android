@@ -52,8 +52,7 @@ class GoogleGeofenceService(
     googleBackgroundLocationService: GoogleBackgroundLocationServiceInterface,
     private val geofenceMonitorLimit: Int = 50
 ) : GoogleGeofenceServiceInterface {
-
-    private val store = localStorage.getKeyValueStorageFor("io.rover.location.GoogleGeofenceService")
+    private val store = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
 
     private val geofenceSubject = PublishSubject<GeofenceServiceInterface.GeofenceEvent>()
     override val geofenceEvents: Publisher<GeofenceServiceInterface.GeofenceEvent> = geofenceSubject
@@ -244,6 +243,7 @@ class GoogleGeofenceService(
 
     companion object {
         private const val ACTIVE_FENCES_KEY = "active-fences"
+        private const val STORAGE_CONTEXT_IDENTIFIER = "google-geofence-service"
     }
 }
 

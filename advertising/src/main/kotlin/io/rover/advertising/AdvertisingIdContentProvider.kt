@@ -45,7 +45,7 @@ class AdvertisingIdContentProvider(
     }
 
     companion object {
-        private const val STORAGE_CONTEXT_IDENTIFIER = "io.rover.advertising"
+        private const val STORAGE_CONTEXT_IDENTIFIER = "advertising"
         private const val IDENTIFIER_KEY = "advertising-identifier"
     }
 }

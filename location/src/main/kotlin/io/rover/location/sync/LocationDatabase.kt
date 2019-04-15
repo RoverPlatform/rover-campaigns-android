@@ -17,7 +17,7 @@ class LocationDatabase(
     2
 ), CursorState {
 
-    private val storage = localStorage.getKeyValueStorageFor("io.rover.location.sync-cursors")
+    private val storage = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
 
     override fun onCreate(db: SQLiteDatabase) {
         GeofencesSqlStorage.initSchema(db)
@@ -49,5 +49,9 @@ class LocationDatabase(
 
     private fun clearCursors() {
         storage.keys.forEach { storage[it] = null }
+    }
+
+    companion object {
+        private const val STORAGE_CONTEXT_IDENTIFIER = "location-sync-cursors"
     }
 }

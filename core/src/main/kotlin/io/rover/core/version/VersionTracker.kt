@@ -76,7 +76,7 @@ class VersionTracker(
     private val store = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
 
     companion object {
-        private const val STORAGE_CONTEXT_IDENTIFIER = "io.rover.core.version-tracker"
+        private const val STORAGE_CONTEXT_IDENTIFIER = "version-tracker"
         private const val LAST_SEEN_VERSION_CODE_KEY = "last-seen-version-code"
         private const val LAST_SEEN_VERSION_NAME_KEY = "last-seen-version-name"
     }
