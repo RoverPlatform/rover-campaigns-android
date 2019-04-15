@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.support.annotation.ColorInt
+import android.support.v4.content.LocalBroadcastManager
 import androidx.work.WorkManager
 import io.rover.core.assets.AndroidAssetService
 import io.rover.core.assets.AssetService
@@ -31,6 +32,7 @@ import io.rover.core.data.sync.SyncCoordinatorInterface
 import io.rover.core.events.ContextProvider
 import io.rover.core.events.EventQueueService
 import io.rover.core.events.EventQueueServiceInterface
+import io.rover.core.events.EventReceiver
 import io.rover.core.events.UserInfo
 import io.rover.core.events.UserInfoInterface
 import io.rover.core.events.contextproviders.ApplicationContextProvider
@@ -231,6 +233,13 @@ class CoreAssembler @JvmOverloads constructor(
             )
         }
 
+        container.register(Scope.Singleton, EventReceiver::class.java) { resolver ->
+            EventReceiver(
+                LocalBroadcastManager.getInstance(application),
+                resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java)
+            )
+        }
+
         container.register(Scope.Singleton, UserInfoInterface::class.java) { resolver ->
             UserInfo(
                 resolver.resolveSingletonOrFail(LocalStorage::class.java),
@@ -420,6 +429,8 @@ class CoreAssembler @JvmOverloads constructor(
                 OpenAppRoute(resolver.resolveSingletonOrFail(Intent::class.java, "openApp"))
             )
         }
+
+        resolver.resolveSingletonOrFail(EventReceiver::class.java).startListening()
 
         if(scheduleBackgroundSync) {
             resolver.resolveSingletonOrFail(SyncCoordinatorInterface::class.java).ensureBackgroundSyncScheduled()
