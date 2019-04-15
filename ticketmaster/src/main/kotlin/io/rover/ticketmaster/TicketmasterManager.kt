@@ -100,9 +100,10 @@ class TicketmasterManager(
     }
 
     companion object {
-        // TODO: implement migration
-        private const val LEGACY_STORAGE_CONTEXT_IDENTIFIER = "io.rover.core.platform.localstorage.io.rover.ticketmaster.TicketmasterManager"
         private const val STORAGE_CONTEXT_IDENTIFIER = "ticketmaster"
+
+        // TODO: migrate from 2.x storage
+        private const val LEGACY_STORAGE_CONTEXT_IDENTIFIER = "io.rover.core.platform.localstorage.io.rover.ticketmaster.TicketmasterManager"
     }
 }
 

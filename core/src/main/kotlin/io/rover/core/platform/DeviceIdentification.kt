@@ -73,6 +73,7 @@ class DeviceIdentification(
 
     companion object {
         private const val STORAGE_CONTEXT_IDENTIFIER = "device-identification"
+        // TODO: migrate from 2.x storage
         private const val LEGACY_STORAGE_2X_CONTEXT_IDENTIFIER = "io.rover.core.platform.localstorage.io.rover.rover.device-identification"
     }
 }
