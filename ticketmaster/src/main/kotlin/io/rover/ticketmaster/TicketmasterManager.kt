@@ -6,7 +6,6 @@ import io.rover.core.data.domain.AttributeValue
 import io.rover.core.data.domain.Attributes
 import io.rover.core.data.graphql.operations.data.toAttributesHash
 import io.rover.core.data.graphql.putProp
-import io.rover.core.data.graphql.safeGetString
 import io.rover.core.data.graphql.safeOptString
 import io.rover.core.data.sync.SyncParticipant
 import io.rover.core.data.sync.SyncQuery

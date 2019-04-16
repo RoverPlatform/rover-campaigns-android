@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.preference.PreferenceFragmentCompat
 import io.rover.core.Rover
-import io.rover.core.eventQueue
 import io.rover.core.logging.log
-import java.lang.RuntimeException
 
 /**
  * This activity displays a list of hidden debug settings for the Rover SDK.

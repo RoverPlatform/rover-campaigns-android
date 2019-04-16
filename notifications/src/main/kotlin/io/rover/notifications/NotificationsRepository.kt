@@ -25,7 +25,6 @@ import io.rover.core.streams.asPublisher
 import io.rover.core.streams.doOnComplete
 import io.rover.core.streams.doOnNext
 import io.rover.core.streams.filterForSubtype
-import io.rover.core.streams.filterNulls
 import io.rover.core.streams.flatMap
 import io.rover.core.streams.map
 import io.rover.core.streams.observeOn

@@ -24,7 +24,6 @@ import io.rover.core.streams.shareHotAndReplay
 import io.rover.core.streams.subscribe
 import io.rover.core.data.domain.Location
 import org.reactivestreams.Publisher
-import java.io.IOException
 import java.util.Date
 
 /**

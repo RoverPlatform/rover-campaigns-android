@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.support.v4.content.LocalBroadcastManager
-import io.rover.core.data.domain.Attributes
 import io.rover.core.data.graphql.operations.data.toAttributesHash
 import io.rover.core.events.domain.Event
 import io.rover.core.logging.log

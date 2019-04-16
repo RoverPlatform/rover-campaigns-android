@@ -26,8 +26,6 @@ class DeviceIdentification(
     private val applicationContext: Context,
     localStorage: LocalStorage
 ) : DeviceIdentificationInterface {
-
-
     private val identifierKey = "identifier"
     private val storage = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
 
