@@ -1,5 +1,7 @@
 package io.rover.ticketmaster
 
+import android.content.Context
+import android.os.Build
 import io.rover.core.data.domain.AttributeValue
 import io.rover.core.data.domain.Attributes
 import io.rover.core.data.graphql.operations.data.toAttributesHash
@@ -16,8 +18,10 @@ import io.rover.core.platform.LocalStorage
 import io.rover.core.platform.whenNotNull
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.FileNotFoundException
 
 class TicketmasterManager(
+    private val applicationContext: Context,
     private val userInfo: UserInfoInterface,
     localStorage: LocalStorage
 ) : TicketmasterAuthorizer, SyncParticipant {
@@ -75,7 +79,8 @@ class TicketmasterManager(
 
     private var member: Member?
         get() {
-            return storage["member"].whenNotNull { memberString ->
+            val storageJson = storage["member"] ?: getAndClearSdk2TicketmasterIdentifierIfPresent()
+            return storageJson.whenNotNull { memberString ->
                 try {
                     Member.decodeJson(JSONObject(memberString))
                 } catch (e: JSONException) {
@@ -87,6 +92,31 @@ class TicketmasterManager(
         set(value) {
             storage["member"] = value?.encodeJson().toString()
         }
+
+    private fun getAndClearSdk2TicketmasterIdentifierIfPresent(): String? {
+        val legacySharedPreferences = applicationContext.getSharedPreferences(
+            LEGACY_STORAGE_2X_SHARED_PREFERENCES,
+            Context.MODE_PRIVATE
+        )
+
+        val legacyTicketmasterMemberJson = legacySharedPreferences.getString(
+            "member",
+            null
+        )
+
+        if(legacyTicketmasterMemberJson != null) {
+            log.i("Migrated legacy Rover SDK 2.x Ticketmaster member data.")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                try {
+                    log.v("Deleting legacy shared preferences file.")
+                    applicationContext.deleteSharedPreferences(LEGACY_STORAGE_2X_SHARED_PREFERENCES)
+                } catch (e: FileNotFoundException) {
+                    log.w("Unable to delete legacy Rover shared preferences file: $e")
+                }
+            }
+        }
+        return legacyTicketmasterMemberJson
+    }
 
     data class Member(
         val hostID: String?,
@@ -102,8 +132,7 @@ class TicketmasterManager(
     companion object {
         private const val STORAGE_CONTEXT_IDENTIFIER = "ticketmaster"
 
-        // TODO: migrate from 2.x storage
-        private const val LEGACY_STORAGE_CONTEXT_IDENTIFIER = "io.rover.core.platform.localstorage.io.rover.ticketmaster.TicketmasterManager"
+        private const val LEGACY_STORAGE_2X_SHARED_PREFERENCES = "io.rover.core.platform.localstorage.io.rover.ticketmaster.TicketmasterManager"
     }
 }
 

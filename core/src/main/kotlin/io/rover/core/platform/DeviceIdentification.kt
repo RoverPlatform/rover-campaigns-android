@@ -35,7 +35,7 @@ class DeviceIdentification(
         // Further reading: https://developer.android.com/training/articles/user-data-ids.html
         // if persisted UUID not present then generate and persist a new one. Memoize it in memory.
         (storage.get(identifierKey) ?: (
-            (getAndClearSdk1IdentifierIfPresent() ?: UUID.randomUUID().toString()).apply {
+            (getAndClearSdk2IdentifierIfPresent() ?: UUID.randomUUID().toString()).apply {
                 storage.set(identifierKey, this)
             }
         )).apply {
@@ -50,30 +50,29 @@ class DeviceIdentification(
         applicationContext.contentResolver, "bluetooth_name"
     )
 
-    private fun getAndClearSdk1IdentifierIfPresent(): String? {
-        val legacySharedPreferencesFile = "ROVER_SHARED_DEVICE"
-        val legacySharedDevice = applicationContext.getSharedPreferences(legacySharedPreferencesFile, Context.MODE_PRIVATE)
-        val legacyUdid = legacySharedDevice.getString("UDID", null)
+    private fun getAndClearSdk2IdentifierIfPresent(): String? {
+        val legacySharedPreferences = applicationContext.getSharedPreferences(
+            LEGACY_STORAGE_2X_SHARED_PREFERENCES,
+            Context.MODE_PRIVATE
+        )
+        val legacyUdid = legacySharedPreferences.getString("identifier", null)
 
-        if(legacyUdid != null) {
-            log.i("Migrated legacy Rover SDK 1.x installation identifier: $legacyUdid")
+        if (legacyUdid != null) {
+            log.i("Migrated legacy Rover SDK 2.x installation identifier: $legacyUdid")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 try {
                     log.v("Deleting legacy shared preferences file.")
-                    applicationContext.deleteSharedPreferences("ROVER_SHARED_DEVICE")
-
+                    applicationContext.deleteSharedPreferences(LEGACY_STORAGE_2X_SHARED_PREFERENCES)
                 } catch (e: FileNotFoundException) {
                     log.w("Unable to delete legacy Rover shared preferences file: $e")
                 }
             }
         }
-
         return legacyUdid
     }
 
     companion object {
         private const val STORAGE_CONTEXT_IDENTIFIER = "device-identification"
-        // TODO: migrate from 2.x storage
-        private const val LEGACY_STORAGE_2X_CONTEXT_IDENTIFIER = "io.rover.core.platform.localstorage.io.rover.rover.device-identification"
+        private const val LEGACY_STORAGE_2X_SHARED_PREFERENCES = "io.rover.core.platform.localstorage.io.rover.rover.device-identification"
     }
 }
