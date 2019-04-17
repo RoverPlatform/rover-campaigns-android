@@ -1,11 +1,11 @@
-package io.rover.notifications
+package io.rover.campaigns.notifications
 
 import android.os.Bundle
-import io.rover.notifications.domain.Notification
-import io.rover.notifications.graphql.decodeJson
-import io.rover.core.events.PushTokenTransmissionChannel
-import io.rover.core.logging.log
-import io.rover.core.platform.DateFormattingInterface
+import io.rover.campaigns.notifications.domain.Notification
+import io.rover.campaigns.notifications.graphql.decodeJson
+import io.rover.campaigns.core.events.PushTokenTransmissionChannel
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.DateFormattingInterface
 import org.json.JSONException
 import org.json.JSONObject
 import java.net.MalformedURLException

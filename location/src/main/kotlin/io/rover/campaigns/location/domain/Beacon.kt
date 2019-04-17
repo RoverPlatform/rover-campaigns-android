@@ -1,6 +1,6 @@
-package io.rover.location.domain
+package io.rover.campaigns.location.domain
 
-import io.rover.core.data.domain.ID
+import io.rover.campaigns.core.data.domain.ID
 import java.util.UUID
 
 data class Beacon(

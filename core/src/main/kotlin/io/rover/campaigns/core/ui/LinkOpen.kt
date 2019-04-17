@@ -1,8 +1,8 @@
-package io.rover.core.ui
+package io.rover.campaigns.core.ui
 
 import android.content.Intent
-import io.rover.core.routing.LinkOpenInterface
-import io.rover.core.routing.Router
+import io.rover.campaigns.core.routing.LinkOpenInterface
+import io.rover.campaigns.core.routing.Router
 import java.net.URI
 
 class LinkOpen(

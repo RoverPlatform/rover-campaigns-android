@@ -1,4 +1,4 @@
-package io.rover.location
+package io.rover.campaigns.location
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -11,18 +11,18 @@ import android.os.Build
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
-import io.rover.core.Rover
-import io.rover.core.logging.log
-import io.rover.core.permissions.PermissionsNotifierInterface
-import io.rover.core.platform.whenNotNull
-import io.rover.core.streams.PublishSubject
-import io.rover.core.streams.Scheduler
-import io.rover.core.streams.doOnNext
-import io.rover.core.streams.map
-import io.rover.core.streams.observeOn
-import io.rover.core.streams.shareHotAndReplay
-import io.rover.core.streams.subscribe
-import io.rover.core.data.domain.Location
+import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
+import io.rover.campaigns.core.platform.whenNotNull
+import io.rover.campaigns.core.streams.PublishSubject
+import io.rover.campaigns.core.streams.Scheduler
+import io.rover.campaigns.core.streams.doOnNext
+import io.rover.campaigns.core.streams.map
+import io.rover.campaigns.core.streams.observeOn
+import io.rover.campaigns.core.streams.shareHotAndReplay
+import io.rover.campaigns.core.streams.subscribe
+import io.rover.campaigns.core.data.domain.Location
 import org.reactivestreams.Publisher
 import java.util.Date
 

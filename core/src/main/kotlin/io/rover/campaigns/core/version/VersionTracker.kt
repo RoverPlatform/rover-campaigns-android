@@ -1,12 +1,12 @@
-package io.rover.core.version
+package io.rover.campaigns.core.version
 
 import android.content.Context
-import io.rover.core.data.domain.AttributeValue
-import io.rover.core.events.EventQueueService.Companion.ROVER_NAMESPACE
-import io.rover.core.events.EventQueueServiceInterface
-import io.rover.core.events.domain.Event
-import io.rover.core.logging.log
-import io.rover.core.platform.LocalStorage
+import io.rover.campaigns.core.data.domain.AttributeValue
+import io.rover.campaigns.core.events.EventQueueService.Companion.ROVER_NAMESPACE
+import io.rover.campaigns.core.events.EventQueueServiceInterface
+import io.rover.campaigns.core.events.domain.Event
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.LocalStorage
 
 class VersionTracker(
     private val applicationContext: Context,

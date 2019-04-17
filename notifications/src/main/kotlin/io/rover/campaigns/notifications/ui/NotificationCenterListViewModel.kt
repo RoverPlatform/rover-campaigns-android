@@ -1,21 +1,21 @@
-package io.rover.notifications.ui
+package io.rover.campaigns.notifications.ui
 
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
-import io.rover.core.logging.log
-import io.rover.core.streams.PublishSubject
-import io.rover.core.streams.Publishers
-import io.rover.core.streams.doOnNext
-import io.rover.core.streams.doOnRequest
-import io.rover.core.streams.filterNulls
-import io.rover.core.streams.map
-import io.rover.core.streams.share
-import io.rover.core.streams.shareHotAndReplay
-import io.rover.core.tracking.SessionTrackerInterface
-import io.rover.notifications.domain.Notification
-import io.rover.notifications.ui.concerns.NotificationCenterListViewModelInterface
-import io.rover.notifications.ui.concerns.NotificationsRepositoryInterface
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.streams.PublishSubject
+import io.rover.campaigns.core.streams.Publishers
+import io.rover.campaigns.core.streams.doOnNext
+import io.rover.campaigns.core.streams.doOnRequest
+import io.rover.campaigns.core.streams.filterNulls
+import io.rover.campaigns.core.streams.map
+import io.rover.campaigns.core.streams.share
+import io.rover.campaigns.core.streams.shareHotAndReplay
+import io.rover.campaigns.core.tracking.SessionTrackerInterface
+import io.rover.campaigns.notifications.domain.Notification
+import io.rover.campaigns.notifications.ui.concerns.NotificationCenterListViewModelInterface
+import io.rover.campaigns.notifications.ui.concerns.NotificationsRepositoryInterface
 import org.reactivestreams.Publisher
 import java.util.Date
 

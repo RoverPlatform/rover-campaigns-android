@@ -1,11 +1,11 @@
-package io.rover.core.events.contextproviders
+package io.rover.campaigns.core.events.contextproviders
 
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.events.ContextProvider
-import io.rover.core.events.PushTokenTransmissionChannel
-import io.rover.core.logging.log
-import io.rover.core.platform.LocalStorage
-import io.rover.core.platform.whenNotNull
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.events.ContextProvider
+import io.rover.campaigns.core.events.PushTokenTransmissionChannel
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.LocalStorage
+import io.rover.campaigns.core.platform.whenNotNull
 import java.util.Date
 
 /**

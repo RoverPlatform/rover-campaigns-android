@@ -1,6 +1,6 @@
-package io.rover.core.data.domain
+package io.rover.campaigns.core.data.domain
 
-import io.rover.core.events.domain.Event
+import io.rover.campaigns.core.events.domain.Event
 
 /**
  * The Rover API data model sometimes includes unstructured data.  See [Attributes].

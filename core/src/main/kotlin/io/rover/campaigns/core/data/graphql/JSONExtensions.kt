@@ -1,10 +1,10 @@
 @file:JvmName("JsonExtensions")
 
-package io.rover.core.data.graphql
+package io.rover.campaigns.core.data.graphql
 
 import android.os.Build
-import io.rover.core.platform.DateFormattingInterface
-import io.rover.core.platform.whenNotNull
+import io.rover.campaigns.core.platform.DateFormattingInterface
+import io.rover.campaigns.core.platform.whenNotNull
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject

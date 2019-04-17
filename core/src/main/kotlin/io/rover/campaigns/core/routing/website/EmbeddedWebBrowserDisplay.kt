@@ -1,4 +1,4 @@
-package io.rover.core.routing.website
+package io.rover.campaigns.core.routing.website
 
 import android.content.Intent
 import android.graphics.Color

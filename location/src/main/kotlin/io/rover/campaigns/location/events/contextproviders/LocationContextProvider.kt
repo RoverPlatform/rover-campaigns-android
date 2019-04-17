@@ -1,10 +1,10 @@
-package io.rover.location.events.contextproviders
+package io.rover.campaigns.location.events.contextproviders
 
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.events.ContextProvider
-import io.rover.core.streams.subscribe
-import io.rover.location.GoogleBackgroundLocationServiceInterface
-import io.rover.core.data.domain.Location
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.events.ContextProvider
+import io.rover.campaigns.core.streams.subscribe
+import io.rover.campaigns.location.GoogleBackgroundLocationServiceInterface
+import io.rover.campaigns.core.data.domain.Location
 
 class LocationContextProvider(
     googleBackgroundLocationService: GoogleBackgroundLocationServiceInterface

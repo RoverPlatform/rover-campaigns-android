@@ -1,11 +1,11 @@
-package io.rover.location
+package io.rover.campaigns.location
 
 import android.content.Intent
 import com.google.android.gms.location.GeofencingEvent
 import com.google.android.gms.location.LocationResult
-import io.rover.location.domain.Beacon
-import io.rover.location.domain.Geofence
-import io.rover.core.data.domain.Location
+import io.rover.campaigns.location.domain.Beacon
+import io.rover.campaigns.location.domain.Geofence
+import io.rover.campaigns.core.data.domain.Location
 import org.reactivestreams.Publisher
 
 interface GoogleBackgroundLocationServiceInterface {

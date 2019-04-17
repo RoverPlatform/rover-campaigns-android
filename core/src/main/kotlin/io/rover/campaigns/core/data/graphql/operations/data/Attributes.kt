@@ -1,10 +1,10 @@
-package io.rover.core.data.graphql.operations.data
+package io.rover.campaigns.core.data.graphql.operations.data
 
-import io.rover.core.data.domain.AttributeValue
-import io.rover.core.data.domain.Attributes
-import io.rover.core.data.graphql.getIterable
-import io.rover.core.data.graphql.safeGetString
-import io.rover.core.platform.DateFormattingInterface
+import io.rover.campaigns.core.data.domain.AttributeValue
+import io.rover.campaigns.core.data.domain.Attributes
+import io.rover.campaigns.core.data.graphql.getIterable
+import io.rover.campaigns.core.data.graphql.safeGetString
+import io.rover.campaigns.core.platform.DateFormattingInterface
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.URI

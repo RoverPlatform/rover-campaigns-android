@@ -1,7 +1,7 @@
-package io.rover.core.container
+package io.rover.campaigns.core.container
 
-import io.rover.core.streams.PublishSubject
-import io.rover.core.streams.Subject
+import io.rover.campaigns.core.streams.PublishSubject
+import io.rover.campaigns.core.streams.Subject
 
 /**
  * Implements both [Container] and [Resolver].  Thus, it hosts a set of live objects for a given set

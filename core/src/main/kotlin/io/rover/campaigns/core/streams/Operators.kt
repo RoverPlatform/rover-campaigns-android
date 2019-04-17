@@ -1,10 +1,10 @@
 @file:JvmName("Operators")
 
-package io.rover.core.streams
+package io.rover.campaigns.core.streams
 
 import android.os.Handler
 import android.os.Looper
-import io.rover.core.logging.log
+import io.rover.campaigns.core.logging.log
 import org.reactivestreams.Processor
 import org.reactivestreams.Publisher
 import org.reactivestreams.Subscriber

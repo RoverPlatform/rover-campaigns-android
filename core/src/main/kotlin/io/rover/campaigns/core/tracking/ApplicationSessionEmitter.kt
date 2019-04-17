@@ -1,10 +1,10 @@
-package io.rover.core.tracking
+package io.rover.campaigns.core.tracking
 
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
-import io.rover.core.logging.log
-import io.rover.core.platform.whenNotNull
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.whenNotNull
 
 /**
  * Monitors the application lifecycle and emits eventForSessionBoundary to the [SessionTrackerInterface]

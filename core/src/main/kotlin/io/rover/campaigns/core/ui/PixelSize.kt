@@ -1,4 +1,4 @@
-package io.rover.core.ui
+package io.rover.campaigns.core.ui
 
 import android.util.Size
 

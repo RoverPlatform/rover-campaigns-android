@@ -1,9 +1,9 @@
-package io.rover.core.events.contextproviders
+package io.rover.campaigns.core.events.contextproviders
 
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.events.ContextProvider
-import io.rover.core.events.UserInfoInterface
-import io.rover.core.events.domain.Event
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.events.ContextProvider
+import io.rover.campaigns.core.events.UserInfoInterface
+import io.rover.campaigns.core.events.domain.Event
 
 /**
  * Allows you to include arbitrary attributes (name/value pairs) within the [DeviceContext] sent

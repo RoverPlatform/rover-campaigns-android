@@ -1,14 +1,14 @@
-package io.rover.core.logging
+package io.rover.campaigns.core.logging
 
 import android.util.Log
-import io.rover.core.container.Resolver
-import io.rover.core.data.domain.AttributeValue
-import io.rover.core.events.EventQueueService.Companion.ROVER_NAMESPACE
-import io.rover.core.events.EventQueueServiceInterface
-import io.rover.core.events.domain.Event
-import io.rover.core.streams.filter
-import io.rover.core.streams.map
-import io.rover.core.streams.subscribe
+import io.rover.campaigns.core.container.Resolver
+import io.rover.campaigns.core.data.domain.AttributeValue
+import io.rover.campaigns.core.events.EventQueueService.Companion.ROVER_NAMESPACE
+import io.rover.campaigns.core.events.EventQueueServiceInterface
+import io.rover.campaigns.core.events.domain.Event
+import io.rover.campaigns.core.streams.filter
+import io.rover.campaigns.core.streams.map
+import io.rover.campaigns.core.streams.subscribe
 import java.util.ArrayDeque
 import java.util.concurrent.Executors
 

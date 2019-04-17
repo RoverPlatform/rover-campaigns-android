@@ -1,4 +1,4 @@
-package io.rover.campaigns.app.debug
+package io.rover.campaigns.campaigns.app.debug
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -9,8 +9,8 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import io.rover.core.Rover
-import io.rover.core.permissions.PermissionsNotifierInterface
+import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
 import kotlinx.android.synthetic.main.activity_debug_main.navigation
 import kotlinx.android.synthetic.main.activity_debug_main.notification_center
 import kotlinx.android.synthetic.main.activity_debug_main.settings_fragment

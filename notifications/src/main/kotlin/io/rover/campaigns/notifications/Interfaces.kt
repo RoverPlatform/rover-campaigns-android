@@ -1,9 +1,9 @@
-package io.rover.notifications
+package io.rover.campaigns.notifications
 
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
-import io.rover.notifications.domain.Notification
+import io.rover.campaigns.notifications.domain.Notification
 
 interface PushReceiverInterface {
     /**

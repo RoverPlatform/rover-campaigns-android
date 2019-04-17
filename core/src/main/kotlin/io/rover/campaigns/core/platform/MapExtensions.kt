@@ -1,4 +1,4 @@
-package io.rover.core.platform
+package io.rover.campaigns.core.platform
 
 /**
  * Merge two hashes together. In the event of the same key existing, [transform] is invoked to

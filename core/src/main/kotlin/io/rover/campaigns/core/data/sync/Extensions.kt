@@ -1,6 +1,6 @@
-package io.rover.core.data.sync
+package io.rover.campaigns.core.data.sync
 
-import io.rover.core.data.graphql.safeOptString
+import io.rover.campaigns.core.data.graphql.safeOptString
 import org.json.JSONObject
 
 fun PageInfo.Companion.decodeJson(json: JSONObject): PageInfo {

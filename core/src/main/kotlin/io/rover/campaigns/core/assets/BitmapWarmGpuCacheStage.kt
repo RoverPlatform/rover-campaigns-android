@@ -1,4 +1,4 @@
-package io.rover.core.assets
+package io.rover.campaigns.core.assets
 
 import android.graphics.Bitmap
 import java.net.URL

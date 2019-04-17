@@ -1,8 +1,8 @@
-package io.rover.core.routing
+package io.rover.campaigns.core.routing
 
 import android.content.Intent
 import android.net.Uri
-import io.rover.core.logging.log
+import io.rover.campaigns.core.logging.log
 import java.net.URI
 
 class RouterService(

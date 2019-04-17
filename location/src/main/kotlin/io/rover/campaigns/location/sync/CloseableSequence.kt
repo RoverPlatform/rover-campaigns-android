@@ -1,4 +1,4 @@
-package io.rover.location.sync
+package io.rover.campaigns.location.sync
 
 interface CloseableIterator<T>: Iterator<T>, AutoCloseable
 

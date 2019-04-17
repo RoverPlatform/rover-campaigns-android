@@ -1,1 +1,1 @@
-package io.rover.core.data.domain
+package io.rover.campaigns.core.data.domain

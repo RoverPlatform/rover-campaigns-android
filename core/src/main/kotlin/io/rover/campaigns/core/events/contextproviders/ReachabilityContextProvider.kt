@@ -1,10 +1,10 @@
-package io.rover.core.events.contextproviders
+package io.rover.campaigns.core.events.contextproviders
 
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.Build
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.events.ContextProvider
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.events.ContextProvider
 
 /**
  * Captures and adds information about the default route (ie., Wifi vs mobile data) to the [DeviceContext]

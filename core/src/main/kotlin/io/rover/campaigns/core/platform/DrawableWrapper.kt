@@ -1,4 +1,4 @@
-package io.rover.core.platform
+package io.rover.campaigns.core.platform
 
 import android.content.res.ColorStateList
 import android.graphics.Canvas

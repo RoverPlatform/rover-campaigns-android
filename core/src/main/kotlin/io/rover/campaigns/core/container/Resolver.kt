@@ -1,4 +1,4 @@
-package io.rover.core.container
+package io.rover.campaigns.core.container
 
 import org.reactivestreams.Publisher
 

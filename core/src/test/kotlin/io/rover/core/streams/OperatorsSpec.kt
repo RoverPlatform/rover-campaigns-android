@@ -1,4 +1,4 @@
-package io.rover.core.streams
+package io.rover.campaigns.core.streams
 
 import org.spekframework.spek2.Spek
 

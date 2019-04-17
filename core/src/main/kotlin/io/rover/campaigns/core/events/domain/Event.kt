@@ -1,6 +1,6 @@
-package io.rover.core.events.domain
+package io.rover.campaigns.core.events.domain
 
-import io.rover.core.data.domain.Attributes
+import io.rover.campaigns.core.data.domain.Attributes
 import java.util.Date
 import java.util.UUID
 

@@ -1,4 +1,4 @@
-package io.rover.debug
+package io.rover.campaigns.debug
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
@@ -6,7 +6,7 @@ import android.support.v7.preference.EditTextPreference
 import android.support.v7.preference.PreferenceManager
 import android.support.v7.preference.PreferenceScreen
 import android.support.v7.preference.SwitchPreferenceCompat
-import io.rover.core.platform.DeviceIdentificationInterface
+import io.rover.campaigns.core.platform.DeviceIdentificationInterface
 
 class DebugPreferences(
     context: Context,

@@ -1,6 +1,6 @@
 @file:JvmName("UriExtensions")
 
-package io.rover.core.platform
+package io.rover.campaigns.core.platform
 
 import android.net.Uri
 import java.net.URI

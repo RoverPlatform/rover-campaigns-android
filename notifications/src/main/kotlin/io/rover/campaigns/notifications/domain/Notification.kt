@@ -1,6 +1,6 @@
-package io.rover.notifications.domain
+package io.rover.campaigns.notifications.domain
 
-import io.rover.notifications.NotificationsAssembler
+import io.rover.campaigns.notifications.NotificationsAssembler
 import java.net.URI
 import java.net.URL
 import java.util.Date

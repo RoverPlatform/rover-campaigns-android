@@ -1,8 +1,8 @@
-package io.rover.core.events.contextproviders
+package io.rover.campaigns.core.events.contextproviders
 
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.events.ContextProvider
-import io.rover.core.platform.DeviceIdentificationInterface
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.events.ContextProvider
+import io.rover.campaigns.core.platform.DeviceIdentificationInterface
 
 class DeviceIdentifierContextProvider(
     deviceIdentification: DeviceIdentificationInterface

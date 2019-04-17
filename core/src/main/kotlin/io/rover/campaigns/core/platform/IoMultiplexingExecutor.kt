@@ -1,4 +1,4 @@
-package io.rover.core.platform
+package io.rover.campaigns.core.platform
 
 import android.annotation.SuppressLint
 import android.os.Build

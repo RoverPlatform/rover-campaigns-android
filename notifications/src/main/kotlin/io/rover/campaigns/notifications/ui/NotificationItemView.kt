@@ -1,4 +1,4 @@
-package io.rover.notifications.ui
+package io.rover.campaigns.notifications.ui
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -9,12 +9,12 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
-import io.rover.core.R
-import io.rover.core.streams.androidLifecycleDispose
-import io.rover.core.streams.subscribe
-import io.rover.core.ui.concerns.BindableView
-import io.rover.core.ui.concerns.ViewModelBinding
-import io.rover.notifications.ui.concerns.NotificationItemViewModelInterface
+import io.rover.campaigns.core.R
+import io.rover.campaigns.core.streams.androidLifecycleDispose
+import io.rover.campaigns.core.streams.subscribe
+import io.rover.campaigns.core.ui.concerns.BindableView
+import io.rover.campaigns.core.ui.concerns.ViewModelBinding
+import io.rover.campaigns.notifications.ui.concerns.NotificationItemViewModelInterface
 
 /**
  * View for the notification center list items.  Is bound to the

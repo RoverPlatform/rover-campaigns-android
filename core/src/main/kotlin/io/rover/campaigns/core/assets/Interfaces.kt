@@ -1,7 +1,7 @@
-package io.rover.core.assets
+package io.rover.campaigns.core.assets
 
 import android.graphics.Bitmap
-import io.rover.core.data.NetworkResult
+import io.rover.campaigns.core.data.NetworkResult
 import org.reactivestreams.Publisher
 import java.net.URL
 

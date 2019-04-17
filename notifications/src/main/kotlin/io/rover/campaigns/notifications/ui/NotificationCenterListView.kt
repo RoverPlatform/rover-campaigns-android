@@ -1,4 +1,4 @@
-package io.rover.notifications.ui
+package io.rover.campaigns.notifications.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -15,18 +15,18 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import io.rover.core.R
-import io.rover.core.Rover
-import io.rover.core.logging.log
-import io.rover.core.platform.whenNotNull
-import io.rover.core.streams.androidLifecycleDispose
-import io.rover.core.streams.subscribe
-import io.rover.core.ui.concerns.BindableView
-import io.rover.core.ui.concerns.ViewModelBinding
-import io.rover.notifications.NotificationOpenInterface
-import io.rover.notifications.domain.Notification
-import io.rover.notifications.ui.concerns.NotificationCenterListViewModelInterface
-import io.rover.notifications.ui.concerns.NotificationItemViewModelInterface
+import io.rover.campaigns.core.R
+import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.whenNotNull
+import io.rover.campaigns.core.streams.androidLifecycleDispose
+import io.rover.campaigns.core.streams.subscribe
+import io.rover.campaigns.core.ui.concerns.BindableView
+import io.rover.campaigns.core.ui.concerns.ViewModelBinding
+import io.rover.campaigns.notifications.NotificationOpenInterface
+import io.rover.campaigns.notifications.domain.Notification
+import io.rover.campaigns.notifications.ui.concerns.NotificationCenterListViewModelInterface
+import io.rover.campaigns.notifications.ui.concerns.NotificationItemViewModelInterface
 
 /**
  * Embed this view to embed a list of previously received push notifications for the user to browse

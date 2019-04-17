@@ -1,4 +1,4 @@
-package io.rover.core.container
+package io.rover.campaigns.core.container
 
 /**
  * Assemblers define factories (themselves typically just closures) that can then provide

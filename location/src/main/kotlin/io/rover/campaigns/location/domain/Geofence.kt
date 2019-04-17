@@ -1,7 +1,7 @@
-package io.rover.location.domain
+package io.rover.campaigns.location.domain
 
-import io.rover.core.data.domain.ID
-import io.rover.core.data.domain.Location
+import io.rover.campaigns.core.data.domain.ID
+import io.rover.campaigns.core.data.domain.Location
 import java.util.Date
 
 data class Geofence(

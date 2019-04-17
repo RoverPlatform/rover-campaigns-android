@@ -1,11 +1,11 @@
-package io.rover.notifications.ui.containers
+package io.rover.campaigns.notifications.ui.containers
 
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import io.rover.notifications.R
-import io.rover.notifications.ui.NotificationCenterListView
+import io.rover.campaigns.notifications.R
+import io.rover.campaigns.notifications.ui.NotificationCenterListView
 
 class NotificationCenterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

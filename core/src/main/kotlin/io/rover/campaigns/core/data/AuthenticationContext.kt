@@ -1,4 +1,4 @@
-package io.rover.core.data
+package io.rover.campaigns.core.data
 
 /**
  * Implementers can furnish consumers with a Rover API account SDK authentication token, or a Bearer

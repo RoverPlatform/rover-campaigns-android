@@ -1,10 +1,10 @@
-package io.rover.core.data.sync
+package io.rover.campaigns.core.data.sync
 
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
-import io.rover.core.events.EventQueueServiceInterface
-import io.rover.core.logging.log
+import io.rover.campaigns.core.events.EventQueueServiceInterface
+import io.rover.campaigns.core.logging.log
 
 /**
  * Run syncs (and event queue flushes) by process lifecycle.

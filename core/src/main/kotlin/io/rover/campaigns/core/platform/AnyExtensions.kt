@@ -1,6 +1,6 @@
 @file:JvmName("AnyExtensions")
 
-package io.rover.core.platform
+package io.rover.campaigns.core.platform
 
 /**
  * Use this extension method evaluate an expression against a value when it is not null.

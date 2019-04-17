@@ -1,4 +1,4 @@
-package io.rover.notifications
+package io.rover.campaigns.notifications
 
 import android.app.PendingIntent
 import android.content.Context
@@ -6,13 +6,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import io.rover.core.Rover
-import io.rover.core.logging.log
-import io.rover.core.platform.DateFormattingInterface
-import io.rover.notifications.domain.Notification
-import io.rover.notifications.graphql.decodeJson
-import io.rover.notifications.graphql.encodeJson
-import io.rover.notifications.ui.concerns.NotificationsRepositoryInterface
+import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.DateFormattingInterface
+import io.rover.campaigns.notifications.domain.Notification
+import io.rover.campaigns.notifications.graphql.decodeJson
+import io.rover.campaigns.notifications.graphql.encodeJson
+import io.rover.campaigns.notifications.ui.concerns.NotificationsRepositoryInterface
 import org.json.JSONException
 import org.json.JSONObject
 

@@ -1,14 +1,14 @@
-package io.rover.ticketmaster
+package io.rover.campaigns.ticketmaster
 
-import io.rover.core.Rover
-import io.rover.core.container.Assembler
-import io.rover.core.container.Container
-import io.rover.core.container.Resolver
-import io.rover.core.container.Scope
-import io.rover.core.data.sync.SyncCoordinatorInterface
-import io.rover.core.data.sync.SyncParticipant
-import io.rover.core.events.UserInfoInterface
-import io.rover.core.platform.LocalStorage
+import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.container.Assembler
+import io.rover.campaigns.core.container.Container
+import io.rover.campaigns.core.container.Resolver
+import io.rover.campaigns.core.container.Scope
+import io.rover.campaigns.core.data.sync.SyncCoordinatorInterface
+import io.rover.campaigns.core.data.sync.SyncParticipant
+import io.rover.campaigns.core.events.UserInfoInterface
+import io.rover.campaigns.core.platform.LocalStorage
 
 class TicketmasterAssembler: Assembler {
     override fun assemble(container: Container) {

@@ -1,8 +1,8 @@
-package io.rover.core.assets
+package io.rover.campaigns.core.assets
 
 import android.net.http.HttpResponseCache
-import io.rover.core.logging.log
-import io.rover.core.data.http.AndroidHttpsUrlConnectionNetworkClient
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.data.http.AndroidHttpsUrlConnectionNetworkClient
 import org.reactivestreams.Publisher
 import org.reactivestreams.Subscription
 import java.io.BufferedInputStream

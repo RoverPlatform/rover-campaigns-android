@@ -1,4 +1,4 @@
-package io.rover.inbox
+package io.rover.campaigns.inbox
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

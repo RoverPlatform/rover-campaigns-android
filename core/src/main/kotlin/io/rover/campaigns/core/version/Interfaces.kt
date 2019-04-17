@@ -1,4 +1,4 @@
-package io.rover.core.version
+package io.rover.campaigns.core.version
 
 /**
  * Statefully tracks the version number of the app locally and emits Rover eventForSessionBoundary whenever it

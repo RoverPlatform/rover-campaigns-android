@@ -1,15 +1,15 @@
-package io.rover.core.data.graphql.operations.data
+package io.rover.campaigns.core.data.graphql.operations.data
 
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.data.domain.Location
-import io.rover.core.data.graphql.getDate
-import io.rover.core.data.graphql.putProp
-import io.rover.core.data.graphql.safeGetString
-import io.rover.core.data.graphql.safeOptBoolean
-import io.rover.core.data.graphql.safeOptInt
-import io.rover.core.data.graphql.safeOptString
-import io.rover.core.platform.DateFormattingInterface
-import io.rover.core.platform.whenNotNull
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.data.domain.Location
+import io.rover.campaigns.core.data.graphql.getDate
+import io.rover.campaigns.core.data.graphql.putProp
+import io.rover.campaigns.core.data.graphql.safeGetString
+import io.rover.campaigns.core.data.graphql.safeOptBoolean
+import io.rover.campaigns.core.data.graphql.safeOptInt
+import io.rover.campaigns.core.data.graphql.safeOptString
+import io.rover.campaigns.core.platform.DateFormattingInterface
+import io.rover.campaigns.core.platform.whenNotNull
 import org.json.JSONObject
 
 /**

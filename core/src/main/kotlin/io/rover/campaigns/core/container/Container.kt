@@ -1,4 +1,4 @@
-package io.rover.core.container
+package io.rover.campaigns.core.container
 
 /**
  * Contains a mapping of factories to object types.

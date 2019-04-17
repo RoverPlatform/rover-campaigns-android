@@ -1,12 +1,12 @@
-package io.rover.core.data.http
+package io.rover.campaigns.core.data.http
 
 import android.content.Context
 import android.net.http.HttpResponseCache
 import android.util.Log
-import io.rover.core.logging.log
-import io.rover.core.streams.Publishers
-import io.rover.core.streams.Scheduler
-import io.rover.core.streams.subscribeOn
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.streams.Publishers
+import io.rover.campaigns.core.streams.Scheduler
+import io.rover.campaigns.core.streams.subscribeOn
 import org.reactivestreams.Publisher
 import java.io.BufferedInputStream
 import java.io.ByteArrayOutputStream

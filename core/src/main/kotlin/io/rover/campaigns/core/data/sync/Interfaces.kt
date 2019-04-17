@@ -1,7 +1,7 @@
-package io.rover.core.data.sync
+package io.rover.campaigns.core.data.sync
 
-import io.rover.core.data.domain.Attributes
-import io.rover.core.data.http.HttpClientResponse
+import io.rover.campaigns.core.data.domain.Attributes
+import io.rover.campaigns.core.data.http.HttpClientResponse
 import org.json.JSONObject
 import org.reactivestreams.Publisher
 

@@ -1,8 +1,8 @@
-package io.rover.core.events.contextproviders
+package io.rover.campaigns.core.events.contextproviders
 
 import android.bluetooth.BluetoothAdapter
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.events.ContextProvider
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.events.ContextProvider
 
 class BluetoothContextProvider(
     bluetoothAdapter: BluetoothAdapter

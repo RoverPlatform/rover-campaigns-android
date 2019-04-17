@@ -1,4 +1,4 @@
-package io.rover.core.ui.concerns
+package io.rover.campaigns.core.ui.concerns
 
 import org.reactivestreams.Subscription
 import kotlin.reflect.KProperty

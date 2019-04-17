@@ -1,4 +1,4 @@
-package io.rover.core.platform
+package io.rover.campaigns.core.platform
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE

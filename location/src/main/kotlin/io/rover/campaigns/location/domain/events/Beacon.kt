@@ -1,7 +1,7 @@
-package io.rover.location.domain.events
+package io.rover.campaigns.location.domain.events
 
-import io.rover.core.data.domain.AttributeValue
-import io.rover.location.domain.Beacon
+import io.rover.campaigns.core.data.domain.AttributeValue
+import io.rover.campaigns.location.domain.Beacon
 
 fun Beacon.asAttributeValue(): AttributeValue {
     return AttributeValue.Object(

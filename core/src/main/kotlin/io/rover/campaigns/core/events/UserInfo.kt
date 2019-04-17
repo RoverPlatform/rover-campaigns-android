@@ -1,12 +1,12 @@
-package io.rover.core.events
+package io.rover.campaigns.core.events
 
-import io.rover.core.data.domain.AttributeValue
-import io.rover.core.data.domain.Attributes
-import io.rover.core.data.graphql.operations.data.encodeJson
-import io.rover.core.data.graphql.operations.data.toAttributesHash
-import io.rover.core.logging.log
-import io.rover.core.platform.DateFormattingInterface
-import io.rover.core.platform.LocalStorage
+import io.rover.campaigns.core.data.domain.AttributeValue
+import io.rover.campaigns.core.data.domain.Attributes
+import io.rover.campaigns.core.data.graphql.operations.data.encodeJson
+import io.rover.campaigns.core.data.graphql.operations.data.toAttributesHash
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.DateFormattingInterface
+import io.rover.campaigns.core.platform.LocalStorage
 import org.json.JSONObject
 
 class UserInfo(

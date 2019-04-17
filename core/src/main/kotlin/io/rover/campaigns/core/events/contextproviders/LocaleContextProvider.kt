@@ -1,9 +1,9 @@
-package io.rover.core.events.contextproviders
+package io.rover.campaigns.core.events.contextproviders
 
 import android.content.res.Resources
 import android.os.Build
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.events.ContextProvider
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.events.ContextProvider
 import java.util.Locale
 
 /**

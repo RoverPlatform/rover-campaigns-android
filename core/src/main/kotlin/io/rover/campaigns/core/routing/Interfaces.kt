@@ -1,7 +1,7 @@
-package io.rover.core.routing
+package io.rover.campaigns.core.routing
 
 import android.content.Intent
-import io.rover.core.container.Assembler
+import io.rover.campaigns.core.container.Assembler
 import java.net.URI
 
 interface Router {

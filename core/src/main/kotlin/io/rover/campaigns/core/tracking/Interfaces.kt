@@ -1,6 +1,6 @@
-package io.rover.core.tracking
+package io.rover.campaigns.core.tracking
 
-import io.rover.core.data.domain.Attributes
+import io.rover.campaigns.core.data.domain.Attributes
 import java.util.UUID
 
 interface SessionStoreInterface {

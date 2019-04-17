@@ -1,4 +1,4 @@
-package io.rover.inbox
+package io.rover.campaigns.inbox
 
 import org.junit.Test
 

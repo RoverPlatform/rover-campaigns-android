@@ -1,6 +1,6 @@
 @file:JvmName("StringExtensions")
 
-package io.rover.core.platform
+package io.rover.campaigns.core.platform
 
 import android.os.Build
 import android.text.Html

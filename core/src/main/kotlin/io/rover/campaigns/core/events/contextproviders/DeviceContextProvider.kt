@@ -1,9 +1,9 @@
-package io.rover.core.events.contextproviders
+package io.rover.campaigns.core.events.contextproviders
 
 import android.os.Build
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.events.ContextProvider
-import io.rover.core.platform.getDeviceName
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.events.ContextProvider
+import io.rover.campaigns.core.platform.getDeviceName
 
 /**
  * Captures and adds details about the product details of the user's device and its running Android

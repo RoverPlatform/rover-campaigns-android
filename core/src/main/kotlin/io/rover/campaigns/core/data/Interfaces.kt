@@ -1,6 +1,6 @@
-package io.rover.core.data
+package io.rover.campaigns.core.data
 
-import io.rover.core.data.graphql.getObjectIterable
+import io.rover.campaigns.core.data.graphql.getObjectIterable
 import org.json.JSONArray
 import org.json.JSONObject
 

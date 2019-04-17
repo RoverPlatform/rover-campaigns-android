@@ -1,6 +1,6 @@
 @file:JvmName("Location")
 
-package io.rover.location
+package io.rover.campaigns.location
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -11,30 +11,30 @@ import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.MessagesClient
-import io.rover.core.Rover
-import io.rover.core.container.Assembler
-import io.rover.core.container.Container
-import io.rover.core.container.Resolver
-import io.rover.core.container.Scope
-import io.rover.core.data.sync.CursorState
-import io.rover.core.data.sync.RealPagedSyncParticipant
-import io.rover.core.data.sync.SyncCoordinatorInterface
-import io.rover.core.data.sync.SyncParticipant
-import io.rover.core.events.ContextProvider
-import io.rover.core.events.EventQueueServiceInterface
-import io.rover.core.permissions.PermissionsNotifierInterface
-import io.rover.core.platform.LocalStorage
-import io.rover.core.streams.Scheduler
-import io.rover.location.events.contextproviders.LocationContextProvider
-import io.rover.location.sync.BeaconSyncDecoder
-import io.rover.location.sync.BeaconsRepository
-import io.rover.location.sync.BeaconsSqlStorage
-import io.rover.location.sync.BeaconsSyncResource
-import io.rover.location.sync.GeofenceSyncDecoder
-import io.rover.location.sync.GeofencesRepository
-import io.rover.location.sync.GeofencesSqlStorage
-import io.rover.location.sync.GeofencesSyncResource
-import io.rover.location.sync.LocationDatabase
+import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.container.Assembler
+import io.rover.campaigns.core.container.Container
+import io.rover.campaigns.core.container.Resolver
+import io.rover.campaigns.core.container.Scope
+import io.rover.campaigns.core.data.sync.CursorState
+import io.rover.campaigns.core.data.sync.RealPagedSyncParticipant
+import io.rover.campaigns.core.data.sync.SyncCoordinatorInterface
+import io.rover.campaigns.core.data.sync.SyncParticipant
+import io.rover.campaigns.core.events.ContextProvider
+import io.rover.campaigns.core.events.EventQueueServiceInterface
+import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
+import io.rover.campaigns.core.platform.LocalStorage
+import io.rover.campaigns.core.streams.Scheduler
+import io.rover.campaigns.location.events.contextproviders.LocationContextProvider
+import io.rover.campaigns.location.sync.BeaconSyncDecoder
+import io.rover.campaigns.location.sync.BeaconsRepository
+import io.rover.campaigns.location.sync.BeaconsSqlStorage
+import io.rover.campaigns.location.sync.BeaconsSyncResource
+import io.rover.campaigns.location.sync.GeofenceSyncDecoder
+import io.rover.campaigns.location.sync.GeofencesRepository
+import io.rover.campaigns.location.sync.GeofencesSqlStorage
+import io.rover.campaigns.location.sync.GeofencesSyncResource
+import io.rover.campaigns.location.sync.LocationDatabase
 
 /**
  * Location Assembler contains the Rover SDK subsystems for Geofence, Beacon, and location tracking.

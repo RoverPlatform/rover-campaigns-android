@@ -1,4 +1,4 @@
-package io.rover.notifications
+package io.rover.campaigns.notifications
 
 import android.annotation.SuppressLint
 import android.app.Notification
@@ -11,20 +11,20 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.RequiresApi
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
-import io.rover.notifications.domain.NotificationAttachment
-import io.rover.notifications.ui.concerns.NotificationsRepositoryInterface
-import io.rover.core.R
-import io.rover.core.assets.AssetService
-import io.rover.core.data.NetworkResult
-import io.rover.core.logging.log
-import io.rover.core.streams.Publishers
-import io.rover.core.streams.Scheduler
-import io.rover.core.streams.doOnNext
-import io.rover.core.streams.map
-import io.rover.core.streams.onErrorReturn
-import io.rover.core.streams.subscribe
-import io.rover.core.streams.subscribeOn
-import io.rover.core.streams.timeout
+import io.rover.campaigns.notifications.domain.NotificationAttachment
+import io.rover.campaigns.notifications.ui.concerns.NotificationsRepositoryInterface
+import io.rover.campaigns.core.R
+import io.rover.campaigns.core.assets.AssetService
+import io.rover.campaigns.core.data.NetworkResult
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.streams.Publishers
+import io.rover.campaigns.core.streams.Scheduler
+import io.rover.campaigns.core.streams.doOnNext
+import io.rover.campaigns.core.streams.map
+import io.rover.campaigns.core.streams.onErrorReturn
+import io.rover.campaigns.core.streams.subscribe
+import io.rover.campaigns.core.streams.subscribeOn
+import io.rover.campaigns.core.streams.timeout
 import org.reactivestreams.Publisher
 import java.util.concurrent.TimeUnit
 

@@ -1,4 +1,4 @@
-package io.rover.location;
+package io.rover.campaigns.location;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

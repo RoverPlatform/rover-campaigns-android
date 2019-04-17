@@ -1,15 +1,15 @@
-package io.rover.advertising
+package io.rover.campaigns.advertising
 
 import android.content.Context
 import com.google.android.gms.ads.identifier.AdvertisingIdClient
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.events.ContextProvider
-import io.rover.core.logging.log
-import io.rover.core.platform.LocalStorage
-import io.rover.core.streams.Publishers
-import io.rover.core.streams.Scheduler
-import io.rover.core.streams.subscribe
-import io.rover.core.streams.subscribeOn
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.events.ContextProvider
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.LocalStorage
+import io.rover.campaigns.core.streams.Publishers
+import io.rover.campaigns.core.streams.Scheduler
+import io.rover.campaigns.core.streams.subscribe
+import io.rover.campaigns.core.streams.subscribeOn
 
 class AdvertisingIdContentProvider(
     applicationContext: Context,

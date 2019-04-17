@@ -1,8 +1,8 @@
-package io.rover.core.data.graphql
+package io.rover.campaigns.core.data.graphql
 
-import io.rover.core.data.GraphQlRequest
-import io.rover.core.data.NetworkResult
-import io.rover.core.data.domain.EventSnapshot
+import io.rover.campaigns.core.data.GraphQlRequest
+import io.rover.campaigns.core.data.NetworkResult
+import io.rover.campaigns.core.data.domain.EventSnapshot
 import org.reactivestreams.Publisher
 
 interface GraphQlApiServiceInterface {

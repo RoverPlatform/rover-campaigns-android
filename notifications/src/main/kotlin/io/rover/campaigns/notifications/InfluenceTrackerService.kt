@@ -1,16 +1,16 @@
-package io.rover.notifications
+package io.rover.campaigns.notifications
 
 import android.app.Application
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
 import android.arch.lifecycle.OnLifecycleEvent
-import io.rover.core.logging.log
-import io.rover.core.platform.DateFormattingInterface
-import io.rover.core.platform.LocalStorage
-import io.rover.core.platform.whenNotNull
-import io.rover.notifications.domain.Notification
-import io.rover.notifications.graphql.decodeJson
-import io.rover.notifications.graphql.encodeJson
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.DateFormattingInterface
+import io.rover.campaigns.core.platform.LocalStorage
+import io.rover.campaigns.core.platform.whenNotNull
+import io.rover.campaigns.notifications.domain.Notification
+import io.rover.campaigns.notifications.graphql.decodeJson
+import io.rover.campaigns.notifications.graphql.encodeJson
 import org.json.JSONException
 import org.json.JSONObject
 

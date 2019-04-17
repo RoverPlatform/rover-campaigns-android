@@ -1,7 +1,7 @@
-package io.rover.core.data.sync
+package io.rover.campaigns.core.data.sync
 
-import io.rover.core.logging.log
-import io.rover.core.platform.whenNotNull
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.whenNotNull
 import org.json.JSONException
 import org.json.JSONObject
 import java.lang.RuntimeException

@@ -1,14 +1,14 @@
-package io.rover.core.events
+package io.rover.campaigns.core.events
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.support.v4.content.LocalBroadcastManager
-import io.rover.core.data.graphql.operations.data.toAttributesHash
-import io.rover.core.events.domain.Event
-import io.rover.core.logging.log
-import io.rover.core.platform.whenNotNull
+import io.rover.campaigns.core.data.graphql.operations.data.toAttributesHash
+import io.rover.campaigns.core.events.domain.Event
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.whenNotNull
 import org.json.JSONException
 import org.json.JSONObject
 import java.lang.RuntimeException

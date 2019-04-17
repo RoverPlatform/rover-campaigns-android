@@ -1,10 +1,10 @@
-package io.rover.debug.routes
+package io.rover.campaigns.debug.routes
 
 import android.content.Context
 import android.content.Intent
-import io.rover.debug.RoverDebugActivity
-import io.rover.core.routing.Route
-import io.rover.core.platform.whenNotNull
+import io.rover.campaigns.debug.RoverDebugActivity
+import io.rover.campaigns.core.routing.Route
+import io.rover.campaigns.core.platform.whenNotNull
 import java.net.URI
 
 class DebugRoute(

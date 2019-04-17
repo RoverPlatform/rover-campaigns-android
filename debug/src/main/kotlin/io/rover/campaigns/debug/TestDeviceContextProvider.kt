@@ -1,7 +1,7 @@
-package io.rover.debug
+package io.rover.campaigns.debug
 
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.events.ContextProvider
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.events.ContextProvider
 
 class TestDeviceContextProvider(
     private val debugPreferences: DebugPreferences

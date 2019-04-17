@@ -1,8 +1,8 @@
-package io.rover.core.events.contextproviders
+package io.rover.campaigns.core.events.contextproviders
 
 import android.telephony.TelephonyManager
-import io.rover.core.data.domain.DeviceContext
-import io.rover.core.events.ContextProvider
+import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.events.ContextProvider
 
 /**
  * Captures and adds the mobile carrier and data connection details to a [DeviceContext].

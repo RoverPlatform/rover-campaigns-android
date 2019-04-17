@@ -1,6 +1,6 @@
 @file:JvmName("Schedulers")
 
-package io.rover.core.streams
+package io.rover.campaigns.core.streams
 
 import android.os.Handler
 import android.os.Looper

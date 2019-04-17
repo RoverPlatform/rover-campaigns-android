@@ -1,6 +1,6 @@
 @file:JvmName("Android")
 
-package io.rover.core.streams
+package io.rover.campaigns.core.streams
 
 import android.arch.lifecycle.GenericLifecycleObserver
 import android.arch.lifecycle.Lifecycle

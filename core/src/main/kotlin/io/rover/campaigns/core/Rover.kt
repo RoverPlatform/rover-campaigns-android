@@ -1,14 +1,14 @@
-package io.rover.core
+package io.rover.campaigns.core
 
 import android.content.Context
-import io.rover.core.container.Assembler
-import io.rover.core.container.ContainerResolver
-import io.rover.core.container.InjectionContainer
-import io.rover.core.data.http.AndroidHttpsUrlConnectionNetworkClient
-import io.rover.core.logging.AndroidLogger
-import io.rover.core.logging.GlobalStaticLogHolder
-import io.rover.core.logging.LogBuffer
-import io.rover.core.logging.log
+import io.rover.campaigns.core.container.Assembler
+import io.rover.campaigns.core.container.ContainerResolver
+import io.rover.campaigns.core.container.InjectionContainer
+import io.rover.campaigns.core.data.http.AndroidHttpsUrlConnectionNetworkClient
+import io.rover.campaigns.core.logging.AndroidLogger
+import io.rover.campaigns.core.logging.GlobalStaticLogHolder
+import io.rover.campaigns.core.logging.LogBuffer
+import io.rover.campaigns.core.logging.log
 import java.net.HttpURLConnection
 
 /**

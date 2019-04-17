@@ -1,7 +1,7 @@
-package io.rover.core.assets
+package io.rover.campaigns.core.assets
 
-import io.rover.core.logging.log
-import io.rover.core.streams.blockForResult
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.streams.blockForResult
 import java.io.BufferedInputStream
 import java.lang.Exception
 import java.net.URL

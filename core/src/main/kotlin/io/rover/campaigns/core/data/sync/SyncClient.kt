@@ -1,16 +1,16 @@
-package io.rover.core.data.sync
+package io.rover.campaigns.core.data.sync
 
 import android.net.Uri
-import io.rover.core.data.AuthenticationContext
-import io.rover.core.data.domain.AttributeValue
-import io.rover.core.data.domain.Attributes
-import io.rover.core.data.graphql.operations.data.encodeJson
-import io.rover.core.data.http.HttpClientResponse
-import io.rover.core.data.http.HttpRequest
-import io.rover.core.data.http.HttpVerb
-import io.rover.core.data.http.NetworkClient
-import io.rover.core.logging.log
-import io.rover.core.platform.DateFormattingInterface
+import io.rover.campaigns.core.data.AuthenticationContext
+import io.rover.campaigns.core.data.domain.AttributeValue
+import io.rover.campaigns.core.data.domain.Attributes
+import io.rover.campaigns.core.data.graphql.operations.data.encodeJson
+import io.rover.campaigns.core.data.http.HttpClientResponse
+import io.rover.campaigns.core.data.http.HttpRequest
+import io.rover.campaigns.core.data.http.HttpVerb
+import io.rover.campaigns.core.data.http.NetworkClient
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.DateFormattingInterface
 import org.json.JSONArray
 import org.reactivestreams.Publisher
 import java.net.URL

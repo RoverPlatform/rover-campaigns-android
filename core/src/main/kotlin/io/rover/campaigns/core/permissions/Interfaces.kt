@@ -1,4 +1,4 @@
-package io.rover.core.permissions
+package io.rover.campaigns.core.permissions
 
 import org.reactivestreams.Publisher
 

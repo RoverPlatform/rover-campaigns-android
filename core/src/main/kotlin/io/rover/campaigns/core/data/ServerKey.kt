@@ -1,4 +1,4 @@
-package io.rover.core.data
+package io.rover.campaigns.core.data
 
 /**
  * A version of Authentication Context that works with simply a standard SDK Key, acquired from

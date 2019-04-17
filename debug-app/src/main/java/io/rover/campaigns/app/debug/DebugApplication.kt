@@ -1,14 +1,14 @@
-package io.rover.campaigns.app.debug
+package io.rover.campaigns.campaigns.app.debug
 
 import android.app.Application
 import android.content.Intent
 import com.google.firebase.iid.FirebaseInstanceId
-import io.rover.core.CoreAssembler
-import io.rover.core.Rover
-import io.rover.debug.DebugAssembler
-import io.rover.location.LocationAssembler
-import io.rover.notifications.NotificationsAssembler
-import io.rover.ticketmaster.TicketmasterAssembler
+import io.rover.campaigns.core.CoreAssembler
+import io.rover.campaigns.core.Rover
+import io.rover.campaigns.debug.DebugAssembler
+import io.rover.campaigns.location.LocationAssembler
+import io.rover.campaigns.notifications.NotificationsAssembler
+import io.rover.campaigns.ticketmaster.TicketmasterAssembler
 import timber.log.Timber
 
 

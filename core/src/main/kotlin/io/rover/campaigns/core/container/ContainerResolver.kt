@@ -1,3 +1,3 @@
-package io.rover.core.container
+package io.rover.campaigns.core.container
 
 interface ContainerResolver : Container, Resolver

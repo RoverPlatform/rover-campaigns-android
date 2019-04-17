@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.rover.core.platform
+package io.rover.campaigns.core.platform
 
 import android.os.Build
 

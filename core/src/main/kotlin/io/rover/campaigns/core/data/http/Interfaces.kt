@@ -1,4 +1,4 @@
-package io.rover.core.data.http
+package io.rover.campaigns.core.data.http
 
 import org.reactivestreams.Publisher
 

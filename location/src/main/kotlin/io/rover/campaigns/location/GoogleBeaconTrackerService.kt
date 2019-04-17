@@ -1,4 +1,4 @@
-package io.rover.location
+package io.rover.campaigns.location
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -17,18 +17,18 @@ import com.google.android.gms.nearby.messages.MessagesOptions
 import com.google.android.gms.nearby.messages.NearbyPermissions
 import com.google.android.gms.nearby.messages.Strategy
 import com.google.android.gms.nearby.messages.SubscribeOptions
-import io.rover.core.Rover
-import io.rover.core.logging.log
-import io.rover.core.permissions.PermissionsNotifierInterface
-import io.rover.core.platform.whenNotNull
-import io.rover.core.streams.Publishers
-import io.rover.core.streams.Scheduler
-import io.rover.core.streams.doOnNext
-import io.rover.core.streams.map
-import io.rover.core.streams.observeOn
-import io.rover.core.streams.subscribe
-import io.rover.location.domain.Beacon
-import io.rover.location.sync.BeaconsRepository
+import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
+import io.rover.campaigns.core.platform.whenNotNull
+import io.rover.campaigns.core.streams.Publishers
+import io.rover.campaigns.core.streams.Scheduler
+import io.rover.campaigns.core.streams.doOnNext
+import io.rover.campaigns.core.streams.map
+import io.rover.campaigns.core.streams.observeOn
+import io.rover.campaigns.core.streams.subscribe
+import io.rover.campaigns.location.domain.Beacon
+import io.rover.campaigns.location.sync.BeaconsRepository
 import java.util.UUID
 
 /**

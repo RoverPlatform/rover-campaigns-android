@@ -1,8 +1,8 @@
-package io.rover.core.assets
+package io.rover.campaigns.core.assets
 
 import android.graphics.Bitmap
 import android.util.LruCache
-import io.rover.core.logging.log
+import io.rover.campaigns.core.logging.log
 import java.net.URL
 
 /**

@@ -1,11 +1,11 @@
-package io.rover.debug
+package io.rover.campaigns.debug
 
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.preference.PreferenceFragmentCompat
-import io.rover.core.Rover
-import io.rover.core.logging.log
+import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.logging.log
 
 /**
  * This activity displays a list of hidden debug settings for the Rover SDK.

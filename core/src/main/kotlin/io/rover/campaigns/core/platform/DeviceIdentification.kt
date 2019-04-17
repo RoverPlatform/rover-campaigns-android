@@ -1,9 +1,9 @@
-package io.rover.core.platform
+package io.rover.campaigns.core.platform
 
 import android.content.Context
 import android.os.Build
 import android.provider.Settings
-import io.rover.core.logging.log
+import io.rover.campaigns.core.logging.log
 import java.io.FileNotFoundException
 import java.util.UUID
 

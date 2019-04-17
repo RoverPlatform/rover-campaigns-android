@@ -1,9 +1,9 @@
-package io.rover.notifications.ui.concerns
+package io.rover.campaigns.notifications.ui.concerns
 
 import android.graphics.Bitmap
 import org.reactivestreams.Publisher
-import io.rover.core.ui.concerns.BindableViewModel
-import io.rover.notifications.domain.Notification
+import io.rover.campaigns.core.ui.concerns.BindableViewModel
+import io.rover.campaigns.notifications.domain.Notification
 
 /**
  * This repository syncs and stores the Push Notifications.

@@ -1,7 +1,7 @@
-package io.rover.core.routing.routes
+package io.rover.campaigns.core.routing.routes
 
 import android.content.Intent
-import io.rover.core.routing.Route
+import io.rover.campaigns.core.routing.Route
 import java.net.URI
 
 class OpenAppRoute(

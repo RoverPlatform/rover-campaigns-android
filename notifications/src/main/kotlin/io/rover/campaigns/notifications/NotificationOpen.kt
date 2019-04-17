@@ -1,18 +1,18 @@
-package io.rover.notifications
+package io.rover.campaigns.notifications
 
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import io.rover.core.data.domain.AttributeValue
-import io.rover.core.events.EventQueueService
-import io.rover.core.events.EventQueueServiceInterface
-import io.rover.core.events.domain.Event
-import io.rover.core.platform.DateFormattingInterface
-import io.rover.core.routing.Router
-import io.rover.core.routing.website.EmbeddedWebBrowserDisplayInterface
-import io.rover.notifications.domain.Notification
-import io.rover.notifications.domain.events.asAttributeValue
-import io.rover.notifications.graphql.decodeJson
+import io.rover.campaigns.core.data.domain.AttributeValue
+import io.rover.campaigns.core.events.EventQueueService
+import io.rover.campaigns.core.events.EventQueueServiceInterface
+import io.rover.campaigns.core.events.domain.Event
+import io.rover.campaigns.core.platform.DateFormattingInterface
+import io.rover.campaigns.core.routing.Router
+import io.rover.campaigns.core.routing.website.EmbeddedWebBrowserDisplayInterface
+import io.rover.campaigns.notifications.domain.Notification
+import io.rover.campaigns.notifications.domain.events.asAttributeValue
+import io.rover.campaigns.notifications.graphql.decodeJson
 import org.json.JSONObject
 
 /**
