@@ -1,4 +1,4 @@
-package io.rover.location;
+package io.rover.campaigns.location;
 
 import org.junit.Test;
 

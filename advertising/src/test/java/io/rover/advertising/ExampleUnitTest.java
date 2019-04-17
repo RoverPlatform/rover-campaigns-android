@@ -1,4 +1,4 @@
-package io.rover.advertising;
+package io.rover.campaigns.advertising;
 
 import org.junit.Test;
 

@@ -40,7 +40,6 @@ dependencies {
 
     implementation project(':core')
     implementation project(":notifications")
-    implementation project(":experiences")
     implementation project(":debug")
     implementation project(":location")
 //    implementation project(":advertising")

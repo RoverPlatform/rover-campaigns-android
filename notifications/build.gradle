@@ -64,8 +64,12 @@ dependencies {
     // spek
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
     testImplementation "org.spekframework.spek2:spek-runner-junit5:$spek_version"
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    testImplementation 'com.natpryce:hamkrest:1.6.0.0'
+    testImplementation 'org.amshove.kluent:kluent:1.30'
+    testImplementation 'org.amshove.kluent:kluent-android:1.30'
+
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
 
 configurations {
