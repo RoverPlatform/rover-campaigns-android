@@ -45,7 +45,6 @@ interface PushReceiverInterface {
     /**
      * Handle an already decoded Rover [Notification].
      */
-    @Deprecated("Will be moved elsewhere")
     fun onMessageReceivedNotification(notification: Notification)
 
     /**

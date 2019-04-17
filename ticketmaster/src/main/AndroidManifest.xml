@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.rover.ticketmaster">
+    package="io.rover.campaigns.ticketmaster">
     <application>
     </application>
 </manifest>

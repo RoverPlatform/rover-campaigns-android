@@ -1,5 +1,6 @@
 package io.rover.campaigns.ticketmaster
 
+import android.app.Application
 import io.rover.campaigns.core.Rover
 import io.rover.campaigns.core.container.Assembler
 import io.rover.campaigns.core.container.Container
@@ -24,6 +25,7 @@ class TicketmasterAssembler: Assembler {
             TicketmasterManager::class.java
         ) { resolver ->
             TicketmasterManager(
+                resolver.resolveSingletonOrFail(Application::class.java),
                 resolver.resolveSingletonOrFail(UserInfoInterface::class.java),
                 resolver.resolveSingletonOrFail(LocalStorage::class.java)
             )

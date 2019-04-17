@@ -70,7 +70,7 @@ open class PushReceiver(
         notificationDispatcher.ingest(notification)
     }
 
-    override fun onMessageReceivedNotification(notification: io.rover.notifications.domain.Notification) {
+    override fun onMessageReceivedNotification(notification: Notification) {
         notificationDispatcher.ingest(notification)
     }
 }

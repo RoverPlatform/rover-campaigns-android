@@ -68,7 +68,7 @@ class NotificationDispatcher(
      */
     private val defaultChannelId: String? = null
 ) {
-    fun ingest(notificationFromAction: io.rover.notifications.domain.Notification) {
+    fun ingest(notificationFromAction: io.rover.campaigns.notifications.domain.Notification) {
         Publishers.defer {
             processNotification(notificationFromAction)
         }.subscribeOn(mainThreadScheduler).subscribe {} // TODO: do not use subscriber like this, it will leak
@@ -101,7 +101,7 @@ class NotificationDispatcher(
         notificationManager.createNotificationChannel(mChannel)
     }
 
-    private fun processNotification(notification: io.rover.notifications.domain.Notification): Publisher<Unit> {
+    private fun processNotification(notification: io.rover.campaigns.notifications.domain.Notification): Publisher<Unit> {
         // notify the influenced opens tracker that a notification is being executed.
         influenceTrackerService.notifyNotificationReceived(notification)
 

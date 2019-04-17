@@ -59,10 +59,10 @@ class GoogleGeofenceService(
         .observeOn(mainScheduler)
         .share()
 
-    override val currentGeofences: List<io.rover.location.domain.Geofence>
+    override val currentGeofences: List<io.rover.campaigns.location.domain.Geofence>
         get() = enclosingGeofences
 
-    override val enclosingGeofences: MutableList<io.rover.location.domain.Geofence> = mutableListOf()
+    override val enclosingGeofences: MutableList<io.rover.campaigns.location.domain.Geofence> = mutableListOf()
 
     override fun newGoogleGeofenceEvent(geofencingEvent: GeofencingEvent) {
         // have to do processing here because we need to know what the regions are.
@@ -126,7 +126,7 @@ class GoogleGeofenceService(
     }
 
     @SuppressLint("MissingPermission")
-    private fun startMonitoringGeofences(updatedFencesList: List<io.rover.location.domain.Geofence>) {
+    private fun startMonitoringGeofences(updatedFencesList: List<io.rover.campaigns.location.domain.Geofence>) {
         log.v("Updating geofences.")
         // the fences we ultimately want to be monitoring once the following operation is complete.
         val targetFenceIds = updatedFencesList.map { it.identifier }.toSet()
