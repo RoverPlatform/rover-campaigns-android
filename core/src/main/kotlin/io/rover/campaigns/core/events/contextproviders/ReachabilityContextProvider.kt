@@ -19,13 +19,13 @@ class ReachabilityContextProvider(
     @Suppress("DEPRECATION") // Using deprecated API only on legacy Android.
     private fun getNetworkInfoForType(networkType: Int): List<NetworkInfo> {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connectionManager.allNetworks.map { network ->
+            connectionManager.allNetworks.mapNotNull { network ->
                 connectionManager.getNetworkInfo(network)
             }.filter { networkInfo ->
                 networkInfo.type == networkType
             }.toList()
         } else {
-            listOf(connectionManager.getNetworkInfo(networkType))
+            listOfNotNull(connectionManager.getNetworkInfo(networkType))
         }
     }
 
