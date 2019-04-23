@@ -11,6 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <!-- TODO: add RoverActivity from the separate Rover SDK, with appropriate bespoke intent filters for debug/inbox app deep and universal links, which will probably keep the same form as Rover 2.x links -->
         <service android:name="io.rover.campaigns.app.debug.fcm.FirebaseMessageReceiver">
             <intent-filter>
@@ -31,6 +32,16 @@
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="rv-rover-labs-inc" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data android:host="rover-labs-inc.rover.io" />
             </intent-filter>
 
         </activity>

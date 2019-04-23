@@ -2,6 +2,7 @@ package io.rover.campaigns.app.debug
 
 import android.app.Application
 import android.content.Intent
+import android.graphics.Color
 import com.google.firebase.iid.FirebaseInstanceId
 import io.rover.campaigns.core.CoreAssembler
 import io.rover.campaigns.core.RoverCampaigns
@@ -9,6 +10,7 @@ import io.rover.campaigns.debug.DebugAssembler
 import io.rover.campaigns.location.LocationAssembler
 import io.rover.campaigns.notifications.NotificationsAssembler
 import io.rover.campaigns.ticketmaster.TicketmasterAssembler
+import io.rover.sdk.Rover
 import timber.log.Timber
 
 
@@ -21,6 +23,12 @@ class DebugApplication : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+
+        Rover.initialize(
+            this,
+            getString(R.string.rover_api_token),
+            Color.BLUE
+        )
 
         RoverCampaigns.installSaneGlobalHttpCache(this)
 
@@ -45,4 +53,6 @@ class DebugApplication : Application() {
             TicketmasterAssembler()
         )
     }
+
+
 }

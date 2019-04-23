@@ -1,7 +1,9 @@
 package io.rover.campaigns.app.debug
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
@@ -11,6 +13,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
+import io.rover.campaigns.core.routing.LinkOpenInterface
+import io.rover.campaigns.core.routing.Router
+import io.rover.campaigns.core.routing.RouterService
+import io.rover.campaigns.core.ui.LinkOpen
+import io.rover.sdk.ui.containers.RoverActivity
 import kotlinx.android.synthetic.main.activity_debug_main.navigation
 import kotlinx.android.synthetic.main.activity_debug_main.notification_center
 import kotlinx.android.synthetic.main.activity_debug_main.settings_fragment
@@ -44,7 +51,21 @@ class DebugMainActivity : AppCompatActivity() {
 
         selectTab(R.id.navigation_notifications)
 
-        makePermissionsAttempt()
+        val uri : Uri? = intent.data
+
+//        uri?.let { it.host == "presentExperience" && it.scheme == "rv-rover-labs-inc" }?.
+
+        //
+
+        // for Rover experience deep & universal links:
+        val experienceId = intent?.data?.let { intentUri ->
+            if(intentUri.host == "presentExperience" && intentUri.scheme == "rv-rover-labs-inc") {
+                intentUri.getQueryParameter("id")
+            } else RoverCampaigns.shared!!.resolveSingletonOrFail(Router::class.java).route(intentUri)
+        }
+
+        // ANDREW & SAM: start here and restore TransientLinkLaunchActivity.  Find it in `master` branch of `rover-android`. And then integrate it into debug-app just like it was done historically with SDK 2.x, so carry on with integration in: https://developer.rover.io/v2/android/deep-universal-links/
+
     }
 
     private fun makePermissionsAttempt() {
