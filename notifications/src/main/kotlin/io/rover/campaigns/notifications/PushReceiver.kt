@@ -32,7 +32,7 @@ open class PushReceiver(
         // b) the app is running in foreground.
 
         if (!parameters.containsKey("rover")) {
-            log.w("Non-Rover push notification received: `rover` data parameter not present. Possibly was a Display-only push notification, or otherwise not intended for the Rover SDK. Ignoring.")
+            log.w("Non-RoverCampaigns push notification received: `rover` data parameter not present. Possibly was a Display-only push notification, or otherwise not intended for the RoverCampaigns SDK. Ignoring.")
             // clear influenced open data so we don't take credit for an influenced open for a
             // notification we did not receive.
             influenceTrackerService.nonRoverPushReceived()

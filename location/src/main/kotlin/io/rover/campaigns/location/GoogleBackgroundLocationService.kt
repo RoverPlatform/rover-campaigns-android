@@ -11,7 +11,7 @@ import android.os.Build
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
-import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
 import io.rover.campaigns.core.platform.whenNotNull
@@ -143,14 +143,14 @@ class LocationBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (LocationResult.hasResult(intent)) {
             val result = LocationResult.extractResult(intent)
-            val rover = Rover.shared
+            val rover = RoverCampaigns.shared
             if(rover == null) {
-                log.e("Received a location result from Google, but Rover is not initialized.  Ignoring.")
+                log.e("Received a location result from Google, but RoverCampaigns is not initialized.  Ignoring.")
                 return
             }
             val backgroundLocationService = rover.resolve(GoogleBackgroundLocationServiceInterface::class.java)
             if(backgroundLocationService == null) {
-                log.e("Received a location result from Google, but the Rover GoogleBackgroundLocationServiceInterface is missing. Ensure that LocationAssembler is added to Rover.initialize(). Ignoring.")
+                log.e("Received a location result from Google, but the RoverCampaigns GoogleBackgroundLocationServiceInterface is missing. Ensure that LocationAssembler is added to RoverCampaigns.initialize(). Ignoring.")
                 return
             }
             else backgroundLocationService.newGoogleLocationResult(result)

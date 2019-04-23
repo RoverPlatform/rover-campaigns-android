@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Intent
 import com.google.firebase.iid.FirebaseInstanceId
 import io.rover.campaigns.core.CoreAssembler
-import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.debug.DebugAssembler
 import io.rover.campaigns.location.LocationAssembler
 import io.rover.campaigns.notifications.NotificationsAssembler
@@ -22,9 +22,9 @@ class DebugApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        Rover.installSaneGlobalHttpCache(this)
+        RoverCampaigns.installSaneGlobalHttpCache(this)
 
-        Rover.initialize(
+        RoverCampaigns.initialize(
             CoreAssembler(
                 accountToken = getString(R.string.rover_api_token),
                 application = this,

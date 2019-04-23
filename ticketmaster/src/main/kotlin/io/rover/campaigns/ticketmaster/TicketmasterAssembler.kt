@@ -1,7 +1,7 @@
 package io.rover.campaigns.ticketmaster
 
 import android.app.Application
-import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.container.Assembler
 import io.rover.campaigns.core.container.Container
 import io.rover.campaigns.core.container.Resolver
@@ -49,5 +49,5 @@ class TicketmasterAssembler: Assembler {
 }
 
 @Deprecated("Use .resolve(TicketmasterAuthorizer::class.java)")
-val Rover.ticketmasterAuthorizer: TicketmasterAuthorizer
-    get() = Rover.sharedInstance.resolveSingletonOrFail(TicketmasterAuthorizer::class.java)
+val RoverCampaigns.ticketmasterAuthorizer: TicketmasterAuthorizer
+    get() = RoverCampaigns.sharedInstance.resolveSingletonOrFail(TicketmasterAuthorizer::class.java)

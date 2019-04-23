@@ -17,7 +17,7 @@ import com.google.android.gms.nearby.messages.MessagesOptions
 import com.google.android.gms.nearby.messages.NearbyPermissions
 import com.google.android.gms.nearby.messages.Strategy
 import com.google.android.gms.nearby.messages.SubscribeOptions
-import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
 import io.rover.campaigns.core.platform.whenNotNull
@@ -145,14 +145,14 @@ class GoogleBeaconTrackerService(
 
 class BeaconBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val rover = Rover.shared
+        val rover = RoverCampaigns.shared
         if(rover == null) {
-            log.e("Received a beacon result from Google, but Rover is not initialized.  Ignoring.")
+            log.e("Received a beacon result from Google, but RoverCampaigns is not initialized.  Ignoring.")
             return
         }
         val beaconTrackerService = rover.resolve(GoogleBeaconTrackerServiceInterface::class.java)
         if(beaconTrackerService == null) {
-            log.e("Received a beacon result from Google, but GoogleBeaconTrackerServiceInterface is not registered in the Rover container. Ensure LocationAssembler() is in Rover.initialize(). Ignoring.")
+            log.e("Received a beacon result from Google, but GoogleBeaconTrackerServiceInterface is not registered in the RoverCampaigns container. Ensure LocationAssembler() is in RoverCampaigns.initialize(). Ignoring.")
             return
         }
         else beaconTrackerService.newGoogleBeaconMessage(
