@@ -54,7 +54,7 @@ open class EventReceiver(
             }
         }
         broadcastManager.registerReceiver(receiver, IntentFilter())
-        log.v("Now listening for RoverCampaigns events encapsulated in local broadcast intents.")
+        log.v("Now listening for Rover Campaigns events encapsulated in local broadcast intents.")
     }
 
 

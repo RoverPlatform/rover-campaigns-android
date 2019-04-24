@@ -147,12 +147,12 @@ class BeaconBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val rover = RoverCampaigns.shared
         if(rover == null) {
-            log.e("Received a beacon result from Google, but RoverCampaigns is not initialized.  Ignoring.")
+            log.e("Received a beacon result from Google, but Rover Campaigns is not initialized.  Ignoring.")
             return
         }
         val beaconTrackerService = rover.resolve(GoogleBeaconTrackerServiceInterface::class.java)
         if(beaconTrackerService == null) {
-            log.e("Received a beacon result from Google, but GoogleBeaconTrackerServiceInterface is not registered in the RoverCampaigns container. Ensure LocationAssembler() is in RoverCampaigns.initialize(). Ignoring.")
+            log.e("Received a beacon result from Google, but GoogleBeaconTrackerServiceInterface is not registered in the Rover Campaigns container. Ensure LocationAssembler() is in RoverCampaigns.initialize(). Ignoring.")
             return
         }
         else beaconTrackerService.newGoogleBeaconMessage(

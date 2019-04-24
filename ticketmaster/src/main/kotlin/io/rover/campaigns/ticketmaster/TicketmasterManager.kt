@@ -104,7 +104,7 @@ class TicketmasterManager(
         )
 
         if(legacyTicketmasterMemberJson != null) {
-            log.i("Migrated legacy RoverCampaigns SDK 2.x Ticketmaster member data.")
+            log.i("Migrated legacy Rover SDK 2.x Ticketmaster member data.")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 try {
                     log.v("Deleting legacy shared preferences file.")

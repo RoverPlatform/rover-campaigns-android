@@ -145,12 +145,12 @@ class LocationBroadcastReceiver : BroadcastReceiver() {
             val result = LocationResult.extractResult(intent)
             val rover = RoverCampaigns.shared
             if(rover == null) {
-                log.e("Received a location result from Google, but RoverCampaigns is not initialized.  Ignoring.")
+                log.e("Received a location result from Google, but Rover Campaigns is not initialized.  Ignoring.")
                 return
             }
             val backgroundLocationService = rover.resolve(GoogleBackgroundLocationServiceInterface::class.java)
             if(backgroundLocationService == null) {
-                log.e("Received a location result from Google, but the RoverCampaigns GoogleBackgroundLocationServiceInterface is missing. Ensure that LocationAssembler is added to RoverCampaigns.initialize(). Ignoring.")
+                log.e("Received a location result from Google, but the Rover Campaigns GoogleBackgroundLocationServiceInterface is missing. Ensure that LocationAssembler is added to RoverCampaigns.initialize(). Ignoring.")
                 return
             }
             else backgroundLocationService.newGoogleLocationResult(result)

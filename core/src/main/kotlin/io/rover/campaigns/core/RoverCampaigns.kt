@@ -56,7 +56,7 @@ class RoverCampaigns(
         fun initialize(vararg assemblers: Assembler) {
             val rover = RoverCampaigns(assemblers.asList())
             if (sharedInstanceBackingField != null) {
-                throw RuntimeException("RoverCampaigns already initialized.  This is most likely a bug.")
+                throw RuntimeException("Rover Campaigns already initialized.  This is most likely a bug.")
             }
             sharedInstanceBackingField = rover
             log.i("Started Rover Android SDK v${BuildConfig.VERSION_NAME}.")

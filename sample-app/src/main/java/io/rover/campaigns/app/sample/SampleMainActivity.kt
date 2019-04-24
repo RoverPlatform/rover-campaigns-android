@@ -47,15 +47,19 @@ class SampleMainActivity : AppCompatActivity() {
         selectTab(R.id.navigation_notifications)
 
         val uri : Uri? = intent.data
-        val uriQueryParameter = uri?.getQueryParameter("id")
+        val possibleExperienceId = uri?.getQueryParameter("id")
+        val possibleCampaignId = uri?.getQueryParameter("campaignID")
+
 
         // A simple routing example follows:
         // Your app can handle the intent data as it prefers - here, we're handling a simple deep
         // link scheme as defined in the manifest.
-        if (uri?.scheme == getString(R.string.uri_scheme) && uri?.host == "presentExperience" && uriQueryParameter != null) {
-            startActivity(RoverActivity.makeIntent(packageContext = this, experienceId = uriQueryParameter, campaignId = null))
+        if (uri?.scheme == getString(R.string.uri_scheme) && uri?.host == "presentExperience") {
+            startActivity(RoverActivity.makeIntent(packageContext = this, experienceId = possibleExperienceId, campaignId = possibleCampaignId))
+        } else if(uri?.scheme in listOf("http", "https") && uri?.host == getString(R.string.associated_domain)) {
+            startActivity(RoverActivity.makeIntent(packageContext = this, experienceUrl = uri.toString()))
         } else {
-            // no matching deep link, just do default "main screen" behaviour.
+            // no matching deep or universal link, just do default "main screen" behaviour.
             makePermissionsAttempt()
         }
     }
