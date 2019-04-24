@@ -1,7 +1,6 @@
 package io.rover.campaigns.app.debug
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -13,10 +12,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
-import io.rover.campaigns.core.routing.LinkOpenInterface
-import io.rover.campaigns.core.routing.Router
-import io.rover.campaigns.core.routing.RouterService
-import io.rover.campaigns.core.ui.LinkOpen
 import io.rover.sdk.ui.containers.RoverActivity
 import kotlinx.android.synthetic.main.activity_debug_main.navigation
 import kotlinx.android.synthetic.main.activity_debug_main.notification_center
@@ -52,20 +47,17 @@ class DebugMainActivity : AppCompatActivity() {
         selectTab(R.id.navigation_notifications)
 
         val uri : Uri? = intent.data
+        val uriQueryParameter = uri?.getQueryParameter("id")
 
-//        uri?.let { it.host == "presentExperience" && it.scheme == "rv-rover-labs-inc" }?.
-
-        //
-
-        // for Rover experience deep & universal links:
-        val experienceId = intent?.data?.let { intentUri ->
-            if(intentUri.host == "presentExperience" && intentUri.scheme == "rv-rover-labs-inc") {
-                intentUri.getQueryParameter("id")
-            } else RoverCampaigns.shared!!.resolveSingletonOrFail(Router::class.java).route(intentUri)
+        // A simple routing example follows:
+        // Your app can handle the intent data as it prefers - here, we're handling a simple deep
+        // link scheme as defined in the manifest.
+        if (uri?.scheme == getString(R.string.uri_scheme) && uri?.host == "presentExperience" && uriQueryParameter != null) {
+            startActivity(RoverActivity.makeIntent(packageContext = this, experienceId = uriQueryParameter, campaignId = null))
+        } else {
+            // no matching deep link, just do default "main screen" behaviour.
+            makePermissionsAttempt()
         }
-
-        // ANDREW & SAM: start here and restore TransientLinkLaunchActivity.  Find it in `master` branch of `rover-android`. And then integrate it into debug-app just like it was done historically with SDK 2.x, so carry on with integration in: https://developer.rover.io/v2/android/deep-universal-links/
-
     }
 
     private fun makePermissionsAttempt() {

@@ -2,4 +2,14 @@
     <string name="rover_endpoint">https://api.rover.io</string>
     <!-- Put your own Rover API token here! -->
     <string name="rover_api_token">BLANK</string>
+
+    <!-- This is the domain associated with your account in Rover Settings.  Rover can host
+    Experiences with App Links (Universal Links) that can be opened in a web browser or your
+    suitably enabled app. -->
+    <string name="associated_domain">myapp.rover.io</string>
+
+    <!-- It is up to you to decide how to specify and handle your URIs for opening Rover Experiences
+    using the Rover SDK (not to be confused with the Rover Campaigns SDK). This is an example deep
+    link scheme. -->
+    <string name="uri_scheme">myapp</string>
 </resources>

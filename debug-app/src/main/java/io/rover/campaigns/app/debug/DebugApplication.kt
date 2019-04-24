@@ -36,7 +36,7 @@ class DebugApplication : Application() {
             CoreAssembler(
                 accountToken = getString(R.string.rover_api_token),
                 application = this,
-                urlSchemes = listOf("rv-rover-labs-inc"),
+                urlSchemes = listOf(getString(R.string.uri_scheme)),
                 endpoint = "$roverBaseUrl/graphql"
             ),
             NotificationsAssembler(
