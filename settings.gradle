@@ -1,3 +1,3 @@
-include 'core', 'location', 'notifications', 'debug', 'ticketmaster', 'advertising', 'debug-app', ':rover-sdk'
+include 'core', 'location', 'notifications', 'debug', 'ticketmaster', 'advertising', 'sample-app', ':rover-sdk'
 
 project(':rover-sdk').projectDir = file("../rover-android/sdk")
