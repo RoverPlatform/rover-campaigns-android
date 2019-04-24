@@ -42,6 +42,7 @@ dependencies {
     implementation project(":notifications")
     implementation project(":debug")
     implementation project(":location")
+    implementation project(":rover-sdk")
 //    implementation project(":advertising")
     implementation project(":ticketmaster")
 

@@ -211,7 +211,7 @@ class EventQueueService(
         application.registerActivityLifecycleCallbacks(
             object : Application.ActivityLifecycleCallbacks {
                 override fun onActivityPaused(activity: Activity?) {
-                    log.d("An Activity is pausing, flushing Rover events queue.")
+                    log.d("An Activity is pausing, flushing Rover Campaigns events queue.")
                     flushNow()
                 }
 

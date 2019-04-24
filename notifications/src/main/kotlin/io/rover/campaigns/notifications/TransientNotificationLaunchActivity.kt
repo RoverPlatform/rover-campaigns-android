@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.platform.DateFormattingInterface
 import io.rover.campaigns.notifications.domain.Notification
@@ -33,29 +33,29 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
 
-        val rover = Rover.shared
+        val rover = RoverCampaigns.shared
         if(rover == null) {
-            log.e("TransientNotificationLaunchActivity cannot be used before Rover is initialized.")
+            log.e("TransientNotificationLaunchActivity cannot be used before Rover Campaigns is initialized.")
             return
         }
         val notificationOpen = rover.resolve(NotificationOpenInterface::class.java)
         if(notificationOpen == null) {
-            log.e("Could not resolve NotificationOpenInterface in Rover container.  Ensure NotificationAssembler() is added to Rover.initialize.")
+            log.e("Could not resolve NotificationOpenInterface in Rover Campaigns container.  Ensure NotificationAssembler() is added to RoverCampaigns.initialize.")
             return
         }
         val influenceTracker = rover.resolve(InfluenceTrackerServiceInterface::class.java)
         if(influenceTracker == null) {
-            log.e("Could not resolve InfluenceTrackerServiceInterface in Rover container.  Ensure NotificationAssembler() is added to Rover.initialize.")
+            log.e("Could not resolve InfluenceTrackerServiceInterface in Rover Campaigns container.  Ensure NotificationAssembler() is added to RoverCampaigns.initialize.")
             return
         }
         val dateFormatting = rover.resolve(DateFormattingInterface::class.java)
         if(dateFormatting == null) {
-            log.e("Could not resolve DateFormattingInterface in Rover container.  Ensure NotificationAssembler() is added to Rover.initialize.")
+            log.e("Could not resolve DateFormattingInterface in Rover Campaigns container.  Ensure NotificationAssembler() is added to RoverCampaigns.initialize.")
             return
         }
         val notificationsRepository = rover.resolve(NotificationsRepositoryInterface::class.java)
         if (notificationsRepository == null) {
-            log.e("Could not resolve NotificationsRepositoryInterface in the Rover container.  Ensure NotificationAssembler() is added to Rover.initialize.")
+            log.e("Could not resolve NotificationsRepositoryInterface in the Rover Campaigns container.  Ensure NotificationAssembler() is added to RoverCampaigns.initialize.")
         }
 
         log.v("Transient notification launch activity running.")
@@ -106,7 +106,7 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
         ): PendingIntent {
 
             val notificationJson = notification.encodeJson(
-                (Rover.shared ?: throw RuntimeException("Cannot generate Rover intent when Rover is not initialized."))
+                (RoverCampaigns.shared ?: throw RuntimeException("Cannot generate Rover Campaigns intent when Rover Campaigns is not initialized."))
                     .resolveSingletonOrFail(DateFormattingInterface::class.java)
             )
 

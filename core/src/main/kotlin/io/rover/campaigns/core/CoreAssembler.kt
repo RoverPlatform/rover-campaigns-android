@@ -146,11 +146,10 @@ class CoreAssembler @JvmOverloads constructor(
         }
 
         container.register(Scope.Singleton, UrlSchemes::class.java) { _ ->
-
             urlSchemes.forEach { urlScheme ->
                 when {
                     urlScheme.isBlank() -> throw RuntimeException("Deep link URL scheme must not be blank.")
-                    !urlScheme.startsWith("rv-") -> throw RuntimeException("Rover URI schemes must start with `rv-`.  See the documentation for Deep Links.")
+                    !urlScheme.startsWith("rv-") -> throw RuntimeException("Rover Campaigns URI schemes must start with `rv-`.  See the documentation for Deep Links.")
                     urlScheme.contains(" ") -> throw RuntimeException("Deep link scheme slug must not contain spaces.")
                     // TODO: check for special characters.
                 }
@@ -446,31 +445,31 @@ data class UrlSchemes(
 )
 
 @Deprecated("Use .resolve(EventQueueServiceInterface::class.java)")
-val Rover.eventQueue: EventQueueServiceInterface
+val RoverCampaigns.eventQueue: EventQueueServiceInterface
     get() = this.resolve(EventQueueServiceInterface::class.java) ?: throw missingDependencyError("EventQueueService")
 
 @Deprecated("Use .resolve(PermissionsNotifierInterface::class.java)")
-val Rover.permissionsNotifier: PermissionsNotifierInterface
+val RoverCampaigns.permissionsNotifier: PermissionsNotifierInterface
     get() = this.resolve(PermissionsNotifierInterface::class.java) ?: throw missingDependencyError("PermissionsNotifier")
 
 @Deprecated("Use .resolve(LinkOpenInterface::class.java)")
-val Rover.linkOpen: LinkOpenInterface
+val RoverCampaigns.linkOpen: LinkOpenInterface
     get() = this.resolve(LinkOpenInterface::class.java) ?: throw missingDependencyError("LinkOpen")
 
 @Deprecated("Use .resolve(AssetService::class.java)")
-val Rover.assetService: AssetService
+val RoverCampaigns.assetService: AssetService
     get() = this.resolve(AssetService::class.java) ?: throw missingDependencyError("AssetService")
 
 @Deprecated("Use .resolve(Router::class.java)")
-val Rover.router: Router
+val RoverCampaigns.router: Router
     get() = this.resolve(Router::class.java) ?: throw missingDependencyError("Router")
 
 @Deprecated("Use .resolve(EmbeddedWebBrowserDisplayInterface::class.java)")
-val Rover.embeddedWebBrowserDisplay
+val RoverCampaigns.embeddedWebBrowserDisplay
     get() = this.resolve(EmbeddedWebBrowserDisplayInterface::class.java) ?: throw missingDependencyError("EmbeddedWebBrowserDisplayInterface")
 
 @Deprecated("Use .resolve(DeviceIdentificationInterface::class.java)")
-val Rover.deviceIdentification
+val RoverCampaigns.deviceIdentification
     get() = this.resolve(DeviceIdentificationInterface::class.java) ?: throw missingDependencyError("DeviceIdentificationInterface")
 
 private fun missingDependencyError(name: String): Throwable {

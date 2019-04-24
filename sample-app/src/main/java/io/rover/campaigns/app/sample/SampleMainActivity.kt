@@ -1,7 +1,8 @@
-package io.rover.campaigns.app.debug
+package io.rover.campaigns.app.sample
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
@@ -9,13 +10,14 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import io.rover.campaigns.core.Rover
+import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
+import io.rover.sdk.ui.containers.RoverActivity
 import kotlinx.android.synthetic.main.activity_debug_main.navigation
 import kotlinx.android.synthetic.main.activity_debug_main.notification_center
 import kotlinx.android.synthetic.main.activity_debug_main.settings_fragment
 
-class DebugMainActivity : AppCompatActivity() {
+class SampleMainActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         selectTab(item.itemId)
@@ -44,7 +46,22 @@ class DebugMainActivity : AppCompatActivity() {
 
         selectTab(R.id.navigation_notifications)
 
-        makePermissionsAttempt()
+        val uri : Uri? = intent.data
+        val possibleExperienceId = uri?.getQueryParameter("id")
+        val possibleCampaignId = uri?.getQueryParameter("campaignID")
+
+
+        // A simple routing example follows:
+        // Your app can handle the intent data as it prefers - here, we're handling a simple deep
+        // link scheme and a universal link domain as defined in the manifest.
+        if (uri?.scheme == getString(R.string.uri_scheme) && uri?.host == "presentExperience") {
+            startActivity(RoverActivity.makeIntent(packageContext = this, experienceId = possibleExperienceId, campaignId = possibleCampaignId))
+        } else if(uri?.scheme in listOf("http", "https") && uri?.host == getString(R.string.associated_domain)) {
+            startActivity(RoverActivity.makeIntent(packageContext = this, experienceUrl = uri.toString()))
+        } else {
+            // no matching deep or universal link, just do default "main screen" behaviour.
+            makePermissionsAttempt()
+        }
     }
 
     private fun makePermissionsAttempt() {
@@ -75,7 +92,7 @@ class DebugMainActivity : AppCompatActivity() {
             }
         } else {
             // Permission has already been granted
-            Rover.shared?.resolveSingletonOrFail(PermissionsNotifierInterface::class.java)?.permissionGranted(
+            RoverCampaigns.shared?.resolveSingletonOrFail(PermissionsNotifierInterface::class.java)?.permissionGranted(
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
         }
@@ -85,7 +102,7 @@ class DebugMainActivity : AppCompatActivity() {
         val perms = permissions.zip(grantResults.toList()).associate { it }
 
         if(perms[Manifest.permission.ACCESS_FINE_LOCATION] == PackageManager.PERMISSION_GRANTED) {
-            Rover.shared?.resolveSingletonOrFail(PermissionsNotifierInterface::class.java)?.permissionGranted(
+            RoverCampaigns.shared?.resolveSingletonOrFail(PermissionsNotifierInterface::class.java)?.permissionGranted(
                 Manifest.permission.ACCESS_FINE_LOCATION
             )
         }

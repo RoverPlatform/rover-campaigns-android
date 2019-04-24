@@ -31,7 +31,7 @@ class RouterService(
                 Intent.ACTION_VIEW,
                 Uri.parse(uri.toString())
             ).apply {
-                log.i("No Route matched `$uri`, it is either a web link or a link to another app.  Deferring to Android.")
+                log.i("No built-in Rover Campaigns route matched `$uri`.  Opening it as an Intent.")
             }
         }
     }
