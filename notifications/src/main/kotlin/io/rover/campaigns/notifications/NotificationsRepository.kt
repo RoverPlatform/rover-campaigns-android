@@ -1,36 +1,13 @@
 package io.rover.campaigns.notifications
 
-import io.rover.campaigns.core.data.domain.AttributeValue
 import io.rover.campaigns.core.data.graphql.getObjectIterable
-import io.rover.campaigns.core.data.sync.GraphQLResponse
-import io.rover.campaigns.core.data.sync.SyncCoordinatorInterface
-import io.rover.campaigns.core.data.sync.SyncDecoder
-import io.rover.campaigns.core.data.sync.SyncQuery
-import io.rover.campaigns.core.data.sync.SyncRequest
-import io.rover.campaigns.core.data.sync.SyncResource
-import io.rover.campaigns.core.data.sync.last
+import io.rover.campaigns.core.data.sync.*
 import io.rover.campaigns.core.events.EventQueueService
 import io.rover.campaigns.core.events.EventQueueServiceInterface
 import io.rover.campaigns.core.events.domain.Event
 import io.rover.campaigns.core.logging.log
-import io.rover.campaigns.core.platform.DateFormattingInterface
-import io.rover.campaigns.core.platform.DeviceIdentificationInterface
-import io.rover.campaigns.core.platform.LocalStorage
-import io.rover.campaigns.core.platform.merge
-import io.rover.campaigns.core.platform.whenNotNull
-import io.rover.campaigns.core.streams.PublishSubject
-import io.rover.campaigns.core.streams.Publishers
-import io.rover.campaigns.core.streams.Scheduler
-import io.rover.campaigns.core.streams.asPublisher
-import io.rover.campaigns.core.streams.doOnComplete
-import io.rover.campaigns.core.streams.doOnNext
-import io.rover.campaigns.core.streams.filterForSubtype
-import io.rover.campaigns.core.streams.flatMap
-import io.rover.campaigns.core.streams.map
-import io.rover.campaigns.core.streams.observeOn
-import io.rover.campaigns.core.streams.shareAndReplay
-import io.rover.campaigns.core.streams.shareHotAndReplay
-import io.rover.campaigns.core.streams.subscribeOn
+import io.rover.campaigns.core.platform.*
+import io.rover.campaigns.core.streams.*
 import io.rover.campaigns.notifications.domain.Notification
 import io.rover.campaigns.notifications.domain.events.asAttributeValue
 import io.rover.campaigns.notifications.graphql.decodeJson
@@ -334,12 +311,12 @@ class NotificationsSyncResource(
         // Notifications don't use cursors.  The GraphQL API just gives us a fixed amount.
         log.v("Being asked for next sync request.")
 
-        val values: HashMap<String, AttributeValue> = hashMapOf(
-            Pair(SyncQuery.Argument.last.name, AttributeValue.Scalar.Integer(500)),
-            Pair(SyncQuery.Argument.deviceIdentifier.name, AttributeValue.Scalar.String(deviceIdentification.installationIdentifier)),
-            Pair(SyncQuery.Argument.orderBy.name, AttributeValue.Object(
-                Pair("field", AttributeValue.Scalar.String("CREATED_AT")),
-                Pair("direction", AttributeValue.Scalar.String("DESC"))
+        val values: HashMap<String, Any> = hashMapOf(
+            Pair(SyncQuery.Argument.last.name, 500),
+            Pair(SyncQuery.Argument.deviceIdentifier.name, deviceIdentification.installationIdentifier),
+            Pair(SyncQuery.Argument.orderBy.name, hashMapOf(
+                Pair("field", "CREATED_AT"),
+                Pair("direction", "DESC")
             ))
         )
 

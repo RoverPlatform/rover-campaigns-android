@@ -28,7 +28,7 @@ internal fun EventSnapshot.asJson(
 
         props.forEach { putProp(this@asJson, it) }
 
-        putProp(this@asJson, EventSnapshot::attributes) { it.encodeJson(dateFormatting) }
+        putProp(this@asJson, EventSnapshot::attributes) { it.encodeJson() }
 
         putProp(this@asJson, EventSnapshot::deviceContext, "device") { it.asJson(dateFormatting) }
     }

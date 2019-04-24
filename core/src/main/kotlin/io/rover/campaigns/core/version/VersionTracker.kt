@@ -1,7 +1,6 @@
 package io.rover.campaigns.core.version
 
 import android.content.Context
-import io.rover.campaigns.core.data.domain.AttributeValue
 import io.rover.campaigns.core.events.EventQueueService.Companion.ROVER_NAMESPACE
 import io.rover.campaigns.core.events.EventQueueServiceInterface
 import io.rover.campaigns.core.events.domain.Event
@@ -64,8 +63,8 @@ class VersionTracker(
                     "App Updated",
                     // the current app version is included as part of Context already thanks to ApplicationContextProvider.
                     hashMapOf(
-                        Pair("previousVersion", AttributeValue.Scalar.String(previousVersionName)),
-                        Pair("previousBuild", AttributeValue.Scalar.Integer(previousVersionCode))
+                        Pair("previousVersion", previousVersionName),
+                        Pair("previousBuild", previousVersionCode)
                     )
                 ),
                 ROVER_NAMESPACE

@@ -2,7 +2,6 @@ package io.rover.campaigns.core.tracking
 
 import android.os.Handler
 import android.os.Looper
-import io.rover.campaigns.core.data.domain.AttributeValue
 import io.rover.campaigns.core.data.domain.Attributes
 import io.rover.campaigns.core.data.graphql.operations.data.encodeJson
 import io.rover.campaigns.core.data.graphql.operations.data.toAttributesHash
@@ -12,12 +11,10 @@ import io.rover.campaigns.core.events.EventQueueService.Companion.ROVER_NAMESPAC
 import io.rover.campaigns.core.events.EventQueueServiceInterface
 import io.rover.campaigns.core.events.domain.Event
 import io.rover.campaigns.core.logging.log
-import io.rover.campaigns.core.platform.DateFormattingInterface
 import io.rover.campaigns.core.platform.LocalStorage
 import io.rover.campaigns.core.platform.whenNotNull
 import org.json.JSONObject
-import java.util.Date
-import java.util.UUID
+import java.util.*
 import kotlin.math.max
 
 class SessionTracker(
@@ -73,7 +70,7 @@ class SessionTracker(
                 Event(
                     expiredSession.eventName,
                     hashMapOf(
-                        Pair("duration", AttributeValue.Scalar.Integer(expiredSession.durationSeconds))
+                        Pair("duration", expiredSession.durationSeconds)
                     ) + expiredSession.attributes
                 ),
                 ROVER_NAMESPACE
@@ -104,8 +101,7 @@ class SessionTracker(
 }
 
 class SessionStore(
-    localStorage: LocalStorage,
-    private val dateFormatting: DateFormattingInterface
+    localStorage: LocalStorage
 ) : SessionStoreInterface {
     private val store = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
 
@@ -151,7 +147,7 @@ class SessionStore(
     }
 
     private fun setEntry(sessionKey: Any, sessionEntry: SessionEntry) {
-        store[sessionKey.toString()] = sessionEntry.encodeJson(dateFormatting).toString()
+        store[sessionKey.toString()] = sessionEntry.encodeJson().toString()
     }
 
     override fun soonestExpiryInSeconds(keepAliveSeconds: Int): Int? {
@@ -242,12 +238,12 @@ class SessionStore(
          */
         val closedAt: Date?
     ) {
-        fun encodeJson(dateFormatting: DateFormattingInterface): JSONObject {
+        fun encodeJson(): JSONObject {
             return JSONObject().apply {
                 put("uuid", uuid.toString())
                 put("session-event-name", sessionEventName)
                 put("started-at", startedAt.time / 1000)
-                put("session-attributes", sessionAttributes.encodeJson(dateFormatting))
+                put("session-attributes", sessionAttributes.encodeJson())
                 if (closedAt != null) {
                     put("closed-at", closedAt.time / 1000)
                 }

@@ -1,20 +1,17 @@
 package io.rover.campaigns.core.events
 
-import io.rover.campaigns.core.data.domain.AttributeValue
 import io.rover.campaigns.core.data.domain.Attributes
 import io.rover.campaigns.core.data.graphql.operations.data.encodeJson
 import io.rover.campaigns.core.data.graphql.operations.data.toAttributesHash
 import io.rover.campaigns.core.logging.log
-import io.rover.campaigns.core.platform.DateFormattingInterface
 import io.rover.campaigns.core.platform.LocalStorage
 import org.json.JSONObject
 
 class UserInfo(
-    localStorage: LocalStorage,
-    private val dateFormatting: DateFormattingInterface
+    localStorage: LocalStorage
 ) : UserInfoInterface {
     private val store = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
-    override fun update(builder: (attributes: HashMap<kotlin.String, AttributeValue>) -> Unit) {
+    override fun update(builder: (attributes: HashMap<String, Any>) -> Unit) {
         val mutableDraft = HashMap(currentUserInfo)
         builder(mutableDraft)
         currentUserInfo = mutableDraft
@@ -36,7 +33,7 @@ class UserInfo(
     }
         private set(value) {
             field = value
-            store[USER_INFO_KEY] = value.encodeJson(dateFormatting).toString()
+            store[USER_INFO_KEY] = value.encodeJson().toString()
             log.v("Stored new user info.")
         }
 

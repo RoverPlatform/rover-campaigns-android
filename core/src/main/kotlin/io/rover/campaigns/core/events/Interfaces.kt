@@ -1,6 +1,5 @@
 package io.rover.campaigns.core.events
 
-import io.rover.campaigns.core.data.domain.AttributeValue
 import io.rover.campaigns.core.data.domain.Attributes
 import io.rover.campaigns.core.data.domain.DeviceContext
 import io.rover.campaigns.core.events.contextproviders.UserInfoContextProvider
@@ -89,7 +88,7 @@ interface UserInfoInterface {
      * Note that you may not use these attributes to address Campaigns to specific users with
      * personalization, because the threat model does not allow these values to be trusted.
      */
-    fun update(builder: (attributes: HashMap<kotlin.String, AttributeValue>) -> Unit)
+    fun update(builder: (attributes: HashMap<String, Any>) -> Unit)
 
     /**
      * Clear all the custom attributes.

@@ -2,7 +2,6 @@ package io.rover.campaigns.core.data.sync
 
 import android.net.Uri
 import io.rover.campaigns.core.data.AuthenticationContext
-import io.rover.campaigns.core.data.domain.AttributeValue
 import io.rover.campaigns.core.data.domain.Attributes
 import io.rover.campaigns.core.data.graphql.operations.data.encodeJson
 import io.rover.campaigns.core.data.http.HttpClientResponse
@@ -49,7 +48,7 @@ class SyncClient(
 
         val fragments: List<String>? = requests.flatMap { it.query.fragments }
 
-        val initial = hashMapOf<String, AttributeValue>()
+        val initial = hashMapOf<String, Any>()
 
         val variables: Attributes = requests.fold(initial) { result, request ->
             request.variables.entries.fold(result) { nextResult, element ->
@@ -68,7 +67,7 @@ class SyncClient(
 
         builder.appendQueryParameter("query", condensedQuery)
 
-        val variablesJson = variables.encodeJson(dateFormatting)
+        val variablesJson = variables.encodeJson()
 
         builder.appendQueryParameter(
             "variables",
