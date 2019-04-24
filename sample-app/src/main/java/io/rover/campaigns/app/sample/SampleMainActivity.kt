@@ -1,4 +1,4 @@
-package io.rover.campaigns.app.debug
+package io.rover.campaigns.app.sample
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_debug_main.navigation
 import kotlinx.android.synthetic.main.activity_debug_main.notification_center
 import kotlinx.android.synthetic.main.activity_debug_main.settings_fragment
 
-class DebugMainActivity : AppCompatActivity() {
+class SampleMainActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         selectTab(item.itemId)

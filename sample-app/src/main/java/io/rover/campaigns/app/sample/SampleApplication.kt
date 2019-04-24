@@ -1,4 +1,4 @@
-package io.rover.campaigns.app.debug
+package io.rover.campaigns.app.sample
 
 import android.app.Application
 import android.content.Intent
@@ -14,8 +14,7 @@ import io.rover.sdk.Rover
 import timber.log.Timber
 
 
-class DebugApplication : Application() {
-    private val roverBaseUrl by lazy { resources.getString(R.string.rover_endpoint) }
+class SampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -36,13 +35,12 @@ class DebugApplication : Application() {
             CoreAssembler(
                 accountToken = getString(R.string.rover_api_token),
                 application = this,
-                urlSchemes = listOf(getString(R.string.uri_scheme)),
-                endpoint = "$roverBaseUrl/graphql"
+                urlSchemes = listOf(getString(R.string.rover_campaigns_uri_scheme))
             ),
             NotificationsAssembler(
                 applicationContext = this,
                 smallIconResId = R.mipmap.rover_notification_icon,
-                notificationCenterIntent = Intent(applicationContext, DebugMainActivity::class.java)
+                notificationCenterIntent = Intent(applicationContext, SampleMainActivity::class.java)
             ) { tokenCallback ->
                 FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
                     tokenCallback(task.result?.token)

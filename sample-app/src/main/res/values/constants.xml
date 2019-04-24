@@ -12,4 +12,8 @@
     using the Rover SDK (not to be confused with the Rover Campaigns SDK). This is an example deep
     link scheme. -->
     <string name="uri_scheme">myapp</string>
+
+    <!-- The Rover Campaigns SDK has several built-in deep link handlers.  This field should be set
+    to match the URL Scheme set in your Rover Settings. -->
+    <string name="rover_campaigns_uri_scheme">rv-myapp</string>
 </resources>
