@@ -1,6 +1,6 @@
 <resources>
     <string name="rover_endpoint">https://api.rover.io</string>
-    <!-- Put your own Rover API token here! -->
+    <!-- Put your own Rover Campaigns API token here! -->
     <string name="rover_api_token">BLANK</string>
 
     <!-- This is the domain associated with your account in Rover Settings.  Rover can host

@@ -53,7 +53,7 @@ class SampleMainActivity : AppCompatActivity() {
 
         // A simple routing example follows:
         // Your app can handle the intent data as it prefers - here, we're handling a simple deep
-        // link scheme as defined in the manifest.
+        // link scheme and a universal link domain as defined in the manifest.
         if (uri?.scheme == getString(R.string.uri_scheme) && uri?.host == "presentExperience") {
             startActivity(RoverActivity.makeIntent(packageContext = this, experienceId = possibleExperienceId, campaignId = possibleCampaignId))
         } else if(uri?.scheme in listOf("http", "https") && uri?.host == getString(R.string.associated_domain)) {

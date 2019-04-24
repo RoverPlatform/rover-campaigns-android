@@ -11,8 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
-        <!-- TODO: add RoverActivity from the separate Rover SDK, with appropriate bespoke intent filters for debug/inbox app deep and universal links, which will probably keep the same form as Rover 2.x links -->
         <service android:name="io.rover.campaigns.app.sample.fcm.FirebaseMessageReceiver">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
