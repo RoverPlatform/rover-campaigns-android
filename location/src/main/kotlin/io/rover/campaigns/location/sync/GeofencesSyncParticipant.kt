@@ -9,9 +9,23 @@ import io.rover.campaigns.core.data.domain.ID
 import io.rover.campaigns.core.data.graphql.getObjectIterable
 import io.rover.campaigns.core.data.graphql.getStringIterable
 import io.rover.campaigns.core.data.graphql.safeGetString
-import io.rover.campaigns.core.data.sync.*
+import io.rover.campaigns.core.data.sync.GraphQLResponse
+import io.rover.campaigns.core.data.sync.PageInfo
+import io.rover.campaigns.core.data.sync.SqlSyncStorageInterface
+import io.rover.campaigns.core.data.sync.SyncCoordinatorInterface
+import io.rover.campaigns.core.data.sync.SyncDecoder
+import io.rover.campaigns.core.data.sync.SyncQuery
+import io.rover.campaigns.core.data.sync.SyncRequest
+import io.rover.campaigns.core.data.sync.SyncResource
+import io.rover.campaigns.core.data.sync.after
+import io.rover.campaigns.core.data.sync.decodeJson
+import io.rover.campaigns.core.data.sync.first
 import io.rover.campaigns.core.logging.log
-import io.rover.campaigns.core.streams.*
+import io.rover.campaigns.core.streams.Publishers
+import io.rover.campaigns.core.streams.Scheduler
+import io.rover.campaigns.core.streams.map
+import io.rover.campaigns.core.streams.observeOn
+import io.rover.campaigns.core.streams.subscribeOn
 import io.rover.campaigns.location.domain.Geofence
 import org.json.JSONArray
 import org.json.JSONObject
@@ -48,7 +62,7 @@ class GeofencesRepository(
 
 class GeofencesSqlStorage(
     private val sqLiteDatabase: SQLiteDatabase
-): SqlSyncStorageInterface<Geofence> {
+) : SqlSyncStorageInterface<Geofence> {
 
     fun queryGeofenceByIdentifier(identifier: String): Geofence? {
         val columnNames = Columns.values().sortedBy { it.ordinal }.map { it.columnName }
@@ -70,7 +84,7 @@ class GeofencesSqlStorage(
         )
 
         return try {
-            if(cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 return Geofence.fromSqliteCursor(cursor)
             } else {
                 null
@@ -105,7 +119,7 @@ class GeofencesSqlStorage(
 
                 return object : AbstractIterator<Geofence>(), CloseableIterator<Geofence> {
                     override fun computeNext() {
-                        if(!cursor.moveToNext()) {
+                        if (!cursor.moveToNext()) {
                             done()
                         } else {
                             setNext(
@@ -158,7 +172,8 @@ class GeofencesSqlStorage(
         private const val TABLE_NAME = "geofences"
 
         fun initSchema(sqLiteDatabase: SQLiteDatabase) {
-            sqLiteDatabase.execSQL("""
+            sqLiteDatabase.execSQL(
+                """
                 CREATE TABLE $TABLE_NAME (
                     id TEXT PRIMARY KEY,
                     name TEXT,
@@ -167,13 +182,16 @@ class GeofencesSqlStorage(
                     center_latitude DOUBLE,
                     center_longitude DOUBLE
                 )
-        """.trimIndent())
+        """.trimIndent()
+            )
         }
 
         fun dropSchema(sqLiteDatabase: SQLiteDatabase) {
-            sqLiteDatabase.execSQL("""
+            sqLiteDatabase.execSQL(
+                """
                 DROP TABLE $TABLE_NAME
-            """.trimIndent())
+            """.trimIndent()
+            )
         }
     }
 
@@ -204,7 +222,7 @@ fun Geofence.Companion.fromSqliteCursor(cursor: Cursor): Geofence {
 
 class GeofencesSyncResource(
     private val sqliteStorageInterface: SqlSyncStorageInterface<Geofence>
-): SyncResource<Geofence> {
+) : SyncResource<Geofence> {
     override fun upsertObjects(nodes: List<Geofence>) {
         sqliteStorageInterface.upsertObjects(nodes)
     }
@@ -213,13 +231,15 @@ class GeofencesSyncResource(
         log.v("Being asked for next sync request for cursor: $cursor")
         val values: HashMap<String, Any> = hashMapOf(
             Pair(SyncQuery.Argument.first.name, 500),
-            Pair(SyncQuery.Argument.orderBy.name, hashMapOf(
-                Pair("field", "UPDATED_AT"),
-                Pair("direction", "ASC")
-            ))
+            Pair(
+                SyncQuery.Argument.orderBy.name, hashMapOf(
+                    Pair("field", "UPDATED_AT"),
+                    Pair("direction", "ASC")
+                )
+            )
         )
 
-        if(cursor != null) {
+        if (cursor != null) {
             values[SyncQuery.Argument.after.name] = cursor
         }
 
@@ -230,7 +250,7 @@ class GeofencesSyncResource(
     }
 }
 
-class GeofenceSyncDecoder: SyncDecoder<Geofence> {
+class GeofenceSyncDecoder : SyncDecoder<Geofence> {
     override fun decode(json: JSONObject): GraphQLResponse<Geofence> {
         return GeofencesSyncResponseData.decodeJson(json.getJSONObject("data")).geofences
     }
