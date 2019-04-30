@@ -58,8 +58,8 @@ open class EventReceiver(
         return if (containsKey(EXPERIENCE) && containsKey(CAMPAIGN_ID)) {
             val experienceHash = ((this[EXPERIENCE] as AttributeValue.Object).hash).toMutableMap()
 
-            experienceHash[CAMPAIGN_ID] = getValue(CAMPAIGN_ID)
-            toMutableMap().apply { this[EXPERIENCE] = AttributeValue.Object(experienceHash) }
+            experienceHash[CAMPAIGN_ID] = this.getValue(CAMPAIGN_ID)
+            this.toMutableMap().apply { this[EXPERIENCE] = AttributeValue.Object(experienceHash) }
         } else this
     }
 
