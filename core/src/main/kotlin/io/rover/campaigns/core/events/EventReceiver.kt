@@ -41,37 +41,26 @@ open class EventReceiver(
             }
         }
 
-        val modifiedAttributesJsonObject = if (attributesJsonbObject != null) {
-            removeTopLevelCampaignIDIfPresent(addCampaignIDToExperienceIfBothPresent(attributesJsonbObject))
-        } else {
-            emptyMap()
-        }
+        val attributesObject = attributesJsonbObject
+            ?.addCampaignIDToExperienceIfBothPresent()
+            ?.removeTopLevelCampaignIDIfPresent() ?: emptyMap()
 
-        val event = Event(
-            camelcaseEventName.humanize(),
-            modifiedAttributesJsonObject
-        )
+        val event = Event(camelcaseEventName.humanize(), attributesObject)
 
         eventQueueService.trackEvent(event, "rover")
     }
 
-    private fun removeTopLevelCampaignIDIfPresent(attributesJSONObject: Map<String, AttributeValue>): Map<String, AttributeValue> {
-        return if (attributesJSONObject.containsKey(CAMPAIGN_ID)) {
-            attributesJSONObject.toMutableMap().apply { remove(CAMPAIGN_ID) }
-        } else {
-            attributesJSONObject
-        }
+    private fun Map<String, AttributeValue>.removeTopLevelCampaignIDIfPresent(): Map<String, AttributeValue> {
+        return if (containsKey(CAMPAIGN_ID)) this.toMutableMap().apply { remove(CAMPAIGN_ID) } else this
     }
 
-    private fun addCampaignIDToExperienceIfBothPresent(attributesJSONObject: Map<String, AttributeValue>): Map<String, AttributeValue> {
-        return if (attributesJSONObject.containsKey(EXPERIENCE) && attributesJSONObject.containsKey(CAMPAIGN_ID)) {
-            val experienceHash = ((attributesJSONObject[EXPERIENCE] as AttributeValue.Object).hash).toMutableMap()
-            experienceHash[CAMPAIGN_ID] = attributesJSONObject.getValue(CAMPAIGN_ID)
+    private fun Map<String, AttributeValue>.addCampaignIDToExperienceIfBothPresent(): Map<String, AttributeValue> {
+        return if (containsKey(EXPERIENCE) && containsKey(CAMPAIGN_ID)) {
+            val experienceHash = ((this[EXPERIENCE] as AttributeValue.Object).hash).toMutableMap()
 
-            attributesJSONObject.toMutableMap().apply {
-                this[EXPERIENCE] = AttributeValue.Object(experienceHash)
-            }
-        } else attributesJSONObject
+            experienceHash[CAMPAIGN_ID] = getValue(CAMPAIGN_ID)
+            toMutableMap().apply { this[EXPERIENCE] = AttributeValue.Object(experienceHash) }
+        } else this
     }
 
     open fun startListening() {
