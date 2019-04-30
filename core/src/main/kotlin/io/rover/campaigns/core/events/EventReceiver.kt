@@ -16,6 +16,10 @@ import java.lang.RuntimeException
 /**
  * Receive events emitted as local broadcasts by the Rover SDK.
  */
+
+private const val EXPERIENCE = "experience"
+private const val CAMPAIGN_ID = "campaignID"
+
 open class EventReceiver(
     private val broadcastManager: LocalBroadcastManager,
     private val eventQueueService: EventQueueServiceInterface
@@ -37,12 +41,29 @@ open class EventReceiver(
             }
         }
 
+        val attributesObject = attributesJsonbObject
+            ?.addCampaignIDToExperienceIfBothPresent()
+            ?.removeTopLevelCampaignIDIfPresent() ?: emptyMap()
+
         val event = Event(
             camelcaseEventName.humanize(),
-            attributesJsonbObject ?: emptyMap()
+            attributesObject
         )
 
         eventQueueService.trackEvent(event, "rover")
+    }
+
+    private fun Map<String, Any>.removeTopLevelCampaignIDIfPresent(): Map<String, Any> {
+        return if (containsKey(CAMPAIGN_ID)) this.toMutableMap().apply { remove(CAMPAIGN_ID) } else this
+    }
+
+    private fun Map<String, Any>.addCampaignIDToExperienceIfBothPresent(): Map<String, Any> {
+        return if (containsKey(EXPERIENCE) && containsKey(CAMPAIGN_ID)) {
+            val experienceHash = (this[EXPERIENCE] as Map<*, *>).toMutableMap()
+
+            experienceHash[CAMPAIGN_ID] = this.getValue(CAMPAIGN_ID)
+            this.toMutableMap().apply { this[EXPERIENCE] = experienceHash }
+        } else this
     }
 
     open fun startListening() {
@@ -53,7 +74,18 @@ open class EventReceiver(
                 }
             }
         }
-        broadcastManager.registerReceiver(receiver, IntentFilter())
+
+        val intentFilter = IntentFilter().apply {
+            addAction("io.rover.ExperiencePresented")
+            addAction("io.rover.ExperienceDismissed")
+            addAction("io.rover.ExperienceViewed")
+            addAction("io.rover.BlockTapped")
+            addAction("io.rover.ScreenViewed")
+            addAction("io.rover.ScreenDismissed")
+            addAction("io.rover.ScreenPresented")
+        }
+
+        broadcastManager.registerReceiver(receiver, intentFilter)
         log.v("Now listening for Rover Campaigns events encapsulated in local broadcast intents.")
     }
 
