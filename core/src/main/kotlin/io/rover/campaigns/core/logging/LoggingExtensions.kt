@@ -8,7 +8,7 @@ import io.rover.campaigns.core.events.domain.Event
 import io.rover.campaigns.core.streams.filter
 import io.rover.campaigns.core.streams.map
 import io.rover.campaigns.core.streams.subscribe
-import java.util.*
+import java.util.ArrayDeque
 import java.util.concurrent.Executors
 
 /**

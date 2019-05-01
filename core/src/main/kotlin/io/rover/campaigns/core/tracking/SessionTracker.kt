@@ -14,7 +14,8 @@ import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.platform.LocalStorage
 import io.rover.campaigns.core.platform.whenNotNull
 import org.json.JSONObject
-import java.util.*
+import java.util.Date
+import java.util.UUID
 import kotlin.math.max
 
 class SessionTracker(
