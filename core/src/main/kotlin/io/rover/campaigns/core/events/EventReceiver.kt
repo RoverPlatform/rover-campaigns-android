@@ -53,7 +53,18 @@ open class EventReceiver(
                 }
             }
         }
-        broadcastManager.registerReceiver(receiver, IntentFilter())
+
+        val intentFilter = IntentFilter().apply {
+            addAction("io.rover.ExperiencePresented")
+            addAction("io.rover.ExperienceDismissed")
+            addAction("io.rover.ExperienceViewed")
+            addAction("io.rover.ScreenPresented")
+            addAction("io.rover.ScreenDismissed")
+            addAction("io.rover.ScreenViewed")
+            addAction("io.rover.BlockTapped")
+        }
+
+        broadcastManager.registerReceiver(receiver, intentFilter)
         log.v("Now listening for Rover Campaigns events encapsulated in local broadcast intents.")
     }
 
