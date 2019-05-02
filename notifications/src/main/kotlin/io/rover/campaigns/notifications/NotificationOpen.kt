@@ -3,7 +3,6 @@ package io.rover.campaigns.notifications
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import io.rover.campaigns.core.data.domain.AttributeValue
 import io.rover.campaigns.core.events.EventQueueService
 import io.rover.campaigns.core.events.EventQueueServiceInterface
 import io.rover.campaigns.core.events.domain.Event
@@ -83,7 +82,7 @@ open class NotificationOpen(
                 "Notification Opened",
                 hashMapOf(
                     Pair("notification", notification.asAttributeValue()),
-                    Pair("source", AttributeValue.Scalar.String(source.wireValue))
+                    Pair("source", source.wireValue)
                 )
             ),
             EventQueueService.ROVER_NAMESPACE

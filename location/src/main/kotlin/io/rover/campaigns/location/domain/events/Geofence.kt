@@ -1,24 +1,22 @@
 package io.rover.campaigns.location.domain.events
 
-import io.rover.campaigns.core.data.domain.AttributeValue
+import io.rover.campaigns.core.data.domain.Attributes
 import io.rover.campaigns.location.domain.Geofence
 
-fun Geofence.asAttributeValue(): AttributeValue {
-    return AttributeValue.Object(
-        Pair("id", AttributeValue.Scalar.String(id.rawValue)),
+fun Geofence.asAttributeValue(): Attributes {
+    return hashMapOf(
+        Pair("id",id.rawValue),
         Pair(
             "center",
-            AttributeValue.Array(
-                listOf(
-                    AttributeValue.Scalar.Double(center.latitude),
-                    AttributeValue.Scalar.Double(center.longitude)
-                )
+            listOf(
+               center.latitude,
+               center.longitude
             )
         ),
-        Pair("radius", AttributeValue.Scalar.Double(radius)),
-        Pair("name", AttributeValue.Scalar.String(name)),
-        Pair("tags", AttributeValue.Array(
-            tags.map { AttributeValue.Scalar.String(it )}
-        ))
+        Pair("radius",radius),
+        Pair("name",name),
+        Pair("tags",
+            tags
+        )
     )
 }

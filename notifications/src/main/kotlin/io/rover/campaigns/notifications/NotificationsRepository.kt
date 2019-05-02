@@ -1,6 +1,5 @@
 package io.rover.campaigns.notifications
 
-import io.rover.campaigns.core.data.domain.AttributeValue
 import io.rover.campaigns.core.data.graphql.getObjectIterable
 import io.rover.campaigns.core.data.sync.GraphQLResponse
 import io.rover.campaigns.core.data.sync.SyncCoordinatorInterface
@@ -334,12 +333,12 @@ class NotificationsSyncResource(
         // Notifications don't use cursors.  The GraphQL API just gives us a fixed amount.
         log.v("Being asked for next sync request.")
 
-        val values: HashMap<String, AttributeValue> = hashMapOf(
-            Pair(SyncQuery.Argument.last.name, AttributeValue.Scalar.Integer(500)),
-            Pair(SyncQuery.Argument.deviceIdentifier.name, AttributeValue.Scalar.String(deviceIdentification.installationIdentifier)),
-            Pair(SyncQuery.Argument.orderBy.name, AttributeValue.Object(
-                Pair("field", AttributeValue.Scalar.String("CREATED_AT")),
-                Pair("direction", AttributeValue.Scalar.String("DESC"))
+        val values: HashMap<String, Any> = hashMapOf(
+            Pair(SyncQuery.Argument.last.name, 500),
+            Pair(SyncQuery.Argument.deviceIdentifier.name, deviceIdentification.installationIdentifier),
+            Pair(SyncQuery.Argument.orderBy.name, hashMapOf(
+                Pair("field", "CREATED_AT"),
+                Pair("direction", "DESC")
             ))
         )
 

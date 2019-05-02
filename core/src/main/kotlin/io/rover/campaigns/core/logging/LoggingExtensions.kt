@@ -2,7 +2,6 @@ package io.rover.campaigns.core.logging
 
 import android.util.Log
 import io.rover.campaigns.core.container.Resolver
-import io.rover.campaigns.core.data.domain.AttributeValue
 import io.rover.campaigns.core.events.EventQueueService.Companion.ROVER_NAMESPACE
 import io.rover.campaigns.core.events.EventQueueServiceInterface
 import io.rover.campaigns.core.events.domain.Event
@@ -132,7 +131,7 @@ class EventQueueLogger(
             Event(
                 "Error",
                 hashMapOf(
-                    Pair("message", AttributeValue.Scalar.String("$logTag: $message"))
+                    Pair("message", "$logTag: $message")
                 )
             )
         )

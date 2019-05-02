@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
-import io.rover.campaigns.core.data.domain.AttributeValue
 import io.rover.campaigns.core.data.domain.ID
 import io.rover.campaigns.core.data.graphql.getObjectIterable
 import io.rover.campaigns.core.data.graphql.getStringIterable
@@ -30,6 +29,7 @@ import io.rover.campaigns.location.domain.Beacon
 import org.json.JSONArray
 import org.json.JSONObject
 import org.reactivestreams.Publisher
+import java.util.HashMap
 import java.util.UUID
 
 class BeaconsRepository(
@@ -211,16 +211,16 @@ class BeaconsSyncResource(
     override fun nextRequest(cursor: String?): SyncRequest {
         log.v("Being asked for next sync request for cursor: $cursor")
 
-        val values: HashMap<String, AttributeValue> = hashMapOf(
-            Pair(SyncQuery.Argument.first.name, AttributeValue.Scalar.Integer(500)),
-            Pair(SyncQuery.Argument.orderBy.name, AttributeValue.Object(
-                Pair("field", AttributeValue.Scalar.String("UPDATED_AT")),
-                Pair("direction", AttributeValue.Scalar.String("ASC"))
+        val values: HashMap<String, Any> = hashMapOf(
+            Pair(SyncQuery.Argument.first.name, 500),
+            Pair(SyncQuery.Argument.orderBy.name, hashMapOf(
+                Pair("field", "UPDATED_AT"),
+                Pair("direction", "ASC")
             ))
         )
 
         if(cursor != null) {
-            values[SyncQuery.Argument.after.name] = AttributeValue.Scalar.String(cursor)
+            values[SyncQuery.Argument.after.name] = cursor
         }
 
         return SyncRequest(

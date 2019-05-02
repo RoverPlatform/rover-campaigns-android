@@ -2,7 +2,6 @@ package io.rover.campaigns.ticketmaster
 
 import android.content.Context
 import android.os.Build
-import io.rover.campaigns.core.data.domain.AttributeValue
 import io.rover.campaigns.core.data.domain.Attributes
 import io.rover.campaigns.core.data.graphql.operations.data.toAttributesHash
 import io.rover.campaigns.core.data.graphql.putProp
@@ -45,8 +44,8 @@ class TicketmasterManager(
         return member.whenNotNull { member ->
 
             val params = listOfNotNull(
-                member.hostID.whenNotNull { Pair("hostMemberID", AttributeValue.Scalar.String(it)) },
-                member.teamID.whenNotNull { Pair("teamMemberID", AttributeValue.Scalar.String(it)) }
+                member.hostID.whenNotNull { Pair("hostMemberID", it) },
+                member.teamID.whenNotNull { Pair("teamMemberID", it) }
             )
 
             if(params.isEmpty()) {
@@ -66,7 +65,7 @@ class TicketmasterManager(
 
             profileAttributes.whenNotNull { attributes ->
                 userInfo.update { userInfo ->
-                    userInfo["ticketmaster"] = AttributeValue.Object(attributes)
+                    userInfo["ticketmaster"] = attributes
                 }
                 SyncResult.NewData(null)
             } ?: SyncResult.NoData

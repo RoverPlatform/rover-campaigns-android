@@ -241,8 +241,7 @@ class CoreAssembler @JvmOverloads constructor(
 
         container.register(Scope.Singleton, UserInfoInterface::class.java) { resolver ->
             UserInfo(
-                resolver.resolveSingletonOrFail(LocalStorage::class.java),
-                resolver.resolveSingletonOrFail(DateFormattingInterface::class.java)
+                resolver.resolveSingletonOrFail(LocalStorage::class.java)
             )
         }
 
@@ -359,8 +358,7 @@ class CoreAssembler @JvmOverloads constructor(
 
         container.register(Scope.Singleton, SessionStoreInterface::class.java) { resolver ->
             SessionStore(
-                resolver.resolveSingletonOrFail(LocalStorage::class.java),
-                resolver.resolveSingletonOrFail(DateFormattingInterface::class.java)
+                resolver.resolveSingletonOrFail(LocalStorage::class.java)
             )
         }
 
