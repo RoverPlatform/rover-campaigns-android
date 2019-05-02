@@ -48,7 +48,7 @@ class SampleMainActivity : AppCompatActivity() {
 
         val uri : Uri? = intent.data
         // Tries to retrieve experienceId from last path segment
-        val possibleExperienceId = uri?.lastPathSegment
+        val possibleExperienceId = uri?.getQueryParameter("experienceID")
         val possibleCampaignId = uri?.getQueryParameter("campaignID")
 
 
