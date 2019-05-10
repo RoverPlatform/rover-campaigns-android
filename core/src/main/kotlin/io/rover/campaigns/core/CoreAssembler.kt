@@ -46,6 +46,7 @@ import io.rover.campaigns.core.events.contextproviders.SdkVersionContextProvider
 import io.rover.campaigns.core.events.contextproviders.TelephonyContextProvider
 import io.rover.campaigns.core.events.contextproviders.TimeZoneContextProvider
 import io.rover.campaigns.core.events.contextproviders.UserInfoContextProvider
+import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.permissions.PermissionsNotifier
 import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
 import io.rover.campaigns.core.platform.DateFormatting
@@ -73,6 +74,8 @@ import io.rover.campaigns.core.tracking.SessionTrackerInterface
 import io.rover.campaigns.core.ui.LinkOpen
 import io.rover.campaigns.core.version.VersionTracker
 import io.rover.campaigns.core.version.VersionTrackerInterface
+import io.rover.sdk.Rover
+import io.rover.sdk.services.EventEmitter
 import java.net.URL
 import java.util.concurrent.Executor
 
@@ -123,6 +126,8 @@ class CoreAssembler @JvmOverloads constructor(
      * The location of the Rover API.  You should never need to change this.
      */
     private val endpoint: String = "https://api.rover.io/graphql",
+
+    private val eventEmitter: EventEmitter? = Rover.shared?.eventEmitter,
 
     /**
      * By default the Rover SDK will schedule occasional background syncs (for instance, if you have
@@ -233,10 +238,7 @@ class CoreAssembler @JvmOverloads constructor(
         }
 
         container.register(Scope.Singleton, EventReceiver::class.java) { resolver ->
-            EventReceiver(
-                LocalBroadcastManager.getInstance(application),
-                resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java)
-            )
+            EventReceiver(eventEmitter, resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java))
         }
 
         container.register(Scope.Singleton, UserInfoInterface::class.java) { resolver ->
