@@ -9,7 +9,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.support.annotation.ColorInt
-import android.support.v4.content.LocalBroadcastManager
 import androidx.work.WorkManager
 import io.rover.campaigns.core.assets.AndroidAssetService
 import io.rover.campaigns.core.assets.AssetService
@@ -46,7 +45,6 @@ import io.rover.campaigns.core.events.contextproviders.SdkVersionContextProvider
 import io.rover.campaigns.core.events.contextproviders.TelephonyContextProvider
 import io.rover.campaigns.core.events.contextproviders.TimeZoneContextProvider
 import io.rover.campaigns.core.events.contextproviders.UserInfoContextProvider
-import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.permissions.PermissionsNotifier
 import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
 import io.rover.campaigns.core.platform.DateFormatting
