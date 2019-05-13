@@ -1,72 +1,116 @@
 package io.rover.campaigns.core.events
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.support.v4.content.LocalBroadcastManager
-import io.rover.campaigns.core.data.graphql.operations.data.toAttributesHash
+import io.rover.campaigns.core.data.domain.Attributes
 import io.rover.campaigns.core.events.domain.Event
 import io.rover.campaigns.core.logging.log
-import io.rover.campaigns.core.platform.whenNotNull
-import org.json.JSONException
-import org.json.JSONObject
-import java.lang.RuntimeException
+import io.rover.campaigns.core.streams.subscribe
+import io.rover.sdk.data.domain.Block
+import io.rover.sdk.data.domain.Experience
+import io.rover.sdk.data.domain.Screen
+import io.rover.sdk.data.events.RoverEvent
+import io.rover.sdk.services.EventEmitter
 
 /**
- * Receive events emitted as local broadcasts by the Rover SDK.
+ * Receive events emitted by the Rover SDK.
  */
 open class EventReceiver(
-    private val broadcastManager: LocalBroadcastManager,
+    private val eventEmitter: EventEmitter?,
     private val eventQueueService: EventQueueServiceInterface
 ) {
-    open fun processReceivedIntent(intent: Intent) {
-        val camelcaseEventName = intent.action.removePrefix("io.rover.")
-        val attributesJson: String? = intent.getStringExtra("attributes")
-
-        val attributesJsonbObject = attributesJson.whenNotNull { json ->
-            try {
-                JSONObject(json).toAttributesHash()
-            } catch (jsonException: JSONException) {
-                log.w("Received invalid JSON in broadcast intent: $jsonException")
-                null
-            } catch (runtimeException: RuntimeException) {
-                // TODO: remove this handler once the old Attributes system is removed.
-                log.w("Received invalid Attributes in JSON in broadcast intent: $runtimeException")
-                null
-            }
-        }
-
-        val event = Event(
-            camelcaseEventName.humanize(),
-            attributesJsonbObject ?: emptyMap()
-        )
-
-        eventQueueService.trackEvent(event, "rover")
-    }
-
     open fun startListening() {
-        val receiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context, intent: Intent) {
-                if(intent.action.startsWith("io.rover.")) {
-                    processReceivedIntent(intent)
-                }
+        eventEmitter?.let {
+            eventEmitter.trackedEvents.subscribe { event ->
+                eventQueueService.trackEvent(transformEvent(event), "rover")
             }
         }
-        broadcastManager.registerReceiver(receiver, IntentFilter())
-        log.v("Now listening for Rover Campaigns events encapsulated in local broadcast intents.")
+            ?: log.w("A Rover SDK event emitter wasn't available; Rover events will not be tracked.  Make sure you call Rover.initialize() before initializing the Campaigns SDK.")
     }
 
-
+    private fun transformEvent(event: RoverEvent): Event {
+        return when (event) {
+            is RoverEvent.BlockTapped -> event.transformToEvent()
+            is RoverEvent.ExperienceDismissed -> event.transformToEvent()
+            is RoverEvent.ScreenDismissed -> event.transformToEvent()
+            is RoverEvent.ExperiencePresented -> event.transformToEvent()
+            is RoverEvent.ExperienceViewed -> event.transformToEvent()
+            is RoverEvent.ScreenViewed -> event.transformToEvent()
+            is RoverEvent.ScreenPresented -> event.transformToEvent()
+        }
+    }
 }
 
-fun String.humanize(): String {
-    /// Convert "CamelCase" to "Camel Case".
-    return this.fold("") { x, y ->
-        if(y.isUpperCase()) {
-            "$x $y"
-        } else {
-            "$x$y"
-        }
-    }.trim()
+private fun experienceAttributes(experience: Experience) = mapOf(
+    "id" to experience.id.rawValue,
+    "name" to experience.name,
+    "keys" to experience.keys,
+    "tags" to experience.tags
+)
+
+private fun screenAttributes(screen: Screen) = mapOf(
+    "id" to screen.id.rawValue,
+    "name" to screen.name,
+    "keys" to screen.keys,
+    "tags" to screen.tags
+)
+
+private fun blockAttributes(block: Block) = mapOf(
+    "id" to block.id.rawValue,
+    "name" to block.name,
+    "keys" to block.keys,
+    "tags" to block.tags
+)
+
+private fun RoverEvent.BlockTapped.transformToEvent(): Event {
+    val attributes: Attributes = mapOf(
+        "experience" to experienceAttributes(experience),
+        "screen" to screenAttributes(screen),
+        "block" to blockAttributes(block)
+    )
+
+    return Event("Block Tapped", attributes)
+}
+
+private fun RoverEvent.ExperienceDismissed.transformToEvent(): Event {
+    return Event("Experience Dismissed", mapOf("experience" to experienceAttributes(experience)))
+}
+
+private fun RoverEvent.ScreenDismissed.transformToEvent(): Event {
+    val attributes: Attributes = mapOf(
+        "experience" to experienceAttributes(experience),
+        "screen" to screenAttributes(screen)
+    )
+
+    return Event("Screen Dismissed", attributes)
+}
+
+private fun RoverEvent.ExperiencePresented.transformToEvent(): Event {
+    return Event("Experience Presented", mapOf("experience" to experienceAttributes(experience)))
+}
+
+private fun RoverEvent.ExperienceViewed.transformToEvent(): Event {
+    val attributes: Attributes = mapOf(
+        "experience" to experienceAttributes(experience),
+        "duration" to duration
+    )
+
+    return Event("Experience Viewed", attributes)
+}
+
+private fun RoverEvent.ScreenViewed.transformToEvent(): Event {
+    val attributes: Attributes = mapOf(
+        "experience" to experienceAttributes(experience),
+        "screen" to screenAttributes(screen),
+        "duration" to duration
+    )
+
+    return Event("Screen Viewed", attributes)
+}
+
+private fun RoverEvent.ScreenPresented.transformToEvent(): Event {
+    val attributes: Attributes = mapOf(
+        "experience" to experienceAttributes(experience),
+        "screen" to screenAttributes(screen)
+    )
+
+    return Event("Screen Presented", attributes)
 }

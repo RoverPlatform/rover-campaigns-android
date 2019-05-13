@@ -96,6 +96,7 @@ configurations {
 
 dependencies {
     ktlint "com.github.shyiko:ktlint:0.27.0"
+    implementation project(':rover-sdk')
     // additional 3rd party ruleset(s) can be specified here
     // just add them to the classpath (ktlint 'groupId:artifactId:version') and
     // ktlint will pick them up
