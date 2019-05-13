@@ -39,21 +39,21 @@ open class EventReceiver(
     }
 }
 
-private fun createExperienceMap(experience: Experience) = mapOf(
+private fun experienceAttributes(experience: Experience) = mapOf(
     "id" to experience.id.rawValue,
     "name" to experience.name,
     "keys" to experience.keys,
     "tags" to experience.tags
 )
 
-private fun createScreenMap(screen: Screen) = mapOf(
+private fun screenAttributes(screen: Screen) = mapOf(
     "id" to screen.id.rawValue,
     "name" to screen.name,
     "keys" to screen.keys,
     "tags" to screen.tags
 )
 
-private fun createBlockMap(block: Block) = mapOf(
+private fun blockAttributes(block: Block) = mapOf(
     "id" to block.id.rawValue,
     "name" to block.name,
     "keys" to block.keys,
@@ -62,34 +62,34 @@ private fun createBlockMap(block: Block) = mapOf(
 
 private fun RoverEvent.BlockTapped.transformToEvent(): Event {
     val attributes: Attributes = mapOf(
-        "experience" to createExperienceMap(experience),
-        "screen" to createScreenMap(screen),
-        "block" to createBlockMap(block)
+        "experience" to experienceAttributes(experience),
+        "screen" to screenAttributes(screen),
+        "block" to blockAttributes(block)
     )
 
     return Event("Block Tapped", attributes)
 }
 
 private fun RoverEvent.ExperienceDismissed.transformToEvent(): Event {
-    return Event("Experience Dismissed", mapOf("experience" to createExperienceMap(experience)))
+    return Event("Experience Dismissed", mapOf("experience" to experienceAttributes(experience)))
 }
 
 private fun RoverEvent.ScreenDismissed.transformToEvent(): Event {
     val attributes: Attributes = mapOf(
-        "experience" to createExperienceMap(experience),
-        "screen" to createScreenMap(screen)
+        "experience" to experienceAttributes(experience),
+        "screen" to screenAttributes(screen)
     )
 
     return Event("Screen Dismissed", attributes)
 }
 
 private fun RoverEvent.ExperiencePresented.transformToEvent(): Event {
-    return Event("Experience Presented", mapOf("experience" to createExperienceMap(experience)))
+    return Event("Experience Presented", mapOf("experience" to experienceAttributes(experience)))
 }
 
 private fun RoverEvent.ExperienceViewed.transformToEvent(): Event {
     val attributes: Attributes = mapOf(
-        "experience" to createExperienceMap(experience),
+        "experience" to experienceAttributes(experience),
         "duration" to duration
     )
 
@@ -98,8 +98,8 @@ private fun RoverEvent.ExperienceViewed.transformToEvent(): Event {
 
 private fun RoverEvent.ScreenViewed.transformToEvent(): Event {
     val attributes: Attributes = mapOf(
-        "experience" to createExperienceMap(experience),
-        "screen" to createScreenMap(screen),
+        "experience" to experienceAttributes(experience),
+        "screen" to screenAttributes(screen),
         "duration" to duration
     )
 
@@ -108,8 +108,8 @@ private fun RoverEvent.ScreenViewed.transformToEvent(): Event {
 
 private fun RoverEvent.ScreenPresented.transformToEvent(): Event {
     val attributes: Attributes = mapOf(
-        "experience" to createExperienceMap(experience),
-        "screen" to createScreenMap(screen)
+        "experience" to experienceAttributes(experience),
+        "screen" to screenAttributes(screen)
     )
 
     return Event("Screen Presented", attributes)

@@ -125,8 +125,6 @@ class CoreAssembler @JvmOverloads constructor(
      */
     private val endpoint: String = "https://api.rover.io/graphql",
 
-    private val eventEmitter: EventEmitter? = Rover.shared?.eventEmitter,
-
     /**
      * By default the Rover SDK will schedule occasional background syncs (for instance, if you have
      * the Rover Location module installed, this will keep the monitored beacons and geofences up to
@@ -159,6 +157,18 @@ class CoreAssembler @JvmOverloads constructor(
             }
 
             UrlSchemes(urlSchemes)
+        }
+
+        /**
+         * Attempt to retrieve the [EventEmitter] instance from the rover sdk in order to receive
+         * events for analytics and automation purposes.
+         */
+        val eventEmitter = Rover.shared?.eventEmitter
+
+        eventEmitter.whenNotNull {
+            container.register(Scope.Singleton, EventEmitter::class.java) { _ ->
+                it
+            }
         }
 
         container.register(Scope.Singleton, NetworkClient::class.java) { resolver ->
@@ -236,7 +246,10 @@ class CoreAssembler @JvmOverloads constructor(
         }
 
         container.register(Scope.Singleton, EventReceiver::class.java) { resolver ->
-            EventReceiver(eventEmitter, resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java))
+            EventReceiver(
+                resolver.resolve(EventEmitter::class.java),
+                resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java)
+            )
         }
 
         container.register(Scope.Singleton, UserInfoInterface::class.java) { resolver ->
@@ -285,7 +298,11 @@ class CoreAssembler @JvmOverloads constructor(
             ApplicationContextProvider(application)
         }
 
-        container.register(Scope.Singleton, ContextProvider::class.java, "deviceIdentifier") { resolver ->
+        container.register(
+            Scope.Singleton,
+            ContextProvider::class.java,
+            "deviceIdentifier"
+        ) { resolver ->
             DeviceIdentifierContextProvider(
                 resolver.resolveSingletonOrFail(DeviceIdentificationInterface::class.java)
             )
@@ -429,8 +446,9 @@ class CoreAssembler @JvmOverloads constructor(
 
         resolver.resolveSingletonOrFail(EventReceiver::class.java).startListening()
 
-        if(scheduleBackgroundSync) {
-            resolver.resolveSingletonOrFail(SyncCoordinatorInterface::class.java).ensureBackgroundSyncScheduled()
+        if (scheduleBackgroundSync) {
+            resolver.resolveSingletonOrFail(SyncCoordinatorInterface::class.java)
+                .ensureBackgroundSyncScheduled()
         } else {
             // deschedule any prior rover sync jobs.
             WorkManager.getInstance().cancelAllWorkByTag("rover-sync")
@@ -444,11 +462,13 @@ data class UrlSchemes(
 
 @Deprecated("Use .resolve(EventQueueServiceInterface::class.java)")
 val RoverCampaigns.eventQueue: EventQueueServiceInterface
-    get() = this.resolve(EventQueueServiceInterface::class.java) ?: throw missingDependencyError("EventQueueService")
+    get() = this.resolve(EventQueueServiceInterface::class.java)
+        ?: throw missingDependencyError("EventQueueService")
 
 @Deprecated("Use .resolve(PermissionsNotifierInterface::class.java)")
 val RoverCampaigns.permissionsNotifier: PermissionsNotifierInterface
-    get() = this.resolve(PermissionsNotifierInterface::class.java) ?: throw missingDependencyError("PermissionsNotifier")
+    get() = this.resolve(PermissionsNotifierInterface::class.java)
+        ?: throw missingDependencyError("PermissionsNotifier")
 
 @Deprecated("Use .resolve(LinkOpenInterface::class.java)")
 val RoverCampaigns.linkOpen: LinkOpenInterface
@@ -464,11 +484,14 @@ val RoverCampaigns.router: Router
 
 @Deprecated("Use .resolve(EmbeddedWebBrowserDisplayInterface::class.java)")
 val RoverCampaigns.embeddedWebBrowserDisplay
-    get() = this.resolve(EmbeddedWebBrowserDisplayInterface::class.java) ?: throw missingDependencyError("EmbeddedWebBrowserDisplayInterface")
+    get() = this.resolve(EmbeddedWebBrowserDisplayInterface::class.java)
+        ?: throw missingDependencyError("EmbeddedWebBrowserDisplayInterface")
 
 @Deprecated("Use .resolve(DeviceIdentificationInterface::class.java)")
 val RoverCampaigns.deviceIdentification
-    get() = this.resolve(DeviceIdentificationInterface::class.java) ?: throw missingDependencyError("DeviceIdentificationInterface")
+    get() = this.resolve(DeviceIdentificationInterface::class.java) ?: throw missingDependencyError(
+        "DeviceIdentificationInterface"
+    )
 
 private fun missingDependencyError(name: String): Throwable {
     throw RuntimeException("Dependency not registered: $name.  Did you include CoreAssembler() in the assembler list?")
