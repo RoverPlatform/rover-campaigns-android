@@ -1,70 +1,37 @@
 {
   "project_info": {
-    "project_number": "565610199268",
-    "firebase_url": "https://rover-android-debug-app.firebaseio.com",
-    "project_id": "rover-android-debug-app",
-    "storage_bucket": "rover-android-debug-app.appspot.com"
+    "project_number": "324173573929",
+    "firebase_url": "https://rover-android-example-app.firebaseio.com",
+    "project_id": "rover-android-example-app",
+    "storage_bucket": "rover-android-example-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:565610199268:android:110ca3c839d5189f",
+        "mobilesdk_app_id": "1:324173573929:android:f700be60a598b52c",
         "android_client_info": {
-          "package_name": "io.rover.app.debug"
+          "package_name": "io.rover.Example"
         }
       },
       "oauth_client": [
         {
-          "client_id": "565610199268-domgvsbtt101ta67q757ru9lj1ma5srd.apps.googleusercontent.com",
+          "client_id": "324173573929-uuin6do1tbes1bqd8duuqptjbc410bdj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAqY7ioIE5I816kaYnCGkShoM9KFUTZPB0"
+          "current_key": "AIzaSyBBX-CobPw2eBvdhW0U83Bi-ed1RcyD81o"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:565610199268:android:3690ad010076e12b",
-        "android_client_info": {
-          "package_name": "io.rover.app.debug.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "565610199268-domgvsbtt101ta67q757ru9lj1ma5srd.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAqY7ioIE5I816kaYnCGkShoM9KFUTZPB0"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "324173573929-uuin6do1tbes1bqd8duuqptjbc410bdj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
