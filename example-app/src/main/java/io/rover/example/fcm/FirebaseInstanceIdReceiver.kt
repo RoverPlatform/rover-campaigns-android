@@ -1,4 +1,4 @@
-package io.rover.campaigns.app.sample.fcm
+package io.rover.example.fcm
 
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.iid.FirebaseInstanceIdService

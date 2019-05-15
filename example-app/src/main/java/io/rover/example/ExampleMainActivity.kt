@@ -1,4 +1,4 @@
-package io.rover.campaigns.app.sample
+package io.rover.example
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -13,11 +13,11 @@ import android.view.View
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
 import io.rover.sdk.ui.containers.RoverActivity
-import kotlinx.android.synthetic.main.activity_debug_main.navigation
-import kotlinx.android.synthetic.main.activity_debug_main.notification_center
-import kotlinx.android.synthetic.main.activity_debug_main.settings_fragment
+import kotlinx.android.synthetic.main.activity_example_main.navigation
+import kotlinx.android.synthetic.main.activity_example_main.notification_center
+import kotlinx.android.synthetic.main.activity_example_main.settings_fragment
 
-class SampleMainActivity : AppCompatActivity() {
+class ExampleMainActivity : AppCompatActivity() {
 
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         selectTab(item.itemId)
@@ -38,7 +38,7 @@ class SampleMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_debug_main)
+        setContentView(R.layout.activity_example_main)
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
 
@@ -48,7 +48,7 @@ class SampleMainActivity : AppCompatActivity() {
 
         val uri : Uri? = intent.data
         // Tries to retrieve experienceId from last path segment
-        val possibleExperienceId = uri?.lastPathSegment
+        val possibleExperienceId = uri?.getQueryParameter("experienceID") ?: uri?.getQueryParameter("id")
         val possibleCampaignId = uri?.getQueryParameter("campaignID")
 
 

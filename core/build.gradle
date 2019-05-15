@@ -62,6 +62,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support:transition:27.1.1'
+    implementation "io.rover:sdk:3.0.0-beta.1"
     // Until java.util.concurrent.Flow appears in Android SDK, import:
     api 'org.reactivestreams:reactive-streams:1.0.2'
 
@@ -96,7 +97,6 @@ configurations {
 
 dependencies {
     ktlint "com.github.shyiko:ktlint:0.27.0"
-    implementation project(':rover-sdk')
     // additional 3rd party ruleset(s) can be specified here
     // just add them to the classpath (ktlint 'groupId:artifactId:version') and
     // ktlint will pick them up
