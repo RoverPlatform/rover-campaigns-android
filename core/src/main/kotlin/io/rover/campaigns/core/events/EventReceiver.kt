@@ -40,21 +40,21 @@ open class EventReceiver(
 }
 
 private fun experienceAttributes(experience: Experience) = mapOf(
-    "id" to experience.id.rawValue,
+    "id" to experience.id,
     "name" to experience.name,
     "keys" to experience.keys,
     "tags" to experience.tags
 )
 
 private fun screenAttributes(screen: Screen) = mapOf(
-    "id" to screen.id.rawValue,
+    "id" to screen.id,
     "name" to screen.name,
     "keys" to screen.keys,
     "tags" to screen.tags
 )
 
 private fun blockAttributes(block: Block) = mapOf(
-    "id" to block.id.rawValue,
+    "id" to block.id,
     "name" to block.name,
     "keys" to block.keys,
     "tags" to block.tags
