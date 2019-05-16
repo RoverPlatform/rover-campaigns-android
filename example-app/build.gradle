@@ -5,7 +5,7 @@ android {
     compileSdkVersion 28
 
     defaultConfig {
-        applicationId "io.rover.app.debug"
+        applicationId "io.rover.Example"
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
@@ -24,7 +24,6 @@ android {
         debug {
             // Necessary if you happen to have Instant Run disabled.
             multiDexEnabled true
-            applicationIdSuffix ".debug"
         }
     }
 }
@@ -42,7 +41,7 @@ dependencies {
     implementation project(":notifications")
     implementation project(":debug")
     implementation project(":location")
-    implementation project(":rover-sdk")
+    implementation "io.rover:sdk:3.0.0-beta.1"
 //    implementation project(":advertising")
     implementation project(":ticketmaster")
 

@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.rover.campaigns.debug.DebugMainActivity">
+    tools:context="io.rover.example.ExampleMainActivity">
 
     <io.rover.campaigns.notifications.ui.NotificationCenterListView
         android:id="@+id/notification_center"

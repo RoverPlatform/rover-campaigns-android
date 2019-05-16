@@ -1,4 +1,4 @@
-package io.rover.campaigns.app.sample
+package io.rover.example
 
 import android.app.Application
 import android.content.Intent
@@ -13,8 +13,7 @@ import io.rover.campaigns.ticketmaster.TicketmasterAssembler
 import io.rover.sdk.Rover
 import timber.log.Timber
 
-
-class SampleApplication : Application() {
+class ExampleApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
@@ -40,7 +39,7 @@ class SampleApplication : Application() {
             NotificationsAssembler(
                 applicationContext = this,
                 smallIconResId = R.mipmap.rover_notification_icon,
-                notificationCenterIntent = Intent(applicationContext, SampleMainActivity::class.java)
+                notificationCenterIntent = Intent(applicationContext, ExampleMainActivity::class.java)
             ) { tokenCallback ->
                 FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
                     tokenCallback(task.result?.token)
@@ -51,6 +50,4 @@ class SampleApplication : Application() {
             TicketmasterAssembler()
         )
     }
-
-
 }
