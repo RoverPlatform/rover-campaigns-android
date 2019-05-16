@@ -65,12 +65,13 @@ class ExampleMainActivity : AppCompatActivity() {
         }
     }
 
+    // Request fine location permission for Location module functionality
     private fun makePermissionsAttempt() {
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
 
-            // Should we show an explanation?
+            // Does Android want us to show an explanation of why the permission is needed first?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
 

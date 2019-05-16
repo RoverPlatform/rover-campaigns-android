@@ -22,6 +22,7 @@ class ExampleApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
+        // Initialize the Rover sdk
         Rover.initialize(
             this,
             getString(R.string.rover_api_token),
@@ -30,6 +31,7 @@ class ExampleApplication : Application() {
 
         RoverCampaigns.installSaneGlobalHttpCache(this)
 
+        // Initialize the Campaigns sdk
         RoverCampaigns.initialize(
             CoreAssembler(
                 accountToken = getString(R.string.rover_api_token),
