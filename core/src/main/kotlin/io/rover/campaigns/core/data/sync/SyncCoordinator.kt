@@ -179,14 +179,14 @@ class SyncCoordinator(
                     ?.blockForResult(300)?.first()
             } catch (e: Exception) {
                 log.w("Unexpected failure running background sync: $e")
-                return Result.RETRY
+                return Result.retry()
             }
             return when(result) {
-                SyncCoordinatorInterface.Result.Succeeded -> Result.SUCCESS
-                SyncCoordinatorInterface.Result.RetryNeeded -> Result.RETRY
+                SyncCoordinatorInterface.Result.Succeeded -> Result.success()
+                SyncCoordinatorInterface.Result.RetryNeeded -> Result.retry()
                 null -> {
                     log.w("Rover Campaigns isn't initialized or CoreAssembler hasn't been added, but the background sync job with work manager is still scheduled. Marking as failed.")
-                    Result.FAILURE
+                    Result.failure()
                 }
             }
         }
