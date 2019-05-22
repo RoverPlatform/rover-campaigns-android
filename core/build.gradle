@@ -136,7 +136,7 @@ task webDocsDokka (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) 
 }
 
 ext {
-    groupId = 'io.rover' // package name of the project
+    groupId = 'io.rover.campaigns' // package name of the project
     artifactId = "core" // module name of the library
     libVersion = rover_sdk_version
 }
@@ -184,7 +184,7 @@ publishing {
     publications {
         production(MavenPublication) {
             artifact("$buildDir/outputs/aar/$artifactId-release.aar")
-            groupId "io.rover"
+            groupId "io.rover.campaigns"
 
             version rover_sdk_version
 

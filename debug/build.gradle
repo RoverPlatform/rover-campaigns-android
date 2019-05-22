@@ -96,7 +96,7 @@ task webDocsDokka (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) 
 }
 
 ext {
-    groupId = 'io.rover' // package name of the project
+    groupId = 'io.rover.campaigns' // package name of the project
     artifactId = "debug" // module name of the library
     libVersion = rover_sdk_version
 }
@@ -144,7 +144,7 @@ publishing {
     publications {
         production(MavenPublication) {
             artifact("$buildDir/outputs/aar/$artifactId-release.aar")
-            groupId "io.rover"
+            groupId "io.rover.campaigns"
             artifactId artifactId
             version rover_sdk_version
 
@@ -171,7 +171,7 @@ publishing {
                 // notice that project scope dependencies are not handled. Instead, we must add them
                 // as external dependencies manually.
                 def dependencyNode = dependenciesNode.appendNode('dependency')
-                dependencyNode.appendNode('groupId', 'io.rover')
+                dependencyNode.appendNode('groupId', 'io.rover.campaigns')
                 dependencyNode.appendNode('artifactId', 'core')
                 dependencyNode.appendNode('version', rover_sdk_version)
             }
