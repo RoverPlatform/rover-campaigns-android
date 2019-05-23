@@ -59,6 +59,8 @@ import io.rover.campaigns.core.routing.LinkOpenInterface
 import io.rover.campaigns.core.routing.Router
 import io.rover.campaigns.core.routing.RouterService
 import io.rover.campaigns.core.routing.routes.OpenAppRoute
+import io.rover.campaigns.core.routing.routes.PresentExperienceIntents
+import io.rover.campaigns.core.routing.routes.PresentExperienceRoute
 import io.rover.campaigns.core.routing.website.EmbeddedWebBrowserDisplay
 import io.rover.campaigns.core.routing.website.EmbeddedWebBrowserDisplayInterface
 import io.rover.campaigns.core.streams.Scheduler
@@ -104,6 +106,21 @@ class CoreAssembler @JvmOverloads constructor(
      * anywhere else.
      */
     private val urlSchemes: List<String>,
+
+    /**
+     * Rover universal links are customized for each in this way:
+     *
+     * myapp.rover.io
+     *
+     * You must set an appropriate domain without spaces or special characters to be used in place
+     * of `myapp` above.  It must match the value in your Rover Settings.
+     *
+     * You should also consider adding the handler to the manifest.  While this is not needed for
+     * any Rover functionality to work, it is required for clickable universal links to work from
+     * anywhere else.
+     */
+    private val associatedDomains: List<String>,
+
 
     /**
      * An ARGB int color (typical on Android) that is used when Rover is asked to present a website
@@ -156,7 +173,16 @@ class CoreAssembler @JvmOverloads constructor(
                 }
             }
 
-            UrlSchemes(urlSchemes)
+            UrlSchemes(urlSchemes, associatedDomains)
+        }
+
+        container.register(
+            Scope.Singleton,
+            PresentExperienceIntents::class.java
+        ) { resolver ->
+            PresentExperienceIntents(
+                resolver.resolveSingletonOrFail(Context::class.java)
+            )
         }
 
         /**
@@ -444,6 +470,17 @@ class CoreAssembler @JvmOverloads constructor(
             )
         }
 
+        resolver.resolveSingletonOrFail(Router::class.java).apply {
+            val urlSchemes = resolver.resolveSingletonOrFail(UrlSchemes::class.java)
+            registerRoute(
+                PresentExperienceRoute(
+                    urlSchemes = urlSchemes.schemes,
+                    associatedDomains = associatedDomains,
+                    presentExperienceIntents = resolver.resolveSingletonOrFail(PresentExperienceIntents::class.java)
+                )
+            )
+        }
+
         resolver.resolveSingletonOrFail(EventReceiver::class.java).startListening()
 
         if (scheduleBackgroundSync) {
@@ -457,7 +494,8 @@ class CoreAssembler @JvmOverloads constructor(
 }
 
 data class UrlSchemes(
-    val schemes: List<String>
+    val schemes: List<String>,
+    val associatedDomains: List<String>
 )
 
 @Deprecated("Use .resolve(EventQueueServiceInterface::class.java)")

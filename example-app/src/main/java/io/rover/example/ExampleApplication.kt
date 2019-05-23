@@ -36,7 +36,8 @@ class ExampleApplication : Application() {
             CoreAssembler(
                 accountToken = getString(R.string.rover_api_token),
                 application = this,
-                urlSchemes = listOf(getString(R.string.rover_campaigns_uri_scheme))
+                urlSchemes = listOf(getString(R.string.rover_campaigns_uri_scheme)),
+                associatedDomains = listOf(getString(R.string.rover_campaigns_associated_domain))
             ),
             NotificationsAssembler(
                 applicationContext = this,
