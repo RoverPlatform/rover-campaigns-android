@@ -25,6 +25,8 @@ class PresentExperienceRoute(
                 val queryParameters = uri.query.parseAsQueryParameters()
                 val possibleCampaignId = queryParameters["campaignID"]
 
+                // For now, you need to support deep links with both `experienceID` and `id` to enable backwards compatibility
+                // For Rover 3.0 devices, the Rover server will send deep links within push notifications using `experienceID` parameter. For backwards compatibility, `id` parameter is also supported.
                 val experienceId = queryParameters["experienceID"] ?: queryParameters["id"]
 
                 if(experienceId == null) {
