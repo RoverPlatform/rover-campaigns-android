@@ -24,9 +24,7 @@ import io.rover.sdk.services.EventEmitter
  * the SDK documentation (also needed for the Notifications module).
  */
 class ExperiencesAssembler : Assembler {
-
     override fun assemble(container: Container) {
-
         container.register(
             Scope.Singleton,
             PresentExperienceIntents::class.java

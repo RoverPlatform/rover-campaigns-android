@@ -72,11 +72,7 @@ private fun RoverEvent.BlockTapped.transformToEvent(): Event {
 }
 
 private fun RoverEvent.ExperienceDismissed.transformToEvent(): Event {
-    return Event("Experience Dismissed", mapOf("experience" to experienceAttributes(
-        experience,
-        campaignId
-    )
-    ))
+    return Event("Experience Dismissed", mapOf("experience" to experienceAttributes(experience, campaignId)))
 }
 
 private fun RoverEvent.ScreenDismissed.transformToEvent(): Event {
@@ -89,11 +85,7 @@ private fun RoverEvent.ScreenDismissed.transformToEvent(): Event {
 }
 
 private fun RoverEvent.ExperiencePresented.transformToEvent(): Event {
-    return Event("Experience Presented", mapOf("experience" to experienceAttributes(
-        experience,
-        campaignId
-    )
-    ))
+    return Event("Experience Presented", mapOf("experience" to experienceAttributes(experience, campaignId)))
 }
 
 private fun RoverEvent.ExperienceViewed.transformToEvent(): Event {
