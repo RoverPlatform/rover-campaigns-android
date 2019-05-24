@@ -7,6 +7,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import io.rover.campaigns.core.CoreAssembler
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.debug.DebugAssembler
+import io.rover.campaigns.experiences.ExperiencesAssembler
 import io.rover.campaigns.location.LocationAssembler
 import io.rover.campaigns.notifications.NotificationsAssembler
 import io.rover.campaigns.ticketmaster.TicketmasterAssembler
@@ -43,7 +44,8 @@ class ExampleApplication : Application() {
             },
             LocationAssembler(),
             DebugAssembler(),
-            TicketmasterAssembler()
+            TicketmasterAssembler(),
+            ExperiencesAssembler()
         )
     }
 }

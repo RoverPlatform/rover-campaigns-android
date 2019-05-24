@@ -31,7 +31,6 @@ import io.rover.campaigns.core.data.sync.SyncCoordinatorInterface
 import io.rover.campaigns.core.events.ContextProvider
 import io.rover.campaigns.core.events.EventQueueService
 import io.rover.campaigns.core.events.EventQueueServiceInterface
-import io.rover.campaigns.core.events.EventReceiver
 import io.rover.campaigns.core.events.UserInfo
 import io.rover.campaigns.core.events.UserInfoInterface
 import io.rover.campaigns.core.events.contextproviders.ApplicationContextProvider
@@ -59,8 +58,6 @@ import io.rover.campaigns.core.routing.LinkOpenInterface
 import io.rover.campaigns.core.routing.Router
 import io.rover.campaigns.core.routing.RouterService
 import io.rover.campaigns.core.routing.routes.OpenAppRoute
-import io.rover.campaigns.core.routing.routes.PresentExperienceIntents
-import io.rover.campaigns.core.routing.routes.PresentExperienceRoute
 import io.rover.campaigns.core.routing.website.EmbeddedWebBrowserDisplay
 import io.rover.campaigns.core.routing.website.EmbeddedWebBrowserDisplayInterface
 import io.rover.campaigns.core.streams.Scheduler
@@ -74,8 +71,6 @@ import io.rover.campaigns.core.tracking.SessionTrackerInterface
 import io.rover.campaigns.core.ui.LinkOpen
 import io.rover.campaigns.core.version.VersionTracker
 import io.rover.campaigns.core.version.VersionTrackerInterface
-import io.rover.sdk.Rover
-import io.rover.sdk.services.EventEmitter
 import java.net.URL
 import java.util.concurrent.Executor
 
@@ -121,7 +116,6 @@ class CoreAssembler @JvmOverloads constructor(
      */
     private val associatedDomains: List<String>,
 
-
     /**
      * An ARGB int color (typical on Android) that is used when Rover is asked to present a website
      * within the app (hosted within a an Android [Custom
@@ -150,14 +144,12 @@ class CoreAssembler @JvmOverloads constructor(
     private val scheduleBackgroundSync: Boolean = true
 ) : Assembler {
 
-    init {
-        Rover.initialize(application, accountToken)
-    }
-
     override fun assemble(container: Container) {
         container.register(Scope.Singleton, Context::class.java) { _ ->
             application
         }
+
+        container.register(Scope.Singleton, String::class.java, "accountToken") { _ -> accountToken }
 
         container.register(Scope.Singleton, Application::class.java) { _ ->
             application
@@ -181,31 +173,14 @@ class CoreAssembler @JvmOverloads constructor(
             UrlSchemes(urlSchemes, associatedDomains)
         }
 
-        container.register(
-            Scope.Singleton,
-            PresentExperienceIntents::class.java
-        ) { resolver ->
-            PresentExperienceIntents(
-                resolver.resolveSingletonOrFail(Context::class.java)
-            )
-        }
-
-        /**
-         * Attempt to retrieve the [EventEmitter] instance from the rover sdk in order to receive
-         * events for analytics and automation purposes.
-         */
-        val eventEmitter = Rover.shared?.eventEmitter
-
-        eventEmitter.whenNotNull {
-            container.register(Scope.Singleton, EventEmitter::class.java) { _ ->
-                it
-            }
-        }
-
         container.register(Scope.Singleton, NetworkClient::class.java) { resolver ->
             AndroidHttpsUrlConnectionNetworkClient(
                 resolver.resolveSingletonOrFail(Scheduler::class.java, "io")
             )
+        }
+
+        container.register(Scope.Singleton, Int::class.java, "chromeTabBackgroundColor") { _ ->
+            chromeTabBackgroundColor
         }
 
         container.register(Scope.Singleton, DateFormattingInterface::class.java) { _ ->
@@ -273,13 +248,6 @@ class CoreAssembler @JvmOverloads constructor(
                 application,
                 resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java),
                 resolver.resolveSingletonOrFail(LocalStorage::class.java)
-            )
-        }
-
-        container.register(Scope.Singleton, EventReceiver::class.java) { resolver ->
-            EventReceiver(
-                resolver.resolve(EventEmitter::class.java),
-                resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java)
             )
         }
 
@@ -474,19 +442,6 @@ class CoreAssembler @JvmOverloads constructor(
                 OpenAppRoute(resolver.resolveSingletonOrFail(Intent::class.java, "openApp"))
             )
         }
-
-        resolver.resolveSingletonOrFail(Router::class.java).apply {
-            val urlSchemes = resolver.resolveSingletonOrFail(UrlSchemes::class.java)
-            registerRoute(
-                PresentExperienceRoute(
-                    urlSchemes = urlSchemes.schemes,
-                    associatedDomains = associatedDomains,
-                    presentExperienceIntents = resolver.resolveSingletonOrFail(PresentExperienceIntents::class.java)
-                )
-            )
-        }
-
-        resolver.resolveSingletonOrFail(EventReceiver::class.java).startListening()
 
         if (scheduleBackgroundSync) {
             resolver.resolveSingletonOrFail(SyncCoordinatorInterface::class.java)

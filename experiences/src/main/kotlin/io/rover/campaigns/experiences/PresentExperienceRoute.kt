@@ -1,4 +1,4 @@
-package io.rover.campaigns.core.routing.routes
+package io.rover.campaigns.experiences
 
 import android.content.Context
 import android.content.Intent
@@ -8,7 +8,6 @@ import io.rover.campaigns.core.platform.parseAsQueryParameters
 import io.rover.campaigns.core.routing.Route
 import io.rover.sdk.ui.containers.RoverActivity
 import java.net.URI
-import kotlin.math.exp
 
 class PresentExperienceRoute(
     private val urlSchemes: List<String>,
