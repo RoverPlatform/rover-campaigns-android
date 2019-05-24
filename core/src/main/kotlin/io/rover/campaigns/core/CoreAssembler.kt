@@ -149,6 +149,11 @@ class CoreAssembler @JvmOverloads constructor(
      */
     private val scheduleBackgroundSync: Boolean = true
 ) : Assembler {
+
+    init {
+        Rover.initialize(application, accountToken)
+    }
+
     override fun assemble(container: Container) {
         container.register(Scope.Singleton, Context::class.java) { _ ->
             application

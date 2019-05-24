@@ -22,13 +22,6 @@ class ExampleApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        // Initialize the Rover sdk
-        Rover.initialize(
-            this,
-            getString(R.string.rover_api_token),
-            Color.BLUE
-        )
-
         RoverCampaigns.installSaneGlobalHttpCache(this)
 
         // Initialize the Campaigns sdk
