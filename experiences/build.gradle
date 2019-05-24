@@ -5,7 +5,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'maven-publish'
-apply plugin: "de.mannodermaus.android-junit5"
 
 android {
     compileSdkVersion 27
@@ -15,9 +14,6 @@ android {
         targetSdkVersion 27
         versionCode rover_sdk_version_code
         versionName rover_sdk_version
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -30,16 +26,6 @@ android {
     // Add Kotlin source directory to all source sets
     sourceSets.each {
         it.java.srcDirs += "src/$it.name/kotlin"
-    }
-
-    testOptions {
-        junitPlatform {
-            filters {
-                engines {
-                    include 'spek2'
-                }
-            }
-        }
     }
 }
 
