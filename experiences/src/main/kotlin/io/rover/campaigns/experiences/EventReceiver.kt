@@ -1,6 +1,7 @@
-package io.rover.campaigns.core.events
+package io.rover.campaigns.experiences
 
 import io.rover.campaigns.core.data.domain.Attributes
+import io.rover.campaigns.core.events.EventQueueServiceInterface
 import io.rover.campaigns.core.events.domain.Event
 import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.streams.subscribe

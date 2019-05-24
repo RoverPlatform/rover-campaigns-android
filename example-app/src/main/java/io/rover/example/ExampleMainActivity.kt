@@ -2,7 +2,6 @@ package io.rover.example
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.ActivityCompat
@@ -12,7 +11,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
-import io.rover.sdk.ui.containers.RoverActivity
 import kotlinx.android.synthetic.main.activity_example_main.navigation
 import kotlinx.android.synthetic.main.activity_example_main.notification_center
 import kotlinx.android.synthetic.main.activity_example_main.settings_fragment
@@ -45,24 +43,7 @@ class ExampleMainActivity : AppCompatActivity() {
         notification_center.activity = this
 
         selectTab(R.id.navigation_notifications)
-
-        val uri : Uri? = intent.data
-        // Tries to retrieve experienceId from last path segment
-        val possibleExperienceId = uri?.getQueryParameter("experienceID") ?: uri?.getQueryParameter("id")
-        val possibleCampaignId = uri?.getQueryParameter("campaignID")
-
-
-        // A simple routing example follows:
-        // Your app can handle the intent data as it prefers - here, we're handling a simple deep
-        // link scheme and a universal link domain as defined in the manifest.
-        if (uri?.scheme == getString(R.string.uri_scheme) && uri?.host == "presentExperience" && possibleExperienceId != null) {
-            startActivity(RoverActivity.makeIntent(packageContext = this, experienceId = possibleExperienceId, campaignId = possibleCampaignId))
-        } else if(uri?.scheme in listOf("http", "https") && uri != null && uri.host == getString(R.string.associated_domain)) {
-            startActivity(RoverActivity.makeIntent(packageContext = this, experienceUrl = uri, campaignId = possibleCampaignId))
-        } else {
-            // no matching deep or universal link, just do default "main screen" behaviour.
-            makePermissionsAttempt()
-        }
+        makePermissionsAttempt()
     }
 
     // Request fine location permission for Location module functionality

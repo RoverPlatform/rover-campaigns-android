@@ -1,1 +1,1 @@
-include 'core', 'location', 'notifications', 'debug', 'ticketmaster', 'advertising', 'example-app'
+include 'core', 'location', 'notifications', 'debug', 'ticketmaster', 'advertising', 'example-app', 'experiences'

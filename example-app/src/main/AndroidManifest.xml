@@ -32,32 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- for deep links to open experiences -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="@string/uri_scheme" />
-            </intent-filter>
-
-            <!-- for http universal links/app links to open experiences  -->
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="http" android:host="@string/associated_domain" />
-            </intent-filter>
-
-            <!-- for https universal links/app links to open experiences -->
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="https" android:host="@string/associated_domain" />
-            </intent-filter>
         </activity>
 
         <activity android:name="io.rover.campaigns.core.routing.TransientLinkLaunchActivity">
@@ -81,13 +55,39 @@
                 <data android:host="presentNotificationCenter" />
             </intent-filter>
 
+
+            <!-- for deep links to open experiences -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/rover_campaigns_uri_scheme" />
+            </intent-filter>
+
+            <!-- for http universal links/app links to open experiences  -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="http" android:host="@string/rover_campaigns_associated_domain" />
+            </intent-filter>
+
+            <!-- for https universal links/app links to open experiences -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https" android:host="@string/rover_campaigns_associated_domain" />
+            </intent-filter>
         </activity>
 
         <!-- Registering RoverActivity from the Rover SDK in order to display experiences -->
         <activity
             android:name="io.rover.sdk.ui.containers.RoverActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
