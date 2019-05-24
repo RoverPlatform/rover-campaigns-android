@@ -7,6 +7,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import io.rover.campaigns.core.CoreAssembler
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.debug.DebugAssembler
+import io.rover.campaigns.experiences.ExperiencesAssembler
 import io.rover.campaigns.location.LocationAssembler
 import io.rover.campaigns.notifications.NotificationsAssembler
 import io.rover.campaigns.ticketmaster.TicketmasterAssembler
@@ -22,13 +23,6 @@ class ExampleApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
 
-        // Initialize the Rover sdk
-        Rover.initialize(
-            this,
-            getString(R.string.rover_api_token),
-            Color.BLUE
-        )
-
         RoverCampaigns.installSaneGlobalHttpCache(this)
 
         // Initialize the Campaigns sdk
@@ -36,7 +30,8 @@ class ExampleApplication : Application() {
             CoreAssembler(
                 accountToken = getString(R.string.rover_api_token),
                 application = this,
-                urlSchemes = listOf(getString(R.string.rover_campaigns_uri_scheme))
+                urlSchemes = listOf(getString(R.string.rover_campaigns_uri_scheme)),
+                associatedDomains = listOf(getString(R.string.rover_campaigns_associated_domain))
             ),
             NotificationsAssembler(
                 applicationContext = this,
@@ -49,7 +44,8 @@ class ExampleApplication : Application() {
             },
             LocationAssembler(),
             DebugAssembler(),
-            TicketmasterAssembler()
+            TicketmasterAssembler(),
+            ExperiencesAssembler()
         )
     }
 }

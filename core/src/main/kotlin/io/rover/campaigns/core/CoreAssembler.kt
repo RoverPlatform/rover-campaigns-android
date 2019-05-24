@@ -31,7 +31,6 @@ import io.rover.campaigns.core.data.sync.SyncCoordinatorInterface
 import io.rover.campaigns.core.events.ContextProvider
 import io.rover.campaigns.core.events.EventQueueService
 import io.rover.campaigns.core.events.EventQueueServiceInterface
-import io.rover.campaigns.core.events.EventReceiver
 import io.rover.campaigns.core.events.UserInfo
 import io.rover.campaigns.core.events.UserInfoInterface
 import io.rover.campaigns.core.events.contextproviders.ApplicationContextProvider
@@ -72,8 +71,6 @@ import io.rover.campaigns.core.tracking.SessionTrackerInterface
 import io.rover.campaigns.core.ui.LinkOpen
 import io.rover.campaigns.core.version.VersionTracker
 import io.rover.campaigns.core.version.VersionTrackerInterface
-import io.rover.sdk.Rover
-import io.rover.sdk.services.EventEmitter
 import java.net.URL
 import java.util.concurrent.Executor
 
@@ -106,6 +103,20 @@ class CoreAssembler @JvmOverloads constructor(
     private val urlSchemes: List<String>,
 
     /**
+     * Rover universal links are customized for each in this way:
+     *
+     * myapp.rover.io
+     *
+     * You must set an appropriate domain without spaces or special characters to be used in place
+     * of `myapp` above.  It must match the value in your Rover Settings.
+     *
+     * You should also consider adding the handler to the manifest.  While this is not needed for
+     * any Rover functionality to work, it is required for clickable universal links to work from
+     * anywhere else.
+     */
+    private val associatedDomains: List<String>,
+
+    /**
      * An ARGB int color (typical on Android) that is used when Rover is asked to present a website
      * within the app (hosted within a an Android [Custom
      * Tab](https://developer.chrome.com/multidevice/android/customtabs)).  In many cases it is
@@ -132,10 +143,13 @@ class CoreAssembler @JvmOverloads constructor(
      */
     private val scheduleBackgroundSync: Boolean = true
 ) : Assembler {
+
     override fun assemble(container: Container) {
         container.register(Scope.Singleton, Context::class.java) { _ ->
             application
         }
+
+        container.register(Scope.Singleton, String::class.java, "accountToken") { _ -> accountToken }
 
         container.register(Scope.Singleton, Application::class.java) { _ ->
             application
@@ -156,25 +170,17 @@ class CoreAssembler @JvmOverloads constructor(
                 }
             }
 
-            UrlSchemes(urlSchemes)
-        }
-
-        /**
-         * Attempt to retrieve the [EventEmitter] instance from the rover sdk in order to receive
-         * events for analytics and automation purposes.
-         */
-        val eventEmitter = Rover.shared?.eventEmitter
-
-        eventEmitter.whenNotNull {
-            container.register(Scope.Singleton, EventEmitter::class.java) { _ ->
-                it
-            }
+            UrlSchemes(urlSchemes, associatedDomains)
         }
 
         container.register(Scope.Singleton, NetworkClient::class.java) { resolver ->
             AndroidHttpsUrlConnectionNetworkClient(
                 resolver.resolveSingletonOrFail(Scheduler::class.java, "io")
             )
+        }
+
+        container.register(Scope.Singleton, Int::class.java, "chromeTabBackgroundColor") { _ ->
+            chromeTabBackgroundColor
         }
 
         container.register(Scope.Singleton, DateFormattingInterface::class.java) { _ ->
@@ -242,13 +248,6 @@ class CoreAssembler @JvmOverloads constructor(
                 application,
                 resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java),
                 resolver.resolveSingletonOrFail(LocalStorage::class.java)
-            )
-        }
-
-        container.register(Scope.Singleton, EventReceiver::class.java) { resolver ->
-            EventReceiver(
-                resolver.resolve(EventEmitter::class.java),
-                resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java)
             )
         }
 
@@ -444,8 +443,6 @@ class CoreAssembler @JvmOverloads constructor(
             )
         }
 
-        resolver.resolveSingletonOrFail(EventReceiver::class.java).startListening()
-
         if (scheduleBackgroundSync) {
             resolver.resolveSingletonOrFail(SyncCoordinatorInterface::class.java)
                 .ensureBackgroundSyncScheduled()
@@ -457,7 +454,8 @@ class CoreAssembler @JvmOverloads constructor(
 }
 
 data class UrlSchemes(
-    val schemes: List<String>
+    val schemes: List<String>,
+    val associatedDomains: List<String>
 )
 
 @Deprecated("Use .resolve(EventQueueServiceInterface::class.java)")
