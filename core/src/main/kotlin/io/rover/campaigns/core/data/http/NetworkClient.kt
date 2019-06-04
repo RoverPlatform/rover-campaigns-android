@@ -1,9 +1,11 @@
 package io.rover.campaigns.core.data.http
 
 import android.content.Context
+import android.content.pm.PackageInfo
 import android.net.http.HttpResponseCache
 import android.util.Log
 import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.setRoverUserAgent
 import io.rover.campaigns.core.streams.Publishers
 import io.rover.campaigns.core.streams.Scheduler
 import io.rover.campaigns.core.streams.subscribeOn
@@ -21,7 +23,8 @@ import javax.net.ssl.HttpsURLConnection
  * An implementation of [NetworkClient] powered by Android's stock [HttpsURLConnection].
  */
 class AndroidHttpsUrlConnectionNetworkClient(
-    private val ioScheduler: Scheduler
+    private val ioScheduler: Scheduler,
+    private val appPackageInfo: PackageInfo
 ) : NetworkClient {
 
     override fun request(
@@ -71,6 +74,8 @@ class AndroidHttpsUrlConnectionNetworkClient(
                         setFixedLengthStreamingMode(requestBody?.size ?: 0)
                         setRequestProperty("Content-Encoding", "gzip")
                     }
+
+                    setRoverUserAgent(appPackageInfo)
 
                     // add the request headers.
                     request.headers.onEach { (field, value) -> setRequestProperty(field, value) }
