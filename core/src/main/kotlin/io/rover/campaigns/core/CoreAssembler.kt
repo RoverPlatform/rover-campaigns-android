@@ -175,7 +175,8 @@ class CoreAssembler @JvmOverloads constructor(
 
         container.register(Scope.Singleton, NetworkClient::class.java) { resolver ->
             AndroidHttpsUrlConnectionNetworkClient(
-                resolver.resolveSingletonOrFail(Scheduler::class.java, "io")
+                resolver.resolveSingletonOrFail(Scheduler::class.java, "io"),
+                application.packageManager.getPackageInfo(application.packageName, 0)
             )
         }
 
