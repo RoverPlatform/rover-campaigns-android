@@ -14,8 +14,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode rover_sdk_version_code
-        versionName rover_sdk_version
+        versionCode rover_campaigns_sdk_version_code
+        versionName rover_campaigns_sdk_version
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -98,7 +98,7 @@ task webDocsDokka (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) 
 ext {
     groupId = 'io.rover.campaigns' // package name of the project
     artifactId = "debug" // module name of the library
-    libVersion = rover_sdk_version
+    libVersion = rover_campaigns_sdk_version
 }
 
 //just copy paste the lines below
@@ -146,7 +146,7 @@ publishing {
             artifact("$buildDir/outputs/aar/$artifactId-release.aar")
             groupId "io.rover.campaigns"
             artifactId artifactId
-            version rover_sdk_version
+            version rover_campaigns_sdk_version
 
             //The publication doesn't know about our dependencies, so we have to manually add them to the pom
             pom.withXml {
@@ -173,7 +173,7 @@ publishing {
                 def dependencyNode = dependenciesNode.appendNode('dependency')
                 dependencyNode.appendNode('groupId', 'io.rover.campaigns')
                 dependencyNode.appendNode('artifactId', 'core')
-                dependencyNode.appendNode('version', rover_sdk_version)
+                dependencyNode.appendNode('version', rover_campaigns_sdk_version)
             }
 
             artifact sourcesJar {
