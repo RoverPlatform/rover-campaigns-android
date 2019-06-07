@@ -35,4 +35,4 @@ dependencies {
 }
 ```
 
-Please continue onwards from https://developer.rover.io/android/.
+Please continue onwards from https://github.com/RoverPlatform/rover-campaigns-android/wiki.
