@@ -66,7 +66,8 @@ class NotificationDispatcher(
      * This Channel Id will be used for any push notifications arrive without an included Channel
      * Id.
      */
-    private val defaultChannelId: String? = null
+    private val defaultChannelId: String? = null,
+    private val iconColor: Int? = null
 ) {
     fun ingest(notificationFromAction: io.rover.campaigns.notifications.domain.Notification) {
         Publishers.defer {
@@ -116,6 +117,11 @@ class NotificationDispatcher(
 
         builder.setContentTitle(notification.title)
         builder.setContentText(notification.body)
+
+        iconColor?.let {
+            builder.color = it
+        }
+
         builder.setStyle(NotificationCompat.BigTextStyle())
         builder.setSmallIcon(smallIconResId, smallIconDrawableLevel)
 

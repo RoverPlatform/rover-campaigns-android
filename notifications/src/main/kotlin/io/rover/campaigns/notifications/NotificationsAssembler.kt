@@ -87,6 +87,13 @@ class NotificationsAssembler @JvmOverloads constructor(
     */
     private val defaultChannelId: String = "rover",
 
+
+    /**
+     * The accent color of the small notification icon applied when the notification drawer is
+     * expanded to display notifications.
+     */
+    private val iconColor: Int? = null,
+
     /**
      * Provide an [Intent] for opening your Notification Center.  While you can refrain from
      * providing one, in that case the Rover SDK will use a very simple built-in version of the
@@ -277,7 +284,8 @@ class NotificationsAssembler @JvmOverloads constructor(
                 resolver.resolveSingletonOrFail(InfluenceTrackerServiceInterface::class.java),
                 smallIconResId,
                 smallIconDrawableLevel,
-                defaultChannelId
+                defaultChannelId,
+                iconColor
             )
         }
     }
