@@ -89,7 +89,7 @@ class NotificationsAssembler @JvmOverloads constructor(
 
 
     /**
-     * The accent color of the small notification icon applied when the notification drawer is currently
+     * The accent color of the small notification icon applied when the notification drawer is
      * expanded to display notifications.
      */
     private val iconColor: Int? = null,
