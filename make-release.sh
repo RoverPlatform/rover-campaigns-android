@@ -56,7 +56,7 @@ echo "Making $RELEASE_OR_HOTFIX branch for: $VERSION"
 
 git flow $RELEASE_OR_HOTFIX start $VERSION
 
-echo "Edit your version numbers (podspecs, README, plists) and press return!"
+echo "Edit your version numbers (README.md and build.gradle) and press return!"
 read -n 1
 
 echo "Building SDK."
