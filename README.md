@@ -23,15 +23,15 @@ dependencies {
 Then add the following to your application-level `build.gradle` file (not the
 top level `build.gradle`, but rather your app-level one) in the `dependencies`
 block.
- 
+
 ```groovy
 dependencies {
     // ...
-    implementation "io.rover.campaigns:core:3.1.0"
-    implementation "io.rover.campaigns:notifications:3.1.0"
-    implementation "io.rover.campaigns:location:3.1.0"
-    implementation "io.rover.campaigns:debug:3.1.0"
-    implementation "io.rover.campaigns:experiences:3.1.0"
+    implementation "io.rover.campaigns:core:3.1.1"
+    implementation "io.rover.campaigns:notifications:3.1.1"
+    implementation "io.rover.campaigns:location:3.1.1"
+    implementation "io.rover.campaigns:debug:3.1.1"
+    implementation "io.rover.campaigns:experiences:3.1.1"
 }
 ```
 
