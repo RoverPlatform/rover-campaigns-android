@@ -43,18 +43,20 @@ git checkout develop
 # destroy develop state!
 git reset --hard origin/develop
 
-# go back to master to start the hotfix
-if [ $RELEASE_OR_HOTFIX == "hotfix" ]
-then
-    git checkout master
-fi
-
-echo "Verifying SDK."
-DEPLOY_MAVEN_PATH=`pwd`/maven ./gradlew clean test
-
 echo "Making $RELEASE_OR_HOTFIX branch for: $VERSION"
 
-git flow $RELEASE_OR_HOTFIX start $VERSION
+if [ $RELEASE_OR_HOTFIX == "hotfix" ]
+then
+  echo "Assuming hotfix branch already exists."
+  git checkout hotfix/$VERSION
+  echo "Verifying SDK."
+  DEPLOY_MAVEN_PATH=`pwd`/maven ./gradlew clean test
+else
+  git checkout master
+  echo "Verifying SDK."
+  DEPLOY_MAVEN_PATH=`pwd`/maven ./gradlew clean test
+  git flow $RELEASE_OR_HOTFIX start $VERSION
+fi
 
 echo "Edit your version numbers (README.md and build.gradle) and press return!"
 read -n 1
