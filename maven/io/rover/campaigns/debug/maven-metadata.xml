@@ -3,14 +3,15 @@
   <groupId>io.rover.campaigns</groupId>
   <artifactId>debug</artifactId>
   <versioning>
-    <release>3.1.0</release>
+    <release>3.1.1</release>
     <versions>
       <version>3.0.0-beta.1</version>
       <version>3.0.0-beta.2</version>
       <version>3.0.0-beta.3</version>
       <version>3.0.0</version>
       <version>3.1.0</version>
+      <version>3.1.1</version>
     </versions>
-    <lastUpdated>20190614185224</lastUpdated>
+    <lastUpdated>20190618191343</lastUpdated>
   </versioning>
 </metadata>
