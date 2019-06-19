@@ -30,8 +30,8 @@ class TicketmasterManager(
         val backendName = TicketmasterBackendName.values()[backendNameOrdinal]
 
         member = Member(
-            hostID = if(backendName == TicketmasterBackendName.HOST) memberId else null,
-            teamID = if(backendName == TicketmasterBackendName.ARCHTICS) memberId else null
+            hostID = if (backendName == TicketmasterBackendName.HOST) memberId else null,
+            teamID = if (backendName == TicketmasterBackendName.ARCHTICS) memberId else null
         )
     }
 
@@ -48,7 +48,7 @@ class TicketmasterManager(
                 member.teamID.whenNotNull { Pair("teamMemberID", it) }
             )
 
-            if(params.isEmpty()) {
+            if (params.isEmpty()) {
                 null
             } else {
                 SyncRequest(
@@ -102,7 +102,7 @@ class TicketmasterManager(
             null
         )
 
-        if(legacyTicketmasterMemberJson != null) {
+        if (legacyTicketmasterMemberJson != null) {
             log.i("Migrated legacy Rover SDK 2.x Ticketmaster member data.")
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 try {
@@ -139,7 +139,6 @@ val SyncQuery.Argument.Companion.hostMemberId
 
 val SyncQuery.Argument.Companion.teamMemberID
     get() = SyncQuery.Argument("teamMemberID", "String")
-
 
 val SyncQuery.Companion.ticketmaster
     get() = SyncQuery(
@@ -189,4 +188,3 @@ fun TicketmasterSyncResponseData.Profile.Companion.decodeJson(json: JSONObject):
         json.optJSONObject("attributes")?.toAttributesHash()
     )
 }
-

@@ -4,7 +4,6 @@ import io.rover.campaigns.core.data.domain.Attributes
 import io.rover.campaigns.core.data.graphql.safeGetString
 import org.json.JSONObject
 
-
 fun JSONObject.toStringHash(): Map<String, String> {
     return this.keys().asSequence().associate { key ->
         Pair(key, this.safeGetString(key))
@@ -13,7 +12,7 @@ fun JSONObject.toStringHash(): Map<String, String> {
 
 fun Attributes.encodeJson(): JSONObject {
     this.map { (_, value) ->
-        @Suppress("UNCHECKED_CAST") val newValue = when(value) {
+        @Suppress("UNCHECKED_CAST") val newValue = when (value) {
             is Map<*, *> -> (value as Attributes).encodeJson()
             is Collection<*> -> org.json.JSONArray(value)
             else -> value
@@ -33,4 +32,3 @@ fun JSONObject.toAttributesHash(): Attributes {
         }
     }.associate { it }
 }
-

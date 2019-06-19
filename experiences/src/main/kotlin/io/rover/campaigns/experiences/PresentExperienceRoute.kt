@@ -29,7 +29,7 @@ class PresentExperienceRoute(
                 // For Rover 3.0 devices, the Rover server will send deep links within push notifications using `experienceID` parameter. For backwards compatibility, `id` parameter is also supported.
                 val experienceId = queryParameters["experienceID"] ?: queryParameters["id"]
 
-                if(experienceId == null) {
+                if (experienceId == null) {
                     log.w("A presentExperience deep link lacked either a `campaignID` or `id` parameter.")
                     return null
                 }

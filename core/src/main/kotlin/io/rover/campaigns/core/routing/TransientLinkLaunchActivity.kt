@@ -16,12 +16,12 @@ open class TransientLinkLaunchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val rover = RoverCampaigns.shared
-        if(rover == null) {
+        if (rover == null) {
             log.e("A deep or universal link mapped to Rover was opened, but Rover is not initialized.  Ignoring.")
             return
         }
         val linkOpen = rover.resolve(LinkOpenInterface::class.java)
-        if(linkOpen == null) {
+        if (linkOpen == null) {
             log.e("A deep or universal link mapped to Rover was opened, but LinkOpenInterface is not registered in the Rover container. Ensure ExperiencesAssembler() is in Rover.initialize(). Ignoring.")
             return
         }

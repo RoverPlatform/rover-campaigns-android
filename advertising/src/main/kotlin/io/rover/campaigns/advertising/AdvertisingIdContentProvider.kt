@@ -35,9 +35,9 @@ class AdvertisingIdContentProvider(
             log.v("Advertising id is now: $advertisingId")
 
             Publishers.just(Unit)
-        }.subscribeOn(ioScheduler).subscribe {  }
+        }.subscribeOn(ioScheduler).subscribe { }
     }
-    
+
     override fun captureContext(deviceContext: DeviceContext): DeviceContext {
         return deviceContext.copy(
             advertisingIdentifier = this.advertisingId

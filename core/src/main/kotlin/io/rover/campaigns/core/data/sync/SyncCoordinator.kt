@@ -37,7 +37,7 @@ class SyncCoordinator(
     mainThreadScheduler: Scheduler,
     private val syncClient: SyncClientInterface,
     private val hourlyTargetRefreshFrequency: Int = 1
-): SyncCoordinatorInterface {
+) : SyncCoordinatorInterface {
 
     override fun registerParticipant(participant: SyncParticipant) {
         participants.add(participant)
@@ -76,12 +76,12 @@ class SyncCoordinator(
 
     private fun sync(participants: List<SyncParticipant>, requests: List<SyncRequest>): Publisher<SyncCoordinatorInterface.Result> {
         // this chains recursively.
-        return if(!requests.isEmpty() && !participants.isEmpty()) {
+        return if (!requests.isEmpty() && !participants.isEmpty()) {
             syncClient
                 .executeSyncRequests(requests)
                 .subscribeOn(ioScheduler)
                 .flatMap { httpResponse ->
-                    when(httpResponse) {
+                    when (httpResponse) {
                         is HttpClientResponse.ConnectionFailure -> {
                             log.w("Unable to sync due to connection failure: ${httpResponse.reason}")
                             Publishers.just(SyncCoordinatorInterface.Result.RetryNeeded)
@@ -115,9 +115,9 @@ class SyncCoordinator(
                             }
 
                             // TODO: what if there is a Failed syncresult??
-                            val nextParticipants =  participants.mapNotNull { syncParticipant ->
+                            val nextParticipants = participants.mapNotNull { syncParticipant ->
                                 val syncResult = syncParticipant.saveResponse(json)
-                                if(syncResult is SyncResult.NewData && syncResult.nextRequest != null) {
+                                if (syncResult is SyncResult.NewData && syncResult.nextRequest != null) {
                                     Pair(syncParticipant, syncResult.nextRequest)
                                 } else null
                             }
@@ -170,7 +170,7 @@ class SyncCoordinator(
     class WorkManagerWorker(
         context: Context,
         params: WorkerParameters
-    ): Worker(context, params) {
+    ) : Worker(context, params) {
         override fun doWork(): Result {
             val result = try {
                 RoverCampaigns.shared?.resolve(SyncCoordinatorInterface::class.java)
@@ -181,7 +181,7 @@ class SyncCoordinator(
                 log.w("Unexpected failure running background sync: $e")
                 return Result.retry()
             }
-            return when(result) {
+            return when (result) {
                 SyncCoordinatorInterface.Result.Succeeded -> Result.success()
                 SyncCoordinatorInterface.Result.RetryNeeded -> Result.retry()
                 null -> {

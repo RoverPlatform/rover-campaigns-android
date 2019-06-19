@@ -34,22 +34,22 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
         super.onStart()
 
         val rover = RoverCampaigns.shared
-        if(rover == null) {
+        if (rover == null) {
             log.e("TransientNotificationLaunchActivity cannot be used before Rover Campaigns is initialized.")
             return
         }
         val notificationOpen = rover.resolve(NotificationOpenInterface::class.java)
-        if(notificationOpen == null) {
+        if (notificationOpen == null) {
             log.e("Could not resolve NotificationOpenInterface in Rover Campaigns container.  Ensure NotificationAssembler() is added to RoverCampaigns.initialize.")
             return
         }
         val influenceTracker = rover.resolve(InfluenceTrackerServiceInterface::class.java)
-        if(influenceTracker == null) {
+        if (influenceTracker == null) {
             log.e("Could not resolve InfluenceTrackerServiceInterface in Rover Campaigns container.  Ensure NotificationAssembler() is added to RoverCampaigns.initialize.")
             return
         }
         val dateFormatting = rover.resolve(DateFormattingInterface::class.java)
-        if(dateFormatting == null) {
+        if (dateFormatting == null) {
             log.e("Could not resolve DateFormattingInterface in Rover Campaigns container.  Ensure NotificationAssembler() is added to RoverCampaigns.initialize.")
             return
         }

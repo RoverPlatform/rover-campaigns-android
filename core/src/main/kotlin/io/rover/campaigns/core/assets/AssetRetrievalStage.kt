@@ -8,10 +8,7 @@ import java.net.URL
 
 /**
  * Stream the asset from a remote HTTP API.
- *
- * Be mindful that the stream downstream of this one must close the input streams once they are
- * finished reading from them.
- *
+ * Be mindful that the stream downstream of this one must close the input streams once they are finished reading from them.
  * This never faults to anything further down in the pipeline; it always retrieves from the API.
  */
 class AssetRetrievalStage(
@@ -24,7 +21,7 @@ class AssetRetrievalStage(
         // so now I am going to just *block* while waiting for the callback, since this is all being
         // run on a background executor.
         val streamResult = try {
-             imageDownloader
+            imageDownloader
                 .downloadStreamFromUrl(input)
                 .blockForResult(timeoutSeconds = 300)
                 .first()
@@ -48,22 +45,22 @@ class AssetRetrievalStage(
         // even with large experiences, it seems to work well.  The timeout given by
         // Publisher.blockForResult is a sufficient fail-safe against the pool overflow case.
         return when (streamResult) {
-                is ImageDownloader.HttpClientResponse.ConnectionFailure -> {
-                    PipelineStageResult.Failed(
-                        RuntimeException("Network or HTTP error downloading asset", streamResult.reason)
-                    )
-                }
-                is ImageDownloader.HttpClientResponse.ApplicationError -> {
-                    PipelineStageResult.Failed(
-                        RuntimeException("Remote HTTP API error downloading asset (code ${streamResult.responseCode}): ${streamResult.reportedReason}")
-                    )
-                }
-                is ImageDownloader.HttpClientResponse.Success -> {
-                    // we have the stream! pass it downstream for decoding.
-                    PipelineStageResult.Successful(
-                        streamResult.bufferedInputStream
-                    )
-                }
+            is ImageDownloader.HttpClientResponse.ConnectionFailure -> {
+                PipelineStageResult.Failed(
+                    RuntimeException("Network or HTTP error downloading asset", streamResult.reason)
+                )
             }
+            is ImageDownloader.HttpClientResponse.ApplicationError -> {
+                PipelineStageResult.Failed(
+                    RuntimeException("Remote HTTP API error downloading asset (code ${streamResult.responseCode}): ${streamResult.reportedReason}")
+                )
+            }
+            is ImageDownloader.HttpClientResponse.Success -> {
+                // we have the stream! pass it downstream for decoding.
+                PipelineStageResult.Successful(
+                    streamResult.bufferedInputStream
+                )
+            }
+        }
     }
 }

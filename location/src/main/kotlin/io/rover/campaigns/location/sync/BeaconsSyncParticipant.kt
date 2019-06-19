@@ -56,7 +56,7 @@ class BeaconsRepository(
 
 class BeaconsSqlStorage(
     private val sqLiteDatabase: SQLiteDatabase
-): SqlSyncStorageInterface<Beacon> {
+) : SqlSyncStorageInterface<Beacon> {
 
     fun queryBeaconByUuidMajorAndMinor(uuid: UUID, major: Short, minor: Short): Beacon? {
         val columnNames = Columns.values().sortedBy { it.ordinal }.map { it.columnName }
@@ -104,7 +104,7 @@ class BeaconsSqlStorage(
                 )
                 return object : AbstractIterator<Beacon>(), CloseableIterator<Beacon> {
                     override fun computeNext() {
-                        if(!cursor.moveToNext()) {
+                        if (!cursor.moveToNext()) {
                             done()
                         } else {
                             setNext(
@@ -203,7 +203,7 @@ fun Beacon.Companion.fromSqliteCursor(cursor: Cursor): Beacon {
 
 class BeaconsSyncResource(
     private val sqliteStorageInterface: SqlSyncStorageInterface<Beacon>
-): SyncResource<Beacon> {
+) : SyncResource<Beacon> {
     override fun upsertObjects(nodes: List<Beacon>) {
         sqliteStorageInterface.upsertObjects(nodes)
     }
@@ -219,7 +219,7 @@ class BeaconsSyncResource(
             ))
         )
 
-        if(cursor != null) {
+        if (cursor != null) {
             values[SyncQuery.Argument.after.name] = cursor
         }
 
@@ -230,7 +230,7 @@ class BeaconsSyncResource(
     }
 }
 
-class BeaconSyncDecoder: SyncDecoder<Beacon> {
+class BeaconSyncDecoder : SyncDecoder<Beacon> {
     override fun decode(json: JSONObject): GraphQLResponse<Beacon> {
         return BeaconSyncResponseData.decodeJson(json.getJSONObject("data")).beacons
     }

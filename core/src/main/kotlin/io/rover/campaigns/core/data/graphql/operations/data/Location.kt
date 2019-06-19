@@ -60,7 +60,7 @@ fun Location.Companion.decodeJson(
         json.getDouble("verticalAccuracy"),
         json.getDouble("horizontalAccuracy"),
         dateFormatting.iso8601AsDate(json.safeGetString("timestamp")),
-        json.optJSONObject("address").whenNotNull {  Location.Address.decodeJson(it) }
+        json.optJSONObject("address").whenNotNull { Location.Address.decodeJson(it) }
     )
 }
 

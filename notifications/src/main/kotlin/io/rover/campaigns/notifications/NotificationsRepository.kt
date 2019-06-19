@@ -152,7 +152,7 @@ class NotificationsRepository(
      */
     private val stateStoreObserverChain = syncCoordinator.syncResults.flatMap { syncResult ->
         log.v("Received sync completed notification.")
-        when(syncResult) {
+        when (syncResult) {
             SyncCoordinatorInterface.Result.Succeeded -> Publishers.just(NotificationsRepositoryInterface.Emission.Event.Refreshing(false))
             else -> {
                 listOf(
@@ -324,7 +324,7 @@ class NotificationsRepository(
 class NotificationsSyncResource(
     private val deviceIdentification: DeviceIdentificationInterface,
     private val notificationsRepository: NotificationsRepositoryInterface
-): SyncResource<Notification> {
+) : SyncResource<Notification> {
     override fun upsertObjects(nodes: List<Notification>) {
         notificationsRepository.mergeRetrievedNotifications(nodes)
     }
@@ -351,7 +351,7 @@ class NotificationsSyncResource(
 
 class NotificationSyncDecoder(
     private val dateFormatting: DateFormattingInterface
-): SyncDecoder<Notification> {
+) : SyncDecoder<Notification> {
     override fun decode(json: JSONObject): GraphQLResponse<Notification> {
         return NotificationsSyncResponseData.decodeJson(
             json.getJSONObject("data"),
@@ -400,7 +400,6 @@ val SyncQuery.Companion.notifications: SyncQuery
 
 val SyncQuery.Argument.Companion.deviceIdentifier
     get() = SyncQuery.Argument("deviceIdentifier", "String!")
-
 
 private val SyncQuery.Argument.Companion.orderBy
     get() = SyncQuery.Argument("orderBy", "NotificationOrder")

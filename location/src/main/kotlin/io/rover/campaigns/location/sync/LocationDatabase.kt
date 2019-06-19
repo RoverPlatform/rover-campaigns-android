@@ -10,7 +10,7 @@ import io.rover.campaigns.core.platform.LocalStorage
 class LocationDatabase(
     context: Context,
     localStorage: LocalStorage
-): SQLiteOpenHelper(
+) : SQLiteOpenHelper(
     context,
     "rover-location",
     null,

@@ -5,17 +5,18 @@ import io.rover.campaigns.location.domain.Geofence
 
 fun Geofence.asAttributeValue(): Attributes {
     return hashMapOf(
-        Pair("id",id.rawValue),
+        Pair("id", id.rawValue),
         Pair(
             "center",
             listOf(
-               center.latitude,
-               center.longitude
+                center.latitude,
+                center.longitude
             )
         ),
-        Pair("radius",radius),
-        Pair("name",name),
-        Pair("tags",
+        Pair("radius", radius),
+        Pair("name", name),
+        Pair(
+            "tags",
             tags
         )
     )

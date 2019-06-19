@@ -58,7 +58,6 @@ internal fun DeviceContext.asJson(dateFormatting: DateFormattingInterface): JSON
     }
 }
 
-
 /**
  * Incoming JSON DTO transformation for [DeviceContext]s, as received from the Rover GraphQL API.
  */
