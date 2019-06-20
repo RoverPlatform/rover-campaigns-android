@@ -48,10 +48,10 @@ class RealPagedSyncParticipant<TNode>(
     private val syncDecoder: SyncDecoder<TNode>,
     private val cursorKey: String? = null,
     private val cursorState: CursorState? = null
-): SyncParticipant {
+) : SyncParticipant {
 
     init {
-        if((cursorKey != null) xor (cursorState != null)) {
+        if ((cursorKey != null) xor (cursorState != null)) {
             throw RuntimeException("If you decide to support the use of cursors in this RealPagedSyncParticipant, then you must pass both cursorKey and cursorState.")
         }
     }
@@ -74,7 +74,7 @@ class RealPagedSyncParticipant<TNode>(
             return SyncResult.Failed
         }
 
-        if(pagingResponse.nodes.isEmpty()) {
+        if (pagingResponse.nodes.isEmpty()) {
             return SyncResult.NoData
         }
 
@@ -88,7 +88,7 @@ class RealPagedSyncParticipant<TNode>(
     }
 
     private fun updateCursor(graphQLResponse: GraphQLResponse<TNode>) {
-        if(graphQLResponse.pageInfo?.endCursor?.isNotBlank() == true) {
+        if (graphQLResponse.pageInfo?.endCursor?.isNotBlank() == true) {
             cursorKey.whenNotNull {
                 log.v("Updating cursor to be ${graphQLResponse.pageInfo.endCursor}")
                 cursorState?.setCursorForKey(it, graphQLResponse.pageInfo.endCursor)
@@ -110,6 +110,5 @@ class RealPagedSyncParticipant<TNode>(
                 syncResource.nextRequest(cursorKey.whenNotNull { cursorState?.cursorForKey(it) })
             )
         }
-
     }
 }

@@ -51,13 +51,12 @@ class FirebasePushTokenContextProvider(
         // retrieves the current timestamp value, setting it to now if it's missing (say, if running
         // on an early 2.0 beta install where timestamp was not set).
 
-        if(timestamp == null) {
+        if (timestamp == null) {
             timestamp = (System.currentTimeMillis() / 1000L).toString()
         }
 
         return Date(timestamp!!.toLong() * 1000)
     }
-
 
     init {
         if (token == null) {

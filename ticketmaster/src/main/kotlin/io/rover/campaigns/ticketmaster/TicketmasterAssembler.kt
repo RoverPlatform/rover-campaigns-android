@@ -11,7 +11,7 @@ import io.rover.campaigns.core.data.sync.SyncParticipant
 import io.rover.campaigns.core.events.UserInfoInterface
 import io.rover.campaigns.core.platform.LocalStorage
 
-class TicketmasterAssembler: Assembler {
+class TicketmasterAssembler : Assembler {
     override fun assemble(container: Container) {
         container.register(
             Scope.Singleton,
@@ -35,7 +35,7 @@ class TicketmasterAssembler: Assembler {
             Scope.Singleton,
             SyncParticipant::class.java,
             "ticketmaster"
-        ) { resolver -> resolver.resolveSingletonOrFail(TicketmasterManager::class.java)}
+        ) { resolver -> resolver.resolveSingletonOrFail(TicketmasterManager::class.java) }
     }
 
     override fun afterAssembly(resolver: Resolver) {

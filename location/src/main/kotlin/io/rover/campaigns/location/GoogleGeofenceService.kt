@@ -72,7 +72,6 @@ class GoogleGeofenceService(
                     fence.requestId
                 ).blockForResult().firstOrNull()
 
-
                 if (geofence == null) {
                     val verb = when (geofencingEvent.geofenceTransition) {
                         Geofence.GEOFENCE_TRANSITION_ENTER -> "enter"
@@ -131,7 +130,7 @@ class GoogleGeofenceService(
         // the fences we ultimately want to be monitoring once the following operation is complete.
         val targetFenceIds = updatedFencesList.map { it.identifier }.toSet()
 
-        val alreadyInGoogle = if(activeFences == null || activeFences?.isEmpty() == true) {
+        val alreadyInGoogle = if (activeFences == null || activeFences?.isEmpty() == true) {
             // if I don't have any persisted "previously set" fences, then I should do a full
             // clear from our pending intent, because I don't know what fences could be left from a
             // prior SDK that wasn't tracking the state.
@@ -142,7 +141,7 @@ class GoogleGeofenceService(
         } else {
             // remove any geofences that are active but no longer in our list of target geofence ids.
             val staleGeofences = (activeFences!! - targetFenceIds).toList()
-            if(staleGeofences.isNotEmpty()) {
+            if (staleGeofences.isNotEmpty()) {
                 geofencingClient.removeGeofences(
                     staleGeofences
                 )
@@ -174,7 +173,7 @@ class GoogleGeofenceService(
                 .build()
         }
 
-        if(geofences.isNotEmpty()) {
+        if (geofences.isNotEmpty()) {
             val request = GeofencingRequest.Builder()
                 .addGeofences(geofences)
                 .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER or GeofencingRequest.INITIAL_TRIGGER_DWELL)
@@ -211,7 +210,7 @@ class GoogleGeofenceService(
     private var activeFences: Set<String>? =
             try {
                 val currentFencesJson = store[ACTIVE_FENCES_KEY]
-                when(currentFencesJson) {
+                when (currentFencesJson) {
                     null -> null
                     else -> JSONArray(currentFencesJson).getStringIterable().toSet()
                 }
@@ -250,12 +249,12 @@ class GoogleGeofenceService(
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val rover = RoverCampaigns.shared
-        if(rover == null) {
+        if (rover == null) {
             log.e("Received a geofence result from Google, but Rover Campaigns is not initialized.  Ignoring.")
             return
         }
         val geofenceService = rover.resolve(GoogleGeofenceServiceInterface::class.java)
-        if(geofenceService == null) {
+        if (geofenceService == null) {
             log.e("Received a geofence result from Google, but GoogleGeofenceServiceInterface is not registered in the Rover Campaigns container. Ensure LocationAssembler() is in RoverCampaigns.initialize(). Ignoring.")
             return
         }
@@ -287,11 +286,9 @@ private fun haversine(value: Double): Double {
     return (1 - Math.cos(value)) / 2
 }
 
-
 private fun ahaversine(value: Double): Double {
     return 2 * Math.asin(Math.sqrt(value))
 }
-
 
 private fun degreesToRadians(degrees: Double): Double {
     return (degrees / 360.0) * 2 * Math.PI

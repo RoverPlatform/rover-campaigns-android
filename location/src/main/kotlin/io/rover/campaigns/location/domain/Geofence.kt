@@ -19,21 +19,22 @@ data class Geofence(
     val identifier: String
         get() = "${center.latitude}:${center.longitude}:$radius"
 
-    companion object {
+    companion object
 
-    }
+    data
 
-    data class IdentiferComponents(
+    class IdentiferComponents(
         val latitude: Double,
         val longitude: Double,
         val radius: Double
     ) {
-        constructor(components: List<String>): this(
+        constructor(components: List<String>) : this(
             components[0].toDouble(),
             components[1].toDouble(),
             components[2].toDouble()
         )
-        constructor(identifier: String): this(identifier.split(":"))
+
+        constructor(identifier: String) : this(identifier.split(":"))
     }
 }
 

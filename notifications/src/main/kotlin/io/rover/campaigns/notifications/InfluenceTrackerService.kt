@@ -21,7 +21,7 @@ class InfluenceTrackerService(
     private val notificationOpen: NotificationOpenInterface,
     private val lifecycle: Lifecycle,
     private val influenceThresholdSeconds: Int = 60
-    ) : InfluenceTrackerServiceInterface {
+) : InfluenceTrackerServiceInterface {
     private val store = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
 
     private var lastSeenNotificationAt: Long?
@@ -72,7 +72,7 @@ class InfluenceTrackerService(
             object : LifecycleObserver {
                 @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
                 fun onResume() {
-                    if(!notificationJustOpened) {
+                    if (!notificationJustOpened) {
                         // app was switched to but not by opening a notification.
 
                         // thus, we can track an influenced open here.
@@ -109,7 +109,6 @@ class InfluenceTrackerService(
                     lastSeenNotificationJson = null
                     notificationJustOpened = false
                 }
-
             }
         )
     }

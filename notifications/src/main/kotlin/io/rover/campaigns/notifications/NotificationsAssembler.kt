@@ -87,7 +87,6 @@ class NotificationsAssembler @JvmOverloads constructor(
     */
     private val defaultChannelId: String = "rover",
 
-
     /**
      * The accent color of the small notification icon applied when the notification drawer is
      * expanded to display notifications.

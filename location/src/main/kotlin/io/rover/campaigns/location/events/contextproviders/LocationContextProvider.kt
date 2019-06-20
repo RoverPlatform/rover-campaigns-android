@@ -8,7 +8,7 @@ import io.rover.campaigns.core.data.domain.Location
 
 class LocationContextProvider(
     googleBackgroundLocationService: GoogleBackgroundLocationServiceInterface
-): ContextProvider {
+) : ContextProvider {
     override fun captureContext(deviceContext: DeviceContext): DeviceContext {
         return deviceContext.copy(
             location = currentLocation

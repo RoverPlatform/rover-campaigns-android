@@ -52,7 +52,6 @@ val SyncQuery.Argument.Companion.last
 val SyncQuery.Argument.Companion.before
     get() = SyncQuery.Argument("before", "String")
 
-
 data class SyncRequest(
     val query: SyncQuery,
     val variables: Attributes
@@ -65,7 +64,7 @@ data class SyncRequest(
  * of a paginated sync run.
  */
 sealed class SyncResult {
-    class NewData(val nextRequest: SyncRequest?): SyncResult()
+    class NewData(val nextRequest: SyncRequest?) : SyncResult()
     object NoData : SyncResult()
     object Failed : SyncResult()
 }

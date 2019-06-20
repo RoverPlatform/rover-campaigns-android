@@ -124,7 +124,6 @@ class NotificationCenterListViewModel(
         }
     }
 
-
     init {
         activityLifecycle.addObserver(object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
