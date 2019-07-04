@@ -29,7 +29,10 @@ interface TicketmasterAuthorizer {
      * }
      * ```
     */
+    @Deprecated("Use setCredentials(id: String, email: String?, firstNameL String?) instead.")
     fun setCredentials(backendNameOrdinal: Int, memberId: String?)
+
+    fun setCredentials(id: String, email: String? = null, firstName: String? = null)
 
     /**
      * Clear the user's Ticketmaster credentials after a successful sign-out with the [Presence
