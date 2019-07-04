@@ -19,11 +19,7 @@ data class Geofence(
     val identifier: String
         get() = "${center.latitude}:${center.longitude}:$radius"
 
-    companion object
-
-    data
-
-    class IdentiferComponents(
+    data class IdentiferComponents(
         val latitude: Double,
         val longitude: Double,
         val radius: Double
@@ -36,6 +32,8 @@ data class Geofence(
 
         constructor(identifier: String) : this(identifier.split(":"))
     }
+
+    companion object
 }
 
 fun Geofence.Center.asLocation(): Location {
