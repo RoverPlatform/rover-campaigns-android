@@ -29,7 +29,7 @@ interface TicketmasterAuthorizer {
      * }
      * ```
     */
-    @Deprecated("Use setCredentials(id: String, email: String?, firstNameL String?) instead.")
+    @Deprecated("Use setCredentials(id: String, email: String?, firstName: String?) instead.")
     fun setCredentials(backendNameOrdinal: Int, memberId: String?)
 
     fun setCredentials(id: String, email: String? = null, firstName: String? = null)
