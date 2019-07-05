@@ -30,7 +30,8 @@ class TicketmasterManager(
     companion object {
         private const val STORAGE_CONTEXT_IDENTIFIER = "ticketmaster"
 
-        private const val LEGACY_STORAGE_2X_SHARED_PREFERENCES = "io.rover.core.platform.localstorage.io.rover.ticketmaster.TicketmasterManager"
+        private const val LEGACY_STORAGE_2X_SHARED_PREFERENCES =
+            "io.rover.core.platform.localstorage.io.rover.ticketmaster.TicketmasterManager"
     }
 
     override fun setCredentials(backendNameOrdinal: Int, memberId: String?) {
@@ -39,6 +40,8 @@ class TicketmasterManager(
             email = null,
             firstName = null
         )
+
+        updateUserInfoWithMemberAttributes()
     }
 
     override fun setCredentials(id: String, email: String?, firstName: String?) {
@@ -48,16 +51,23 @@ class TicketmasterManager(
             firstName = firstName
         )
 
+        updateUserInfoWithMemberAttributes()
+    }
+
+    private fun updateUserInfoWithMemberAttributes() {
         val localPropertiesMap = member?.getNonNullPropertiesMap()
 
         userInfo.update {
             if (it.containsKey("ticketmaster")) {
                 val tmAttributes = it.getValue("ticketmaster") as MutableMap<String, Any>
-                localPropertiesMap?.forEach { (propertyName, propertyValue) -> tmAttributes[propertyName] = propertyValue }
+                localPropertiesMap?.forEach { (propertyName, propertyValue) ->
+                    tmAttributes[propertyName] = propertyValue
+                }
                 it["ticketmaster"] = tmAttributes
-        } else {
-            if(localPropertiesMap?.isNotEmpty() == true) it["ticketmaster"] = localPropertiesMap
-        } }
+            } else {
+                if (localPropertiesMap?.isNotEmpty() == true) it["ticketmaster"] = localPropertiesMap
+            }
+        }
     }
 
     override fun clearCredentials() {
@@ -82,14 +92,15 @@ class TicketmasterManager(
             }
         }
     }
-    
+
     override fun saveResponse(json: JSONObject): SyncResult {
         return try {
-            val profileAttributesFromNetwork = TicketmasterSyncResponseData.decodeJson(json.getJSONObject("data")).ticketmasterProfile.attributes
+            val profileAttributesFromNetwork =
+                TicketmasterSyncResponseData.decodeJson(json.getJSONObject("data")).ticketmasterProfile.attributes
             val localMemberProperties = member?.getNonNullPropertiesMap()
             val mutableMapFromNetwork = profileAttributesFromNetwork?.toMutableMap()
 
-            localMemberProperties?.forEach {(key, value) ->
+            localMemberProperties?.forEach { (key, value) ->
                 mutableMapFromNetwork?.put(key, value)
             }
 
@@ -187,7 +198,11 @@ fun TicketmasterManager.Member.Companion.decodeJson(json: JSONObject): Ticketmas
 
 fun TicketmasterManager.Member.encodeJson(): JSONObject {
     return JSONObject().apply {
-        listOf(TicketmasterManager.Member::id, TicketmasterManager.Member::email, TicketmasterManager.Member::firstName).forEach {
+        listOf(
+            TicketmasterManager.Member::id,
+            TicketmasterManager.Member::email,
+            TicketmasterManager.Member::firstName
+        ).forEach {
             putProp(this@encodeJson, it)
         }
     }
