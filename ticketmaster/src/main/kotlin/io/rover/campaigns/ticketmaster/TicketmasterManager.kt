@@ -36,7 +36,7 @@ class TicketmasterManager(
 
     override fun setCredentials(backendNameOrdinal: Int, memberId: String?) {
         member = Member(
-            id = memberId,
+            ticketmasterID = memberId,
             email = null,
             firstName = null
         )
@@ -46,7 +46,7 @@ class TicketmasterManager(
 
     override fun setCredentials(id: String, email: String?, firstName: String?) {
         member = Member(
-            id = id,
+            ticketmasterID = id,
             email = email,
             firstName = firstName
         )
@@ -79,7 +79,7 @@ class TicketmasterManager(
         return member.whenNotNull { member ->
 
             val params = listOfNotNull(
-                member.id.whenNotNull { Pair(TICKETMASTER_ID_KEY, it) }
+                member.ticketmasterID.whenNotNull { Pair(TICKETMASTER_ID_KEY, it) }
             )
 
             if (params.isEmpty()) {
@@ -158,7 +158,7 @@ class TicketmasterManager(
     }
 
     data class Member(
-        val id: String?,
+        val ticketmasterID: String?,
         val email: String?,
         val firstName: String?
     ) {
@@ -167,7 +167,7 @@ class TicketmasterManager(
         fun getNonNullPropertiesMap(): Map<String, String> {
             val propertiesMap = mutableMapOf<String, String>()
 
-            id.whenNotNull { propertiesMap.put(TicketmasterManager.Member::id.name, it) }
+            ticketmasterID.whenNotNull { propertiesMap.put(TicketmasterManager.Member::ticketmasterID.name, it) }
             email.whenNotNull { propertiesMap.put(TicketmasterManager.Member::email.name, it) }
             firstName.whenNotNull { propertiesMap.put(TicketmasterManager.Member::firstName.name, it) }
             return propertiesMap
@@ -190,7 +190,7 @@ val SyncQuery.Companion.ticketmaster
 
 fun TicketmasterManager.Member.Companion.decodeJson(json: JSONObject): TicketmasterManager.Member {
     return TicketmasterManager.Member(
-        id = json.safeOptString(TicketmasterManager.Member::id.name),
+        ticketmasterID = json.safeOptString(TicketmasterManager.Member::ticketmasterID.name),
         email = json.safeOptString(TicketmasterManager.Member::email.name),
         firstName = json.safeOptString(TicketmasterManager.Member::firstName.name)
     )
@@ -199,7 +199,7 @@ fun TicketmasterManager.Member.Companion.decodeJson(json: JSONObject): Ticketmas
 fun TicketmasterManager.Member.encodeJson(): JSONObject {
     return JSONObject().apply {
         listOf(
-            TicketmasterManager.Member::id,
+            TicketmasterManager.Member::ticketmasterID,
             TicketmasterManager.Member::email,
             TicketmasterManager.Member::firstName
         ).forEach {
