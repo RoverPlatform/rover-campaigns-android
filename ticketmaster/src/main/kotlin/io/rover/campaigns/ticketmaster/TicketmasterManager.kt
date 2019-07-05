@@ -51,8 +51,8 @@ class TicketmasterManager(
         val localPropertiesMap = member?.getNonNullPropertiesMap()
 
         userInfo.update {
-            val tmAttributes = it.getValue("ticketmaster") as MutableMap<String, Any>
             if (it.containsKey("ticketmaster")) {
+                val tmAttributes = it.getValue("ticketmaster") as MutableMap<String, Any>
                 localPropertiesMap?.forEach { (propertyName, propertyValue) -> tmAttributes[propertyName] = propertyValue }
                 it["ticketmaster"] = tmAttributes
         } else {
@@ -82,11 +82,7 @@ class TicketmasterManager(
             }
         }
     }
-
-    private fun <K, V> MutableMap<K, V>.putIfNotPresent(keyToPut: K, valueToPut: V) {
-        if (!this.containsKey(keyToPut)) this[keyToPut] = valueToPut
-    }
-
+    
     override fun saveResponse(json: JSONObject): SyncResult {
         return try {
             val profileAttributesFromNetwork = TicketmasterSyncResponseData.decodeJson(json.getJSONObject("data")).ticketmasterProfile.attributes
