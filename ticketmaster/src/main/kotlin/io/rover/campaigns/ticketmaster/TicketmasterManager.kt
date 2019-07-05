@@ -196,8 +196,8 @@ fun TicketmasterManager.Member.Companion.decodeJson(json: JSONObject): Ticketmas
     )
 }
 
-fun TicketmasterManager.Member.encodeJson(): JSONObject {
-    return JSONObject().apply {
+fun TicketmasterManager.Member.encodeJson(jsonObject: JSONObject = JSONObject()): JSONObject {
+    return jsonObject.apply {
         listOf(
             TicketmasterManager.Member::ticketmasterID,
             TicketmasterManager.Member::email,
