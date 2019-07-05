@@ -55,7 +55,7 @@ class TicketmasterManager(
     }
 
     private fun updateUserInfoWithMemberAttributes() {
-        val localPropertiesMap = member?.getNonNullPropertiesMap()
+        val localPropertiesMap = member?.getNonNullPropertiesMapWithoutId()
 
         userInfo.update {
             if (it.containsKey("ticketmaster")) {
@@ -97,7 +97,7 @@ class TicketmasterManager(
         return try {
             val profileAttributesFromNetwork =
                 TicketmasterSyncResponseData.decodeJson(json.getJSONObject("data")).ticketmasterProfile.attributes
-            val localMemberProperties = member?.getNonNullPropertiesMap()
+            val localMemberProperties = member?.getNonNullPropertiesMapWithoutId()
             val mutableMapFromNetwork = profileAttributesFromNetwork?.toMutableMap()
 
             localMemberProperties?.forEach { (key, value) ->
@@ -164,10 +164,8 @@ class TicketmasterManager(
     ) {
         companion object
 
-        fun getNonNullPropertiesMap(): Map<String, String> {
+        fun getNonNullPropertiesMapWithoutId(): Map<String, String> {
             val propertiesMap = mutableMapOf<String, String>()
-
-            ticketmasterID.whenNotNull { propertiesMap.put(TicketmasterManager.Member::ticketmasterID.name, it) }
             email.whenNotNull { propertiesMap.put(TicketmasterManager.Member::email.name, it) }
             firstName.whenNotNull { propertiesMap.put(TicketmasterManager.Member::firstName.name, it) }
             return propertiesMap

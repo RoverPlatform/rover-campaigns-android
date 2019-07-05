@@ -14,29 +14,21 @@ private const val FIRST_NAME = "example first name"
 
 object TicketMasterManagerTest: Spek({
     group("tmManagerMember") {
-        test("getNonNullPropertiesMap() ignores null properties") {
-            val member = Member(ID, null, null)
-            val expectedMap = mapOf(member::ticketmasterID.name to ID)
-
-            assertEquals(expectedMap, member.getNonNullPropertiesMap())
-        }
-
-        test("getNonNullPropertiesMap() returns all non null properties") {
+        test("getNonNullPropertiesMapWithoutID() returns all non null except ID properties") {
             val member = Member(ID, EMAIL, FIRST_NAME)
             val expectedMap = mapOf(
-                member::ticketmasterID.name to ID,
                 member::email.name to EMAIL,
                 member::firstName.name to FIRST_NAME
             )
 
-            assertEquals(expectedMap, member.getNonNullPropertiesMap())
+            assertEquals(expectedMap, member.getNonNullPropertiesMapWithoutId())
         }
 
-        test("getNonNullPropertiesMap() returns empty with all null properties") {
+        test("getNonNullPropertiesMapWithoutID() returns empty with all null properties") {
             val member = Member(null, null, null)
             val expectedMap = mapOf<String, String>()
 
-            assertEquals(expectedMap, member.getNonNullPropertiesMap())
+            assertEquals(expectedMap, member.getNonNullPropertiesMapWithoutId())
         }
 
         test("encodeJson() adds properties to JSONObject") {
