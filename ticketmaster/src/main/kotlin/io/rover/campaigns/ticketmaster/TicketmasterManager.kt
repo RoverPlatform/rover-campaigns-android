@@ -32,6 +32,8 @@ class TicketmasterManager(
 
         private const val LEGACY_STORAGE_2X_SHARED_PREFERENCES =
             "io.rover.core.platform.localstorage.io.rover.ticketmaster.TicketmasterManager"
+
+        private const val TICKETMASTER_MAP_KEY = "ticketmaster"
     }
 
     override fun setCredentials(backendNameOrdinal: Int, memberId: String?) {
@@ -54,25 +56,26 @@ class TicketmasterManager(
         updateUserInfoWithMemberAttributes()
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun updateUserInfoWithMemberAttributes() {
         val localPropertiesMap = member?.getNonNullPropertiesMapWithoutId()
 
         userInfo.update {
-            if (it.containsKey("ticketmaster")) {
-                val tmAttributes = it.getValue("ticketmaster") as MutableMap<String, Any>
+            if (it.containsKey(TICKETMASTER_MAP_KEY)) {
+                val tmAttributes = it.getValue(TICKETMASTER_MAP_KEY) as MutableMap<String, Any>
                 localPropertiesMap?.forEach { (propertyName, propertyValue) ->
                     tmAttributes[propertyName] = propertyValue
                 }
-                it["ticketmaster"] = tmAttributes
+                it[TICKETMASTER_MAP_KEY] = tmAttributes
             } else {
-                if (localPropertiesMap?.isNotEmpty() == true) it["ticketmaster"] = localPropertiesMap
+                if (localPropertiesMap?.isNotEmpty() == true) it[TICKETMASTER_MAP_KEY] = localPropertiesMap
             }
         }
     }
 
     override fun clearCredentials() {
         member = null
-        userInfo.update { it.remove("ticketmaster") }
+        userInfo.update { it.remove(TICKETMASTER_MAP_KEY) }
     }
 
     override fun initialRequest(): SyncRequest? {
