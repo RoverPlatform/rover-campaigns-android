@@ -3,13 +3,14 @@
   <groupId>io.rover.campaigns</groupId>
   <artifactId>experiences</artifactId>
   <versioning>
-    <release>3.1.1</release>
+    <release>3.2.0</release>
     <versions>
       <version>3.0.0-beta.2</version>
       <version>3.0.0</version>
       <version>3.1.0</version>
       <version>3.1.1</version>
+      <version>3.2.0</version>
     </versions>
-    <lastUpdated>20190618191347</lastUpdated>
+    <lastUpdated>20190708182659</lastUpdated>
   </versioning>
 </metadata>
