@@ -191,7 +191,9 @@ val SyncQuery.Companion.ticketmaster
 
 fun TicketmasterManager.Member.Companion.decodeJson(json: JSONObject): TicketmasterManager.Member {
     return TicketmasterManager.Member(
-        ticketmasterID = json.safeOptString(TicketmasterManager.Member::ticketmasterID.name),
+        ticketmasterID = json.safeOptString(TicketmasterManager.Member::ticketmasterID.name)
+            ?: json.safeOptString("hostID")
+            ?: json.safeOptString("teamID"),
         email = json.safeOptString(TicketmasterManager.Member::email.name),
         firstName = json.safeOptString(TicketmasterManager.Member::firstName.name)
     )
