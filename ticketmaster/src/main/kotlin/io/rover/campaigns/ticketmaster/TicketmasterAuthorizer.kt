@@ -29,7 +29,39 @@ interface TicketmasterAuthorizer {
      * }
      * ```
     */
+    @Deprecated("Use setCredentials(id: String, email: String?, firstName: String?) instead.")
     fun setCredentials(backendNameOrdinal: Int, memberId: String?)
+
+
+    /**
+     * Set the user's Ticketmaster credentials after a successful sign-in with the [Presence
+     * SDK](https://developer.ticketmaster.com/products-and-docs/sdks/presence-sdk/). Implement the
+     * `onMemberUpdated()` method in your `TMLoginListener` and call this
+     * method passing in values from the `memberInfo`. Only call this function if the value returned
+     * from (`memberInfo?.memberId`) is not null.
+
+     * @param id The value of the second parameter's (`memberInfo`) `id`
+     * property.
+     *
+     * @param email The value of the second parameter's (`memberInfo`) `email`
+     * property.
+     *
+     * @param firstName The value of the second parameter's (`memberInfo`) `firstName`
+     * property.
+     *
+     * Example:
+     *
+     * ```kotlin
+     * override fun onMemberUpdated(backendName: TMLoginApi.BackendName, memberInfo: TMLoginApi.MemberInfo?) {
+     *     Rover.sharedInstance.ticketmasterAuthorizer.setCredentials(
+     *         memberInfo?.memberId,
+     *         memberInfo?.email,
+     *         memberInfo?.firstName
+     *     )
+     * }
+     * ```
+     */
+    fun setCredentials(id: String, email: String? = null, firstName: String? = null)
 
     /**
      * Clear the user's Ticketmaster credentials after a successful sign-out with the [Presence
