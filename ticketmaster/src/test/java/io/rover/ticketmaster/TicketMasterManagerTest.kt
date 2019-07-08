@@ -2,7 +2,10 @@ package io.rover.ticketmaster
 
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
+import io.rover.campaigns.core.data.graphql.safeOptString
 import io.rover.campaigns.ticketmaster.TicketmasterManager.Member
+import io.rover.campaigns.ticketmaster.decodeJson
 import io.rover.campaigns.ticketmaster.encodeJson
 import junit.framework.Assert.assertEquals
 import org.json.JSONObject
@@ -40,6 +43,43 @@ object TicketMasterManagerTest: Spek({
             verify(mockJsonObject).put(member::ticketmasterID.name, ID)
             verify(mockJsonObject).put(member::firstName.name, FIRST_NAME)
             verify(mockJsonObject).put(member::email.name, EMAIL)
+        }
+
+        test("decodeJson() creates Member with all properties successfully") {
+            val expectedMember = Member(ID, EMAIL, FIRST_NAME)
+            val mockJsonObject = mock<JSONObject>()
+
+            whenever(mockJsonObject.safeOptString("ticketmasterID")).thenReturn(ID)
+            whenever(mockJsonObject.safeOptString("email")).thenReturn(EMAIL)
+            whenever(mockJsonObject.safeOptString("firstName")).thenReturn(FIRST_NAME)
+
+            assertEquals(expectedMember, Member.decodeJson(mockJsonObject))
+        }
+
+        test("decodeJson() creates Member from legacy hostID") {
+            val expectedMember = Member(ID, null, null)
+            val mockJsonObject = mock<JSONObject>()
+
+            whenever(mockJsonObject.safeOptString("hostID")).thenReturn(ID)
+
+            assertEquals(expectedMember, Member.decodeJson(mockJsonObject))
+        }
+
+        test("decodeJson() creates Member from legacy teamID") {
+            val expectedMember = Member(ID, null, null)
+            val mockJsonObject = mock<JSONObject>()
+
+            whenever(mockJsonObject.safeOptString("teamID")).thenReturn(ID)
+
+            assertEquals(expectedMember, Member.decodeJson(mockJsonObject))
+        }
+
+        test("decodeJson() creates Member with null properties") {
+            val expectedMember = Member(null, null, null)
+
+            val mockJsonObject = mock<JSONObject>()
+
+            assertEquals(expectedMember, Member.decodeJson(mockJsonObject))
         }
     }
 })
