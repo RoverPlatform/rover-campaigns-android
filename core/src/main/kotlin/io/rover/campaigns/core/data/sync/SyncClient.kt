@@ -19,7 +19,7 @@ class SyncClient(
     private val authenticationContext: AuthenticationContext,
     private val dateFormatting: DateFormattingInterface,
     private val networkClient: NetworkClient
-): SyncClientInterface {
+) : SyncClientInterface {
     override fun executeSyncRequests(requests: List<SyncRequest>): Publisher<HttpClientResponse> {
         return networkClient.request(
             queryItems(requests).apply {
@@ -29,10 +29,10 @@ class SyncClient(
         )
     }
 
-    private fun queryItems(requests: List<SyncRequest>) : HttpRequest {
+    private fun queryItems(requests: List<SyncRequest>): HttpRequest {
         val signatures = requests.mapNotNull { it.query.signature }
 
-        val expression: String = if(signatures.isEmpty()) {
+        val expression: String = if (signatures.isEmpty()) {
             ""
         } else {
             signatures.joinToString(", ")
@@ -74,7 +74,7 @@ class SyncClient(
             variablesJson.toString()
         )
 
-        if(fragments != null) {
+        if (fragments != null) {
             builder.appendQueryParameter("fragments", JSONArray(fragments).toString())
         }
 
@@ -93,7 +93,7 @@ class SyncClient(
 
 val SyncQuery.signature: String?
     get() {
-        if(arguments.isEmpty()) {
+        if (arguments.isEmpty()) {
             return null
         }
 
@@ -105,7 +105,7 @@ val SyncQuery.signature: String?
 val SyncQuery.definition: String
     get() {
 
-        if(arguments.isEmpty()) {
+        if (arguments.isEmpty()) {
             return ""
         }
 
@@ -114,7 +114,6 @@ val SyncQuery.definition: String
         }
 
         val expression = "($signature)"
-
 
         return """
         $name$expression {

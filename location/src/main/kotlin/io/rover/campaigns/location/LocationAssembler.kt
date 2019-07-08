@@ -334,7 +334,7 @@ class LocationAssembler(
             resolver.resolveSingletonOrFail(GoogleBeaconTrackerServiceInterface::class.java)
         }
 
-        if(automaticLocationTracking) {
+        if (automaticLocationTracking) {
             resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java).addContextProvider(
                 resolver.resolveSingletonOrFail(ContextProvider::class.java, "location")
             )

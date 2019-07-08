@@ -19,7 +19,7 @@ class DateFormatting : DateFormattingInterface {
         timeZone = TimeZone.getTimeZone("UTC")
     }
 
-    private fun format8601WithTimeZone() = if(
+    private fun format8601WithTimeZone() = if (
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
     ) SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US) else
         // on legacy Android use the RFC 822 format, and below for outgoing values we'll transform
@@ -28,7 +28,7 @@ class DateFormatting : DateFormattingInterface {
 
     override fun dateAsIso8601(date: Date, localTime: Boolean): String =
         if (localTime) {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 // Using the new 'XXX' date formatter above.
                 format8601WithTimeZone().format(date)
             } else {
@@ -38,7 +38,6 @@ class DateFormatting : DateFormattingInterface {
                     date
                 ).replace(Regex("(\\d\\d)(\\d\\d)$"), "$1:$2")
             }
-
         } else format8601().format(date)
 
     override fun iso8601AsDate(iso8601Date: String, localTime: Boolean): Date = try {

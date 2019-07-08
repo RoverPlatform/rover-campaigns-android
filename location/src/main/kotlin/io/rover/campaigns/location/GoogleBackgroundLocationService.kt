@@ -84,7 +84,7 @@ class GoogleBackgroundLocationService(
                 )
             }
 
-            if(address == null) {
+            if (address == null) {
                 log.w("Unable to geocode address for current coordinates.")
             }
 
@@ -102,7 +102,7 @@ class GoogleBackgroundLocationService(
         }
         .observeOn(mainScheduler)
         .doOnNext { location ->
-            if(trackLocation) {
+            if (trackLocation) {
                 locationReportingService.updateLocation(location)
             }
         }
@@ -144,16 +144,15 @@ class LocationBroadcastReceiver : BroadcastReceiver() {
         if (LocationResult.hasResult(intent)) {
             val result = LocationResult.extractResult(intent)
             val rover = RoverCampaigns.shared
-            if(rover == null) {
+            if (rover == null) {
                 log.e("Received a location result from Google, but Rover Campaigns is not initialized.  Ignoring.")
                 return
             }
             val backgroundLocationService = rover.resolve(GoogleBackgroundLocationServiceInterface::class.java)
-            if(backgroundLocationService == null) {
+            if (backgroundLocationService == null) {
                 log.e("Received a location result from Google, but the Rover Campaigns GoogleBackgroundLocationServiceInterface is missing. Ensure that LocationAssembler is added to RoverCampaigns.initialize(). Ignoring.")
                 return
-            }
-            else backgroundLocationService.newGoogleLocationResult(result)
+            } else backgroundLocationService.newGoogleLocationResult(result)
         } else {
             log.v("LocationReceiver received an intent, but it lacked a location result. Ignoring. Intent extras were ${intent.extras}")
         }

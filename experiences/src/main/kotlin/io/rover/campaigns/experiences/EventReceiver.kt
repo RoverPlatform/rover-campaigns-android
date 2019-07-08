@@ -45,7 +45,7 @@ private fun experienceAttributes(experience: Experience, campaignId: String?) = 
     "name" to experience.name,
     "keys" to experience.keys,
     "tags" to experience.tags
-) + if(campaignId != null) hashMapOf("campaignID" to campaignId) else hashMapOf()
+) + if (campaignId != null) hashMapOf("campaignID" to campaignId) else hashMapOf()
 
 private fun screenAttributes(screen: Screen) = mapOf(
     "id" to screen.id,

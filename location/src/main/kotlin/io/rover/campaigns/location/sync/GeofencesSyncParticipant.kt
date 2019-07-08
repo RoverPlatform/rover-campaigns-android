@@ -62,7 +62,7 @@ class GeofencesRepository(
 
 class GeofencesSqlStorage(
     private val sqLiteDatabase: SQLiteDatabase
-): SqlSyncStorageInterface<Geofence> {
+) : SqlSyncStorageInterface<Geofence> {
 
     fun queryGeofenceByIdentifier(identifier: String): Geofence? {
         val columnNames = Columns.values().sortedBy { it.ordinal }.map { it.columnName }
@@ -84,7 +84,7 @@ class GeofencesSqlStorage(
         )
 
         return try {
-            if(cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 return Geofence.fromSqliteCursor(cursor)
             } else {
                 null
@@ -119,7 +119,7 @@ class GeofencesSqlStorage(
 
                 return object : AbstractIterator<Geofence>(), CloseableIterator<Geofence> {
                     override fun computeNext() {
-                        if(!cursor.moveToNext()) {
+                        if (!cursor.moveToNext()) {
                             done()
                         } else {
                             setNext(
@@ -158,7 +158,7 @@ class GeofencesSqlStorage(
                     SQLiteDatabase.CONFLICT_REPLACE
                 )
             }
-            sqLiteDatabase.setTransactionSuccessful();
+            sqLiteDatabase.setTransactionSuccessful()
         } catch (e: SQLiteException) {
             // TODO: perhaps this should be a harder error, and perhaps trigger a full resync
             // or similar recovery behaviour.  or Perhaps abort transaction and also prevent update of the cursor so it can be attempted again?
@@ -218,7 +218,7 @@ fun Geofence.Companion.fromSqliteCursor(cursor: Cursor): Geofence {
 
 class GeofencesSyncResource(
     private val sqliteStorageInterface: SqlSyncStorageInterface<Geofence>
-): SyncResource<Geofence> {
+) : SyncResource<Geofence> {
     override fun upsertObjects(nodes: List<Geofence>) {
         sqliteStorageInterface.upsertObjects(nodes)
     }
@@ -233,7 +233,7 @@ class GeofencesSyncResource(
             ))
         )
 
-        if(cursor != null) {
+        if (cursor != null) {
             values[SyncQuery.Argument.after.name] = cursor
         }
 
@@ -244,7 +244,7 @@ class GeofencesSyncResource(
     }
 }
 
-class GeofenceSyncDecoder: SyncDecoder<Geofence> {
+class GeofenceSyncDecoder : SyncDecoder<Geofence> {
     override fun decode(json: JSONObject): GraphQLResponse<Geofence> {
         return GeofencesSyncResponseData.decodeJson(json.getJSONObject("data")).geofences
     }

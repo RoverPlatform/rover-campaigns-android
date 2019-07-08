@@ -66,7 +66,7 @@ open class NotificationOpen(
             NotificationSource.NotificationCenter
         )
 
-        return when(notification.tapBehavior) {
+        return when (notification.tapBehavior) {
             // Not appropriate to re-open the app when opening notification directly, do nothing.
             is Notification.TapBehavior.OpenApp -> null
             else -> intentForNotification(notification)

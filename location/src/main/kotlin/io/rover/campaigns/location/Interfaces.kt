@@ -55,7 +55,7 @@ interface GeofenceServiceInterface {
  * Implementers can register themselves with [RegionRepositoryInterface] to be informed
  * of the most recent list of Geofences that should be monitored.
  */
-interface GoogleGeofenceServiceInterface: GeofenceServiceInterface {
+interface GoogleGeofenceServiceInterface : GeofenceServiceInterface {
     /**
      * This callback is used internally to deliver Google geofencing events delivered to the SDK
      * via an intent into the [GoogleGeofenceServiceInterface] itself.

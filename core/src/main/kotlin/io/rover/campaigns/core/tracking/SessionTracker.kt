@@ -130,21 +130,25 @@ class SessionStore(
 
         if (existingEntry != null) {
             // there is indeed a session open for the given key, mark it as expiring.
-            setEntry(sessionKey, existingEntry.copy(
-                closedAt = Date()
-            ))
+            setEntry(
+                sessionKey, existingEntry.copy(
+                    closedAt = Date()
+                )
+            )
         }
     }
 
     private fun getEntry(sessionKey: Any): SessionEntry? {
         val entryJson = store[sessionKey.toString()].whenNotNull { JSONObject(it) }
 
-        return entryJson.whenNotNull { try {
-            SessionEntry.decodeJson(it)
-        } catch (exception: Exception) {
-            log.w("Invalid JSON appeared in Session Store, ignoring: ${exception.message}")
-            null
-        } }
+        return entryJson.whenNotNull {
+            try {
+                SessionEntry.decodeJson(it)
+            } catch (exception: Exception) {
+                log.w("Invalid JSON appeared in Session Store, ignoring: ${exception.message}")
+                null
+            }
+        }
     }
 
     private fun setEntry(sessionKey: Any, sessionEntry: SessionEntry) {
@@ -166,9 +170,9 @@ class SessionStore(
         // if there's a negative number, return 0 because there's already expired entries that need
         // to be dealt with now.
 
-       return earliestExpiry.whenNotNull { earliest ->
-           max(earliest, 0)
-       }
+        return earliestExpiry.whenNotNull { earliest ->
+            max(earliest, 0)
+        }
     }
 
     override fun collectExpiredSessions(keepAliveSeconds: Int): List<SessionStoreInterface.ExpiredSession> {

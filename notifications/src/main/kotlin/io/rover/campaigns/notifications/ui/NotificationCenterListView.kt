@@ -57,7 +57,7 @@ open class NotificationCenterListView : CoordinatorLayout {
     var activity: AppCompatActivity? = null
         set(activity) {
             field = activity
-            viewModel = if(activity == null) {
+            viewModel = if (activity == null) {
                 null
             } else RoverCampaigns.shared?.resolve(NotificationCenterListViewModelInterface::class.java, null, activity.lifecycle) ?: throw RuntimeException(
                 "Ensure Rover Campaigns is initialized and NotificationsAssembler() added before using notification center."
@@ -239,8 +239,8 @@ open class NotificationCenterListView : CoordinatorLayout {
     }
 
     private val notificationOpen: NotificationOpenInterface by lazy {
-        RoverCampaigns.shared?.resolve(NotificationOpenInterface::class.java) ?:
-        throw java.lang.RuntimeException("Please be sure that Rover Campaigns is initialized and NotificationsAssembler is added to RoverCampaigns.init before using NotificationCenterListView.")
+        RoverCampaigns.shared?.resolve(NotificationOpenInterface::class.java)
+        ?: throw java.lang.RuntimeException("Please be sure that Rover Campaigns is initialized and NotificationsAssembler is added to RoverCampaigns.init before using NotificationCenterListView.")
     }
 
     init {
