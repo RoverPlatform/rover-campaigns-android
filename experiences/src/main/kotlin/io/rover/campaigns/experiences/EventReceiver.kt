@@ -8,6 +8,7 @@ import io.rover.campaigns.core.streams.subscribe
 import io.rover.sdk.data.domain.Block
 import io.rover.sdk.data.domain.Experience
 import io.rover.sdk.data.domain.Screen
+import io.rover.sdk.data.events.Option
 import io.rover.sdk.data.events.RoverEvent
 import io.rover.sdk.services.EventEmitter
 
@@ -36,6 +37,7 @@ open class EventReceiver(
             is RoverEvent.ExperienceViewed -> event.transformToEvent()
             is RoverEvent.ScreenViewed -> event.transformToEvent()
             is RoverEvent.ScreenPresented -> event.transformToEvent()
+            is RoverEvent.PollAnswered -> event.transformToEvent()
         }
     }
 }
@@ -60,6 +62,22 @@ private fun blockAttributes(block: Block) = mapOf(
     "keys" to block.keys,
     "tags" to block.tags
 )
+
+private fun optionAttributes(option: Option) = mapOf(
+    "id" to option.id,
+    "text" to option.text
+) + if (option.image != null) hashMapOf("image" to option.image) else hashMapOf()
+
+private fun RoverEvent.PollAnswered.transformToEvent(): Event {
+    val attributes: Attributes = mapOf(
+        "experience" to experienceAttributes(experience, campaignId),
+        "screen" to screenAttributes(screen),
+        "block" to blockAttributes(block),
+        "option" to optionAttributes(option)
+    )
+
+    return Event("Poll Answered", attributes)
+}
 
 private fun RoverEvent.BlockTapped.transformToEvent(): Event {
     val attributes: Attributes = mapOf(

@@ -34,7 +34,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation project(':core')
-    api "io.rover:sdk:3.0.0"
+    api "io.rover:sdk:3.1.0"
 }
 
 configurations {
