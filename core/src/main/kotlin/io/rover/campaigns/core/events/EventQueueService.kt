@@ -59,7 +59,6 @@ class EventQueueService(
     }
 
     override fun trackEvent(event: Event, namespace: String?) {
-        log.v("Tracking event: $event")
         captureContext()
         enqueueEvent(event, namespace)
         eventSubject.onNext(event)

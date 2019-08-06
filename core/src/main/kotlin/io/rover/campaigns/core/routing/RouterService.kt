@@ -6,7 +6,7 @@ import io.rover.campaigns.core.logging.log
 import java.net.URI
 
 class RouterService(
-    private val openAppIntent: Intent
+    private val openAppIntent: Intent?
 ) : Router {
     private val registeredRoutes: MutableSet<Route> = mutableSetOf()
 
@@ -22,10 +22,8 @@ class RouterService(
 
         val handledByRover = mappedUris.firstOrNull()
 
-        return handledByRover ?: if (inbound || uri == null) {
-            openAppIntent.apply {
-                log.w("No Route matched `$uri`, just opening the app.")
-            }
+        return handledByRover ?: if (inbound || uri == null && openAppIntent != null) {
+            openAppIntent!!.apply { log.w("No Route matched `$uri`, just opening the app.") }
         } else {
             Intent(
                 Intent.ACTION_VIEW,

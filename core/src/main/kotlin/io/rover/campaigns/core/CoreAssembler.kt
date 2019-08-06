@@ -156,8 +156,7 @@ class CoreAssembler @JvmOverloads constructor(
         }
 
         container.register(Scope.Singleton, Intent::class.java, "openApp") { _ ->
-            openAppIntent ?: application
-                .packageManager.getLaunchIntentForPackage(application.packageName)
+            openAppIntent ?: application.packageManager.getLaunchIntentForPackage(application.packageName)
         }
 
         container.register(Scope.Singleton, UrlSchemes::class.java) { _ ->
@@ -360,7 +359,7 @@ class CoreAssembler @JvmOverloads constructor(
             Router::class.java
         ) { resolver ->
             RouterService(
-                resolver.resolveSingletonOrFail(Intent::class.java, "openApp")
+                resolver.resolve(Intent::class.java, "openApp")
             )
         }
 
@@ -440,7 +439,7 @@ class CoreAssembler @JvmOverloads constructor(
 
         resolver.resolveSingletonOrFail(Router::class.java).apply {
             registerRoute(
-                OpenAppRoute(resolver.resolveSingletonOrFail(Intent::class.java, "openApp"))
+                OpenAppRoute(resolver.resolve(Intent::class.java, "openApp"))
             )
         }
 
