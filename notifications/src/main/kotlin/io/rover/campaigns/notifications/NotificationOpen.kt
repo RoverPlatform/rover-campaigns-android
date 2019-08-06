@@ -22,7 +22,7 @@ open class NotificationOpen(
     private val dateFormatting: DateFormattingInterface,
     private val eventsService: EventQueueServiceInterface,
     private val router: Router,
-    private val openAppIntent: Intent,
+    private val openAppIntent: Intent?,
     private val embeddedWebBrowserDisplay: EmbeddedWebBrowserDisplayInterface
 ) : NotificationOpenInterface {
     override fun pendingIntentForAndroidNotification(notification: Notification): PendingIntent {
