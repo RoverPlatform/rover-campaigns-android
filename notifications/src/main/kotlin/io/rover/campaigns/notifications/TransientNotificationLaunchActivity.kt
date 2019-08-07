@@ -67,37 +67,36 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
         // is the whole reason for this activity existing.
 
         val intent = notificationOpen.intentForOpeningNotificationFromJson(notificationJson)
-
-        intent?.let {
-            if (intent.resolveActivityInfo(this.packageManager, PackageManager.GET_SHARED_LIBRARY_FILES) == null) {
-                log.e(
-                    "No activity could be found to handle the Intent needed to start the notification.\n" +
-                        "This could be because the deep link scheme slug you set on NotificationsAssembler does not match what is set in your Rover account, or that an Activity is missing from your manifest.\n\n" +
-                        "Intent was: $intent"
-                )
-                finish()
-                return
-            }
-
-            try {
-                val notification = Notification.decodeJson(
-                    JSONObject(notificationJson),
-                    dateFormatting
-                )
-                notificationsRepository?.markRead(notification)
-            } catch (e: JSONException) {
-                log.w("Badly formed notification, could not mark it as read.")
-            }
-
-            influenceTracker.notificationOpenedDirectly()
-
-            ContextCompat.startActivity(
-                this,
-                intent,
-                null
-            )
-        }
         
+        if (intent?.resolveActivityInfo(this.packageManager, PackageManager.GET_SHARED_LIBRARY_FILES) == null) {
+            log.e(
+                "No activity could be found to handle the Intent needed to start the notification.\n" +
+                    "This could be because the deep link scheme slug you set on NotificationsAssembler does not match what is set in your Rover account, or that an Activity is missing from your manifest.\n\n" +
+                    "Intent was: $intent"
+            )
+            finish()
+            return
+        }
+
+        try {
+            val notification = Notification.decodeJson(
+                JSONObject(notificationJson),
+                dateFormatting
+            )
+            notificationsRepository?.markRead(notification)
+        } catch (e: JSONException) {
+            log.w("Badly formed notification, could not mark it as read.")
+        }
+
+        influenceTracker.notificationOpenedDirectly()
+
+        ContextCompat.startActivity(
+            this,
+            intent,
+            null
+        )
+
+
         finish()
     }
 
@@ -108,7 +107,8 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
         ): PendingIntent {
 
             val notificationJson = notification.encodeJson(
-                (RoverCampaigns.shared ?: throw RuntimeException("Cannot generate Rover Campaigns intent when Rover Campaigns is not initialized."))
+                (RoverCampaigns.shared
+                    ?: throw RuntimeException("Cannot generate Rover Campaigns intent when Rover Campaigns is not initialized."))
                     .resolveSingletonOrFail(DateFormattingInterface::class.java)
             )
 
