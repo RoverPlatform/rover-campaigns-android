@@ -155,8 +155,11 @@ class CoreAssembler @JvmOverloads constructor(
             application
         }
 
-        container.register(Scope.Singleton, Intent::class.java, "openApp") { _ ->
-            openAppIntent ?: application.packageManager.getLaunchIntentForPackage(application.packageName)
+
+        if (openAppIntent != null || application.packageManager.getLaunchIntentForPackage(application.packageName) != null) {
+            container.register(Scope.Singleton, Intent::class.java, "openApp") { _ ->
+                openAppIntent ?: application.packageManager.getLaunchIntentForPackage(application.packageName)
+            }
         }
 
         container.register(Scope.Singleton, UrlSchemes::class.java) { _ ->
