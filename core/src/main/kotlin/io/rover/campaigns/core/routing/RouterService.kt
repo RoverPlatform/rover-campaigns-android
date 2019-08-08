@@ -6,11 +6,11 @@ import io.rover.campaigns.core.logging.log
 import java.net.URI
 
 class RouterService(
-    private val openAppIntent: Intent
+    private val openAppIntent: Intent?
 ) : Router {
     private val registeredRoutes: MutableSet<Route> = mutableSetOf()
 
-    override fun route(uri: URI?, inbound: Boolean): Intent {
+    override fun route(uri: URI?, inbound: Boolean): Intent? {
         val mappedUris = registeredRoutes.mapNotNull { it.resolveUri(uri) }
 
         if (mappedUris.size > 1) {
@@ -22,16 +22,19 @@ class RouterService(
 
         val handledByRover = mappedUris.firstOrNull()
 
-        return handledByRover ?: if (inbound || uri == null) {
-            openAppIntent.apply {
+        return when {
+            handledByRover != null -> handledByRover
+            (inbound || uri == null && openAppIntent != null) -> {
                 log.w("No Route matched `$uri`, just opening the app.")
+                openAppIntent!!
             }
-        } else {
-            Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse(uri.toString())
-            ).apply {
+            (inbound || uri == null && openAppIntent == null) -> {
+                log.w("No Route matched `$uri` and openAppIntent null.")
+                null
+            }
+            else -> {
                 log.i("No built-in Rover Campaigns route matched `$uri`.  Opening it as an Intent.")
+                Intent(Intent.ACTION_VIEW, Uri.parse(uri.toString()))
             }
         }
     }

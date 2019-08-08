@@ -14,7 +14,7 @@ interface Router {
      * something within the Rover SDK, and that any URIs that fail to match any registered routes
      * should be deferred to Android itself.
      */
-    fun route(uri: URI?, inbound: Boolean): Intent
+    fun route(uri: URI?, inbound: Boolean): Intent?
 
     /**
      * Register the given route.  Should typically be called in [Assembler.afterAssembly]

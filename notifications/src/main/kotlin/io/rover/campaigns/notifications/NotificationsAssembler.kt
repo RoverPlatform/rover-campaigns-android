@@ -236,7 +236,7 @@ class NotificationsAssembler @JvmOverloads constructor(
                 resolver.resolveSingletonOrFail(DateFormattingInterface::class.java),
                 resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java),
                 resolver.resolveSingletonOrFail(Router::class.java),
-                resolver.resolveSingletonOrFail(Intent::class.java, "openApp"),
+                resolver.resolve(Intent::class.java, "openApp"),
                 resolver.resolveSingletonOrFail(EmbeddedWebBrowserDisplayInterface::class.java)
             )
         }

@@ -30,16 +30,11 @@ open class TransientLinkLaunchActivity : AppCompatActivity() {
 
         log.v("Transient link launch activity running for received URI: '${intent.data}'")
 
-        val intentStack = linkOpen.localIntentForReceived(
-                uri
-        )
+        val intentStack = linkOpen.localIntentForReceived(uri)
 
         log.v("Launching stack ${intentStack.size} deep: ${intentStack.joinToString("\n") { it.toString() }}")
 
-        ContextCompat.startActivities(
-                this,
-                intentStack.toTypedArray()
-        )
+        if (intentStack.isNotEmpty()) ContextCompat.startActivities(this, intentStack.toTypedArray())
         finish()
     }
 }
