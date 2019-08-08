@@ -23,6 +23,7 @@ import io.rover.campaigns.core.streams.observeOn
 import io.rover.campaigns.core.streams.share
 import org.json.JSONArray
 import org.reactivestreams.Publisher
+import java.lang.AssertionError
 import java.util.Deque
 import java.util.LinkedList
 import java.util.concurrent.Executors
@@ -59,7 +60,14 @@ class EventQueueService(
     }
 
     override fun trackEvent(event: Event, namespace: String?) {
-        log.v("Tracking event: $event")
+        try {
+            log.v("Tracking event: $event")
+        } catch (e: AssertionError) {
+            // Workaround for a bug in Android that can cause crashes on Android 8.0 and 8.1 when
+            // calling toString() on a java.util.Date
+            log.w("Logging tracking event failed: $e")
+        }
+
         captureContext()
         enqueueEvent(event, namespace)
         eventSubject.onNext(event)

@@ -22,7 +22,7 @@ open class NotificationOpen(
     private val dateFormatting: DateFormattingInterface,
     private val eventsService: EventQueueServiceInterface,
     private val router: Router,
-    private val openAppIntent: Intent,
+    private val openAppIntent: Intent?,
     private val embeddedWebBrowserDisplay: EmbeddedWebBrowserDisplayInterface
 ) : NotificationOpenInterface {
     override fun pendingIntentForAndroidNotification(notification: Notification): PendingIntent {
@@ -32,20 +32,17 @@ open class NotificationOpen(
         )
     }
 
-    private fun intentForNotification(notification: Notification): Intent {
+    private fun intentForNotification(notification: Notification): Intent? {
         return when (notification.tapBehavior) {
             is Notification.TapBehavior.OpenApp -> openAppIntent
-            is Notification.TapBehavior.OpenUri -> router.route(
-                notification.tapBehavior.uri,
-                false
-            )
+            is Notification.TapBehavior.OpenUri -> router.route(notification.tapBehavior.uri, false)
             is Notification.TapBehavior.PresentWebsite -> embeddedWebBrowserDisplay.intentForViewingWebsiteViaEmbeddedBrowser(
                 notification.tapBehavior.url.toString()
             )
         }
     }
 
-    override fun intentForOpeningNotificationFromJson(notificationJson: String): Intent {
+    override fun intentForOpeningNotificationFromJson(notificationJson: String): Intent? {
         // side-effect: issue open event.
         val notification = Notification.decodeJson(JSONObject(notificationJson), dateFormatting)
 

@@ -76,7 +76,7 @@ interface NotificationOpenInterface {
      * Return an intent for opening a notification from the Android notification drawer. This is
      * called by the transient notification launch activity to replace itself with a new stack.
      */
-    fun intentForOpeningNotificationFromJson(notificationJson: String): Intent
+    fun intentForOpeningNotificationFromJson(notificationJson: String): Intent?
 
     /**
      * Return an intent for directly opening the notification within the app.

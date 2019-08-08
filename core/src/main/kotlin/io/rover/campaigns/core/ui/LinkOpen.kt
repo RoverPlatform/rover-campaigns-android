@@ -9,6 +9,6 @@ class LinkOpen(
     private val router: Router
 ) : LinkOpenInterface {
     override fun localIntentForReceived(receivedUri: URI): List<Intent> {
-        return listOf(router.route(receivedUri, true))
+        return listOfNotNull(router.route(receivedUri, true))
     }
 }
