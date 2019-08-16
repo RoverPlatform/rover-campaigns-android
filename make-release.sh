@@ -52,7 +52,7 @@ then
   echo "Verifying SDK."
   DEPLOY_MAVEN_PATH=`pwd`/maven ./gradlew clean test
 else
-  git checkout master
+  git checkout develop
   echo "Verifying SDK."
   DEPLOY_MAVEN_PATH=`pwd`/maven ./gradlew clean test
   git flow $RELEASE_OR_HOTFIX start $VERSION
