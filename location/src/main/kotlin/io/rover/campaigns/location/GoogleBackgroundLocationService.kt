@@ -56,6 +56,10 @@ class GoogleBackgroundLocationService(
 
     private val subject = PublishSubject<LocationResult>()
 
+    companion object {
+        private const val LOCATION_UPDATE_INTERVAL = 60000L
+    }
+
     override val locationUpdates: Publisher<Location> = subject
         .observeOn(ioScheduler)
         .map { locationResult ->
@@ -120,8 +124,8 @@ class GoogleBackgroundLocationService(
                 .requestLocationUpdates(
                     LocationRequest
                         .create()
-                        .setInterval(1)
-                        .setFastestInterval(1)
+                        .setInterval(LOCATION_UPDATE_INTERVAL)
+                        .setFastestInterval(LOCATION_UPDATE_INTERVAL)
                         .setSmallestDisplacement(minimumDisplacement)
                         .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY),
                     PendingIntent.getBroadcast(
@@ -139,6 +143,10 @@ class GoogleBackgroundLocationService(
     }
 }
 
+private const val BROADCAST_RECEPTION_THRESHOLD = 10000L
+
+private val lastTimeAtInitialisation = System.currentTimeMillis()
+
 class LocationBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (LocationResult.hasResult(intent)) {
@@ -152,7 +160,9 @@ class LocationBroadcastReceiver : BroadcastReceiver() {
             if (backgroundLocationService == null) {
                 log.e("Received a location result from Google, but the Rover Campaigns GoogleBackgroundLocationServiceInterface is missing. Ensure that LocationAssembler is added to RoverCampaigns.initialize(). Ignoring.")
                 return
-            } else backgroundLocationService.newGoogleLocationResult(result)
+            } else if(System.currentTimeMillis() - lastTimeAtInitialisation > BROADCAST_RECEPTION_THRESHOLD) {
+                backgroundLocationService.newGoogleLocationResult(result)
+            }
         } else {
             log.v("LocationReceiver received an intent, but it lacked a location result. Ignoring. Intent extras were ${intent.extras}")
         }
