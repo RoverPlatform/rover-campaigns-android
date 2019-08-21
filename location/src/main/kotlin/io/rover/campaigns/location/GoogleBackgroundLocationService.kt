@@ -57,7 +57,7 @@ class GoogleBackgroundLocationService(
     private val subject = PublishSubject<LocationResult>()
 
     companion object {
-        private const val LOCATION_UPDATE_INTERVAL = 10000L
+        private const val LOCATION_UPDATE_INTERVAL = 60000L
     }
 
     override val locationUpdates: Publisher<Location> = subject
@@ -143,7 +143,7 @@ class GoogleBackgroundLocationService(
     }
 }
 
-private const val BROADCAST_RECEPTION_THRESHOLD = 8000L
+private const val BROADCAST_RECEPTION_THRESHOLD = 10000L
 
 private val lastTimeAtInitialisation = System.currentTimeMillis()
 
