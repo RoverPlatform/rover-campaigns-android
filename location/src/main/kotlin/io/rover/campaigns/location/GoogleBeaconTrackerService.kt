@@ -6,6 +6,9 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import android.support.v4.content.ContextCompat
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.EddystoneUid
 import com.google.android.gms.nearby.messages.IBeaconId
@@ -125,6 +128,11 @@ class GoogleBeaconTrackerService(
         }
     }
 
+    companion object {
+        private const val BACKGROUND_LOCATION_PERMISSION_CODE = "android.permission.ACCESS_BACKGROUND_LOCATION"
+        private const val Q_SDK_BUILD_VERSION = 29
+    }
+
     init {
         Publishers.combineLatest(
             // observeOn(mainScheduler) used on each because combineLatest() is not thread safe.
@@ -138,7 +146,10 @@ class GoogleBeaconTrackerService(
                 log.v("Starting up beacon tracking for ${fetchedBeacons.count()} beacon(s), aggregated to ${count()} filter(s).")
             }
         }.observeOn(mainScheduler).subscribe { beaconUuids ->
-            startMonitoringBeacons(beaconUuids)
+            if (ContextCompat.checkSelfPermission(applicationContext, BACKGROUND_LOCATION_PERMISSION_CODE) == PackageManager.PERMISSION_GRANTED || Build.VERSION.SDK_INT < Q_SDK_BUILD_VERSION) {
+                log.d("background permission build version true, build version: ${Build.VERSION.SDK_INT}")
+                startMonitoringBeacons(beaconUuids)
+            }
         }
     }
 }
