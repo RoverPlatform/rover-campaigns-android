@@ -130,7 +130,7 @@ class GoogleBeaconTrackerService(
 
     companion object {
         private const val BACKGROUND_LOCATION_PERMISSION_CODE = "android.permission.ACCESS_BACKGROUND_LOCATION"
-        private const val Q_SDK_BUILD_VERSION = 29
+        private const val Q_VERSION_CODE = 29
     }
 
     init {
@@ -147,7 +147,7 @@ class GoogleBeaconTrackerService(
             }
         }.observeOn(mainScheduler).subscribe { beaconUuids ->
             if (ContextCompat.checkSelfPermission(applicationContext, BACKGROUND_LOCATION_PERMISSION_CODE) == PackageManager.PERMISSION_GRANTED
-                || applicationContext.applicationInfo?.targetSdkVersion ?: Build.VERSION.SDK_INT < Q_SDK_BUILD_VERSION) {
+                || applicationContext.applicationInfo?.targetSdkVersion ?: Build.VERSION.SDK_INT < Q_VERSION_CODE) {
                 log.d("background permission build version true, build version: ${Build.VERSION.SDK_INT}")
                 startMonitoringBeacons(beaconUuids)
             }
