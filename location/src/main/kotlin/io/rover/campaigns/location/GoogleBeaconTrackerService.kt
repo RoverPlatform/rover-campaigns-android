@@ -147,7 +147,7 @@ class GoogleBeaconTrackerService(
             }
         }.observeOn(mainScheduler).subscribe { beaconUuids ->
             if (ContextCompat.checkSelfPermission(applicationContext, BACKGROUND_LOCATION_PERMISSION_CODE) == PackageManager.PERMISSION_GRANTED
-                || applicationContext.applicationInfo?.targetSdkVersion ?: Build.VERSION.SDK_INT < Q_VERSION_CODE) {
+                || Build.VERSION.SDK_INT < Q_VERSION_CODE) {
                 log.d("background permission build version true, build version: ${Build.VERSION.SDK_INT}")
                 startMonitoringBeacons(beaconUuids)
             }
