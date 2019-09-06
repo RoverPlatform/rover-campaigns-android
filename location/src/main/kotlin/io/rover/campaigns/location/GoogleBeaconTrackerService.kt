@@ -135,19 +135,27 @@ class GoogleBeaconTrackerService(
     }
 
     init {
+        val fineLocationSource = Publishers.concat(Publishers.just(false), permissionsNotifier.notifyForPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            .map {
+                log.d("fine location permission granted")
+                it == Manifest.permission.ACCESS_FINE_LOCATION })
+
+        val backgroundLocationSource = Publishers.concat(Publishers.just(false), permissionsNotifier.notifyForPermission(BACKGROUND_LOCATION_PERMISSION_CODE)
+            .map { it == BACKGROUND_LOCATION_PERMISSION_CODE })
+
         // This publisher emits whenever all necessary permissions for starting beacon monitoring are granted.
-        val permissionGranted = permissionsNotifier.notifyForPermission(Manifest.permission.ACCESS_FINE_LOCATION).map {
+        val permissionGranted = Publishers.combineLatest(fineLocationSource, backgroundLocationSource) {
+            fineLocationGranted, _ ->
+            val backgroundPermissionGranted = (ContextCompat.checkSelfPermission(applicationContext, BACKGROUND_LOCATION_PERMISSION_CODE) == PackageManager.PERMISSION_GRANTED)
+
             // The BACKGROUND_LOCATION_PERMISSION_CODE permission is required for monitoring for
-            // beacons on Q and above.  Not using permissions notifier for it directly because developer will never notify of of the background permission.
-            Build.VERSION.SDK_INT < Q_VERSION_CODE || (ContextCompat.checkSelfPermission(
-                applicationContext,
-                BACKGROUND_LOCATION_PERMISSION_CODE
-            ) == PackageManager.PERMISSION_GRANTED)
+            // beacons on Q and above.
+            fineLocationGranted && (Build.VERSION.SDK_INT < Q_VERSION_CODE || backgroundPermissionGranted)
         }.filter { it }
 
         Publishers.combineLatest(
             // observeOn(mainScheduler) used on each because combineLatest() is not thread safe.
-            permissionGranted.doOnNext { log.v("Permission obtained.") },
+            permissionGranted.doOnNext { log.v("Permission obtained. $it") },
             beaconsRepository.allBeacons().observeOn(mainScheduler).doOnNext { log.v("Full beacons list obtained from sync.") }
         ) { permission, beacons ->
             Pair(permission, beacons)
