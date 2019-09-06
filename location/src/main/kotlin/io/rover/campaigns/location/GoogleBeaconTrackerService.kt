@@ -136,9 +136,7 @@ class GoogleBeaconTrackerService(
 
     init {
         val fineLocationSource = Publishers.concat(Publishers.just(false), permissionsNotifier.notifyForPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-            .map {
-                log.d("fine location permission granted")
-                it == Manifest.permission.ACCESS_FINE_LOCATION })
+            .map { it == Manifest.permission.ACCESS_FINE_LOCATION })
 
         val backgroundLocationSource = Publishers.concat(Publishers.just(false), permissionsNotifier.notifyForPermission(BACKGROUND_LOCATION_PERMISSION_CODE)
             .map { it == BACKGROUND_LOCATION_PERMISSION_CODE })
