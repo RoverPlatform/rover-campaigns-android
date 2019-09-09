@@ -17,12 +17,19 @@ import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
 import io.rover.campaigns.core.platform.whenNotNull
 import io.rover.campaigns.core.streams.PublishSubject
 import io.rover.campaigns.core.streams.Scheduler
-import io.rover.campaigns.core.streams.doOnNext
 import io.rover.campaigns.core.streams.map
 import io.rover.campaigns.core.streams.observeOn
 import io.rover.campaigns.core.streams.shareHotAndReplay
 import io.rover.campaigns.core.streams.subscribe
 import io.rover.campaigns.core.data.domain.Location
+import io.rover.campaigns.core.data.graphql.operations.data.decodeJson
+import io.rover.campaigns.core.data.graphql.operations.data.encodeJson
+import io.rover.campaigns.core.platform.DateFormattingInterface
+import io.rover.campaigns.core.platform.LocalStorage
+import io.rover.campaigns.core.streams.Publishers
+import io.rover.campaigns.core.streams.filterNulls
+import org.json.JSONException
+import org.json.JSONObject
 import org.reactivestreams.Publisher
 import java.util.Date
 
@@ -43,12 +50,12 @@ class GoogleBackgroundLocationService(
     ioScheduler: Scheduler,
     mainScheduler: Scheduler,
     private val trackLocation: Boolean = false,
-    /**
-     * The minimum displacement in meters that will trigger a location update (and geofence/beacon
-     * rebinding).
-     */
-    private val minimumDisplacement: Float = 500f
+    localStorage: LocalStorage,
+    private val dateFormatting: DateFormattingInterface
 ) : GoogleBackgroundLocationServiceInterface {
+
+    private val keyValueStorage = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
+
     override fun newGoogleLocationResult(locationResult: LocationResult) {
         log.v("Received location result: $locationResult")
         subject.onNext(locationResult)
@@ -57,8 +64,26 @@ class GoogleBackgroundLocationService(
     private val subject = PublishSubject<LocationResult>()
 
     companion object {
+        private const val STORAGE_CONTEXT_IDENTIFIER = "last-known-location"
+        private const val LOCATION_KEY = "current-location"
         private const val LOCATION_UPDATE_INTERVAL = 60000L
     }
+
+    var currentLocation: Location?
+        get() {
+            return try {
+                val location = keyValueStorage[LOCATION_KEY]
+                location?.let {
+                    Location.decodeJson(JSONObject(it), dateFormatting)
+                }
+            } catch (e : JSONException) {
+                log.w("Failed to last known location JSON: $e")
+                null
+            }
+        }
+        set(value) {
+            keyValueStorage[LOCATION_KEY] = value?.encodeJson(dateFormatting).toString()
+        }
 
     override val locationUpdates: Publisher<Location> = subject
         .observeOn(ioScheduler)
@@ -105,15 +130,21 @@ class GoogleBackgroundLocationService(
             )
         }
         .observeOn(mainScheduler)
-        .doOnNext { location ->
-            if (trackLocation) {
-                locationReportingService.updateLocation(location)
-            }
-        }
         .shareHotAndReplay(1)
 
     init {
         startMonitoring()
+
+        Publishers.concat(Publishers.just(currentLocation).filterNulls(), locationUpdates)
+            .subscribe { location ->
+                if (currentLocation == null || currentLocation?.isWithinOneHundredMeters(location) == false) {
+                    if (trackLocation) {
+                        currentLocation = location
+                        locationReportingService.updateLocation(location)
+                        log.d("updated location BackgroundLocationService")
+                    }
+                }
+            }
     }
 
     @SuppressLint("MissingPermission")
@@ -126,7 +157,6 @@ class GoogleBackgroundLocationService(
                         .create()
                         .setInterval(LOCATION_UPDATE_INTERVAL)
                         .setFastestInterval(LOCATION_UPDATE_INTERVAL)
-                        .setSmallestDisplacement(minimumDisplacement)
                         .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY),
                     PendingIntent.getBroadcast(
                         applicationContext,
@@ -143,10 +173,6 @@ class GoogleBackgroundLocationService(
     }
 }
 
-private const val BROADCAST_RECEPTION_THRESHOLD = 10000L
-
-private val lastTimeAtInitialisation = System.currentTimeMillis()
-
 class LocationBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (LocationResult.hasResult(intent)) {
@@ -160,7 +186,7 @@ class LocationBroadcastReceiver : BroadcastReceiver() {
             if (backgroundLocationService == null) {
                 log.e("Received a location result from Google, but the Rover Campaigns GoogleBackgroundLocationServiceInterface is missing. Ensure that LocationAssembler is added to RoverCampaigns.initialize(). Ignoring.")
                 return
-            } else if(System.currentTimeMillis() - lastTimeAtInitialisation > BROADCAST_RECEPTION_THRESHOLD) {
+            } else  {
                 backgroundLocationService.newGoogleLocationResult(result)
             }
         } else {
