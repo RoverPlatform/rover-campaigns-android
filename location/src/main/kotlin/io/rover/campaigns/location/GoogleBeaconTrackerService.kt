@@ -27,6 +27,7 @@ import io.rover.campaigns.core.platform.whenNotNull
 import io.rover.campaigns.core.streams.Publishers
 import io.rover.campaigns.core.streams.Scheduler
 import io.rover.campaigns.core.streams.doOnNext
+import io.rover.campaigns.core.streams.filter
 import io.rover.campaigns.core.streams.map
 import io.rover.campaigns.core.streams.observeOn
 import io.rover.campaigns.core.streams.subscribe
@@ -134,9 +135,25 @@ class GoogleBeaconTrackerService(
     }
 
     init {
+        val fineLocationSource = Publishers.concat(Publishers.just(false), permissionsNotifier.notifyForPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            .map { it == Manifest.permission.ACCESS_FINE_LOCATION })
+
+        val backgroundLocationSource = Publishers.concat(Publishers.just(false), permissionsNotifier.notifyForPermission(BACKGROUND_LOCATION_PERMISSION_CODE)
+            .map { it == BACKGROUND_LOCATION_PERMISSION_CODE })
+
+        // This publisher emits whenever all necessary permissions for starting beacon monitoring are granted.
+        val permissionGranted = Publishers.combineLatest(fineLocationSource, backgroundLocationSource) {
+            fineLocationGranted, _ ->
+            val backgroundPermissionGranted = (ContextCompat.checkSelfPermission(applicationContext, BACKGROUND_LOCATION_PERMISSION_CODE) == PackageManager.PERMISSION_GRANTED)
+
+            // The BACKGROUND_LOCATION_PERMISSION_CODE permission is required for monitoring for
+            // beacons on Q and above.
+            fineLocationGranted && (Build.VERSION.SDK_INT < Q_VERSION_CODE || backgroundPermissionGranted)
+        }.filter { it }
+
         Publishers.combineLatest(
             // observeOn(mainScheduler) used on each because combineLatest() is not thread safe.
-            permissionsNotifier.notifyForPermission(Manifest.permission.ACCESS_FINE_LOCATION).observeOn(mainScheduler).doOnNext { log.v("Permission obtained.") },
+            permissionGranted.doOnNext { log.v("Permission obtained. $it") },
             beaconsRepository.allBeacons().observeOn(mainScheduler).doOnNext { log.v("Full beacons list obtained from sync.") }
         ) { permission, beacons ->
             Pair(permission, beacons)
@@ -146,11 +163,7 @@ class GoogleBeaconTrackerService(
                 log.v("Starting up beacon tracking for ${fetchedBeacons.count()} beacon(s), aggregated to ${count()} filter(s).")
             }
         }.observeOn(mainScheduler).subscribe { beaconUuids ->
-            if (ContextCompat.checkSelfPermission(applicationContext, BACKGROUND_LOCATION_PERMISSION_CODE) == PackageManager.PERMISSION_GRANTED
-                || applicationContext.applicationInfo?.targetSdkVersion ?: Build.VERSION.SDK_INT < Q_VERSION_CODE) {
-                log.d("background permission build version true, build version: ${Build.VERSION.SDK_INT}")
-                startMonitoringBeacons(beaconUuids)
-            }
+            startMonitoringBeacons(beaconUuids)
         }
     }
 }
