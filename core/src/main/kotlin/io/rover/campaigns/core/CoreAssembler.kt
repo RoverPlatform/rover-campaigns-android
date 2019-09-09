@@ -38,6 +38,7 @@ import io.rover.campaigns.core.events.contextproviders.BluetoothContextProvider
 import io.rover.campaigns.core.events.contextproviders.DeviceContextProvider
 import io.rover.campaigns.core.events.contextproviders.DeviceIdentifierContextProvider
 import io.rover.campaigns.core.events.contextproviders.LocaleContextProvider
+import io.rover.campaigns.core.events.contextproviders.LocationServicesContextProvider
 import io.rover.campaigns.core.events.contextproviders.ReachabilityContextProvider
 import io.rover.campaigns.core.events.contextproviders.ScreenContextProvider
 import io.rover.campaigns.core.events.contextproviders.SdkVersionContextProvider
@@ -288,6 +289,10 @@ class CoreAssembler @JvmOverloads constructor(
             TimeZoneContextProvider()
         }
 
+        container.register(Scope.Singleton, ContextProvider::class.java, "locationAuthorization") { _ ->
+            LocationServicesContextProvider(application)
+        }
+
         container.register(Scope.Singleton, ContextProvider::class.java, "attributes") { resolver ->
             UserInfoContextProvider(
                 resolver.resolveSingletonOrFail(
@@ -427,7 +432,8 @@ class CoreAssembler @JvmOverloads constructor(
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "attributes"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "application"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "deviceIdentifier"),
-            resolver.resolveSingletonOrFail(ContextProvider::class.java, "sdkVersion")
+            resolver.resolveSingletonOrFail(ContextProvider::class.java, "sdkVersion"),
+            resolver.resolveSingletonOrFail(ContextProvider::class.java, "locationAuthorization")
         ).forEach { eventQueue.addContextProvider(it) }
 
         resolver.resolveSingletonOrFail(VersionTrackerInterface::class.java).trackAppVersion()
