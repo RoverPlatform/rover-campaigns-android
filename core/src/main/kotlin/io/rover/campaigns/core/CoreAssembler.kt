@@ -289,7 +289,7 @@ class CoreAssembler @JvmOverloads constructor(
             TimeZoneContextProvider()
         }
 
-        container.register(Scope.Singleton, ContextProvider::class.java, "location") { _ ->
+        container.register(Scope.Singleton, ContextProvider::class.java, "locationAuthorization") { _ ->
             LocationServicesContextProvider(application)
         }
 
@@ -433,7 +433,7 @@ class CoreAssembler @JvmOverloads constructor(
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "application"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "deviceIdentifier"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "sdkVersion"),
-            resolver.resolveSingletonOrFail(ContextProvider::class.java, "location")
+            resolver.resolveSingletonOrFail(ContextProvider::class.java, "locationAuthorization")
         ).forEach { eventQueue.addContextProvider(it) }
 
         resolver.resolveSingletonOrFail(VersionTrackerInterface::class.java).trackAppVersion()

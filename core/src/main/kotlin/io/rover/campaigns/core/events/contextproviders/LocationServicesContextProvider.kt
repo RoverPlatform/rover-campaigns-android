@@ -24,8 +24,8 @@ class LocationServicesContextProvider(val applicationContext: android.content.Co
         val mode = Settings.Secure.getInt(applicationContext.contentResolver, LOCATION_MODE, LOCATION_MODE_OFF)
         val locationServicesEnabled = mode != LOCATION_MODE_OFF
 
-        val fineLocationGranted = ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-        val backgroundLocationGranted = ContextCompat.checkSelfPermission(applicationContext, BACKGROUND_LOCATION_PERMISSION_CODE) != PackageManager.PERMISSION_GRANTED
+        val fineLocationGranted = ContextCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        val backgroundLocationGranted = ContextCompat.checkSelfPermission(applicationContext, BACKGROUND_LOCATION_PERMISSION_CODE) == PackageManager.PERMISSION_GRANTED
 
         val locationAuthorization = when {
             fineLocationGranted && (Build.VERSION.SDK_INT < Q_VERSION_CODE || backgroundLocationGranted) -> AUTHORIZED_ALWAYS
