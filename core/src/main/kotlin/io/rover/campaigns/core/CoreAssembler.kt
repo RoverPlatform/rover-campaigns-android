@@ -35,6 +35,7 @@ import io.rover.campaigns.core.events.UserInfo
 import io.rover.campaigns.core.events.UserInfoInterface
 import io.rover.campaigns.core.events.contextproviders.ApplicationContextProvider
 import io.rover.campaigns.core.events.contextproviders.BluetoothContextProvider
+import io.rover.campaigns.core.events.contextproviders.DarkModeContextProvider
 import io.rover.campaigns.core.events.contextproviders.DeviceContextProvider
 import io.rover.campaigns.core.events.contextproviders.DeviceIdentifierContextProvider
 import io.rover.campaigns.core.events.contextproviders.LocaleContextProvider
@@ -269,6 +270,10 @@ class CoreAssembler @JvmOverloads constructor(
             LocaleContextProvider(application.resources)
         }
 
+        container.register(Scope.Singleton, ContextProvider::class.java, "darkMode") { _ ->
+            DarkModeContextProvider(application)
+        }
+
         container.register(Scope.Singleton, ContextProvider::class.java, "reachability") { _ ->
             ReachabilityContextProvider(application)
         }
@@ -425,6 +430,7 @@ class CoreAssembler @JvmOverloads constructor(
         listOf(
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "device"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "locale"),
+            resolver.resolveSingletonOrFail(ContextProvider::class.java, "darkMode"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "reachability"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "screen"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "telephony"),
