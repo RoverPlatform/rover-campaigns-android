@@ -31,7 +31,7 @@ data class Location(
         companion object
     }
 
-    fun isWithinOneHundredMeters(location: Location): Boolean {
+    fun isWithinFiveHundredMeters(location: Location): Boolean {
         val loc1 = android.location.Location("").apply {
             latitude = coordinate.latitude
             longitude = coordinate.longitude
@@ -42,7 +42,7 @@ data class Location(
             longitude = location.coordinate.longitude
         }
 
-        return loc1.distanceTo(loc2) < 100
+        return loc1.distanceTo(loc2) < 500f
     }
 
     companion object

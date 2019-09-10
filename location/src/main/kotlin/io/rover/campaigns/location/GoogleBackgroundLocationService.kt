@@ -52,7 +52,12 @@ class GoogleBackgroundLocationService(
     mainScheduler: Scheduler,
     private val trackLocation: Boolean = false,
     localStorage: LocalStorage,
-    private val dateFormatting: DateFormattingInterface
+    private val dateFormatting: DateFormattingInterface,
+    /**
+     * The minimum displacement in meters that will trigger a location update (and geofence/beacon
+     * rebinding).
+     */
+    private val minimumDisplacement: Float = 500f
 ) : GoogleBackgroundLocationServiceInterface {
 
     private val keyValueStorage = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
@@ -78,7 +83,7 @@ class GoogleBackgroundLocationService(
                     Location.decodeJson(JSONObject(it), dateFormatting)
                 }
             } catch (e : JSONException) {
-                log.w("Failed to last known location JSON: $e")
+                log.w("Failed to decode last known location JSON: $e")
                 null
             }
         }
@@ -140,7 +145,7 @@ class GoogleBackgroundLocationService(
 
         locationChanges
             .subscribe { location ->
-                if (currentLocation == null || currentLocation?.isWithinOneHundredMeters(location) == false) {
+                if (currentLocation == null || currentLocation?.isWithinFiveHundredMeters(location) == false) {
                     if (trackLocation) {
                         currentLocation = location
                         locationReportingService.updateLocation(location)
@@ -160,7 +165,8 @@ class GoogleBackgroundLocationService(
                         .create()
                         .setInterval(LOCATION_UPDATE_INTERVAL)
                         .setFastestInterval(LOCATION_UPDATE_INTERVAL)
-                        .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY),
+                        .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+                        .setSmallestDisplacement(minimumDisplacement),
                     PendingIntent.getBroadcast(
                         applicationContext,
                         0,
