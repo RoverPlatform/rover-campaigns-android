@@ -27,11 +27,11 @@ block.
 ```groovy
 dependencies {
     // ...
-    implementation "io.rover.campaigns:core:3.4.1"
-    implementation "io.rover.campaigns:notifications:3.4.1"
-    implementation "io.rover.campaigns:location:3.4.1"
-    implementation "io.rover.campaigns:debug:3.4.1"
-    implementation "io.rover.campaigns:experiences:3.4.1"
+    implementation "io.rover.campaigns:core:3.4.2"
+    implementation "io.rover.campaigns:notifications:3.4.2"
+    implementation "io.rover.campaigns:location:3.4.2"
+    implementation "io.rover.campaigns:debug:3.4.2"
+    implementation "io.rover.campaigns:experiences:3.4.2"
 }
 ```
 
