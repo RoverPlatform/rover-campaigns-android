@@ -31,7 +31,7 @@ data class Location(
         companion object
     }
 
-    fun isWithinFiveHundredMeters(location: Location): Boolean {
+    fun isNotSignificantDisplacement(location: Location): Boolean {
         val loc1 = android.location.Location("").apply {
             latitude = coordinate.latitude
             longitude = coordinate.longitude
@@ -42,8 +42,13 @@ data class Location(
             longitude = location.coordinate.longitude
         }
 
-        return loc1.distanceTo(loc2) < 500f
+        return loc1.distanceTo(loc2) < MINIMUM_DISPLACEMENT_DISTANCE
     }
 
-    companion object
+    companion object {
+        /**
+         * The minimum displacement distance in meters considered significant displacement.
+         */
+        const val MINIMUM_DISPLACEMENT_DISTANCE = 500f
+    }
 }

@@ -22,6 +22,7 @@ import io.rover.campaigns.core.streams.observeOn
 import io.rover.campaigns.core.streams.shareHotAndReplay
 import io.rover.campaigns.core.streams.subscribe
 import io.rover.campaigns.core.data.domain.Location
+import io.rover.campaigns.core.data.domain.Location.Companion.MINIMUM_DISPLACEMENT_DISTANCE
 import io.rover.campaigns.core.data.graphql.operations.data.decodeJson
 import io.rover.campaigns.core.data.graphql.operations.data.encodeJson
 import io.rover.campaigns.core.platform.DateFormattingInterface
@@ -52,12 +53,7 @@ class GoogleBackgroundLocationService(
     mainScheduler: Scheduler,
     private val trackLocation: Boolean = false,
     localStorage: LocalStorage,
-    private val dateFormatting: DateFormattingInterface,
-    /**
-     * The minimum displacement in meters that will trigger a location update (and geofence/beacon
-     * rebinding).
-     */
-    private val minimumDisplacement: Float = 500f
+    private val dateFormatting: DateFormattingInterface
 ) : GoogleBackgroundLocationServiceInterface {
 
     private val keyValueStorage = localStorage.getKeyValueStorageFor(STORAGE_CONTEXT_IDENTIFIER)
@@ -145,7 +141,7 @@ class GoogleBackgroundLocationService(
 
         locationChanges
             .subscribe { location ->
-                if (currentLocation == null || currentLocation?.isWithinFiveHundredMeters(location) == false) {
+                if (currentLocation == null || currentLocation?.isNotSignificantDisplacement(location) == false) {
                     if (trackLocation) {
                         currentLocation = location
                         locationReportingService.updateLocation(location)
@@ -166,7 +162,7 @@ class GoogleBackgroundLocationService(
                         .setInterval(LOCATION_UPDATE_INTERVAL)
                         .setFastestInterval(LOCATION_UPDATE_INTERVAL)
                         .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
-                        .setSmallestDisplacement(minimumDisplacement),
+                        .setSmallestDisplacement(MINIMUM_DISPLACEMENT_DISTANCE),
                     PendingIntent.getBroadcast(
                         applicationContext,
                         0,
