@@ -141,7 +141,7 @@ class GoogleBackgroundLocationService(
 
         locationChanges
             .subscribe { location ->
-                if (currentLocation == null || currentLocation?.isNotSignificantDisplacement(location) == false) {
+                if (currentLocation == null || currentLocation?.isSignificantDisplacement(location) == true) {
                     if (trackLocation) {
                         currentLocation = location
                         locationReportingService.updateLocation(location)
