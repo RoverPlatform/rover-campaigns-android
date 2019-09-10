@@ -31,5 +31,24 @@ data class Location(
         companion object
     }
 
-    companion object
+    fun isSignificantDisplacement(location: Location): Boolean {
+        val loc1 = android.location.Location("").apply {
+            latitude = coordinate.latitude
+            longitude = coordinate.longitude
+        }
+
+        val loc2 = android.location.Location("").apply {
+            latitude = location.coordinate.latitude
+            longitude = location.coordinate.longitude
+        }
+
+        return loc1.distanceTo(loc2) > MINIMUM_DISPLACEMENT_DISTANCE
+    }
+
+    companion object {
+        /**
+         * The minimum displacement distance in meters considered significant displacement.
+         */
+        const val MINIMUM_DISPLACEMENT_DISTANCE = 500f
+    }
 }

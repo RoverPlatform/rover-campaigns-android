@@ -35,9 +35,11 @@ import io.rover.campaigns.core.events.UserInfo
 import io.rover.campaigns.core.events.UserInfoInterface
 import io.rover.campaigns.core.events.contextproviders.ApplicationContextProvider
 import io.rover.campaigns.core.events.contextproviders.BluetoothContextProvider
+import io.rover.campaigns.core.events.contextproviders.DarkModeContextProvider
 import io.rover.campaigns.core.events.contextproviders.DeviceContextProvider
 import io.rover.campaigns.core.events.contextproviders.DeviceIdentifierContextProvider
 import io.rover.campaigns.core.events.contextproviders.LocaleContextProvider
+import io.rover.campaigns.core.events.contextproviders.LocationServicesContextProvider
 import io.rover.campaigns.core.events.contextproviders.ReachabilityContextProvider
 import io.rover.campaigns.core.events.contextproviders.ScreenContextProvider
 import io.rover.campaigns.core.events.contextproviders.SdkVersionContextProvider
@@ -268,6 +270,10 @@ class CoreAssembler @JvmOverloads constructor(
             LocaleContextProvider(application.resources)
         }
 
+        container.register(Scope.Singleton, ContextProvider::class.java, "darkMode") { _ ->
+            DarkModeContextProvider(application)
+        }
+
         container.register(Scope.Singleton, ContextProvider::class.java, "reachability") { _ ->
             ReachabilityContextProvider(application)
         }
@@ -286,6 +292,10 @@ class CoreAssembler @JvmOverloads constructor(
 
         container.register(Scope.Singleton, ContextProvider::class.java, "timeZone") { _ ->
             TimeZoneContextProvider()
+        }
+
+        container.register(Scope.Singleton, ContextProvider::class.java, "locationAuthorization") { _ ->
+            LocationServicesContextProvider(application)
         }
 
         container.register(Scope.Singleton, ContextProvider::class.java, "attributes") { resolver ->
@@ -420,6 +430,7 @@ class CoreAssembler @JvmOverloads constructor(
         listOf(
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "device"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "locale"),
+            resolver.resolveSingletonOrFail(ContextProvider::class.java, "darkMode"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "reachability"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "screen"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "telephony"),
@@ -427,7 +438,8 @@ class CoreAssembler @JvmOverloads constructor(
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "attributes"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "application"),
             resolver.resolveSingletonOrFail(ContextProvider::class.java, "deviceIdentifier"),
-            resolver.resolveSingletonOrFail(ContextProvider::class.java, "sdkVersion")
+            resolver.resolveSingletonOrFail(ContextProvider::class.java, "sdkVersion"),
+            resolver.resolveSingletonOrFail(ContextProvider::class.java, "locationAuthorization")
         ).forEach { eventQueue.addContextProvider(it) }
 
         resolver.resolveSingletonOrFail(VersionTrackerInterface::class.java).trackAppVersion()

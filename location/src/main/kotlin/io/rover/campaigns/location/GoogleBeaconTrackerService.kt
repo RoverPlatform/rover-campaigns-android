@@ -6,6 +6,9 @@ import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import android.support.v4.content.ContextCompat
 import com.google.android.gms.nearby.Nearby
 import com.google.android.gms.nearby.messages.EddystoneUid
 import com.google.android.gms.nearby.messages.IBeaconId
@@ -24,6 +27,7 @@ import io.rover.campaigns.core.platform.whenNotNull
 import io.rover.campaigns.core.streams.Publishers
 import io.rover.campaigns.core.streams.Scheduler
 import io.rover.campaigns.core.streams.doOnNext
+import io.rover.campaigns.core.streams.filter
 import io.rover.campaigns.core.streams.map
 import io.rover.campaigns.core.streams.observeOn
 import io.rover.campaigns.core.streams.subscribe
@@ -125,10 +129,31 @@ class GoogleBeaconTrackerService(
         }
     }
 
+    companion object {
+        private const val BACKGROUND_LOCATION_PERMISSION_CODE = "android.permission.ACCESS_BACKGROUND_LOCATION"
+        private const val Q_VERSION_CODE = 29
+    }
+
     init {
+        val fineLocationSource = Publishers.concat(Publishers.just(false), permissionsNotifier.notifyForPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+            .map { it == Manifest.permission.ACCESS_FINE_LOCATION })
+
+        val backgroundLocationSource = Publishers.concat(Publishers.just(false), permissionsNotifier.notifyForPermission(BACKGROUND_LOCATION_PERMISSION_CODE)
+            .map { it == BACKGROUND_LOCATION_PERMISSION_CODE })
+
+        // This publisher emits whenever all necessary permissions for starting beacon monitoring are granted.
+        val permissionGranted = Publishers.combineLatest(fineLocationSource, backgroundLocationSource) {
+            fineLocationGranted, _ ->
+            val backgroundPermissionGranted = (ContextCompat.checkSelfPermission(applicationContext, BACKGROUND_LOCATION_PERMISSION_CODE) == PackageManager.PERMISSION_GRANTED)
+
+            // The BACKGROUND_LOCATION_PERMISSION_CODE permission is required for monitoring for
+            // beacons on Q and above.
+            fineLocationGranted && (Build.VERSION.SDK_INT < Q_VERSION_CODE || backgroundPermissionGranted)
+        }.filter { it }
+
         Publishers.combineLatest(
             // observeOn(mainScheduler) used on each because combineLatest() is not thread safe.
-            permissionsNotifier.notifyForPermission(Manifest.permission.ACCESS_FINE_LOCATION).observeOn(mainScheduler).doOnNext { log.v("Permission obtained.") },
+            permissionGranted.doOnNext { log.v("Permission obtained. $it") },
             beaconsRepository.allBeacons().observeOn(mainScheduler).doOnNext { log.v("Full beacons list obtained from sync.") }
         ) { permission, beacons ->
             Pair(permission, beacons)
