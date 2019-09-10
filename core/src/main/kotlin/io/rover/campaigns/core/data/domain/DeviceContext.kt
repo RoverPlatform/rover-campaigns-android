@@ -32,6 +32,8 @@ data class DeviceContext(
     val localeRegion: String?,
     val localeScript: String?,
 
+    val isDarkModeEnabled: Boolean?,
+
     // TODO: enum type
     val notificationAuthorization: NotificationAuthorization?,
 
@@ -87,7 +89,7 @@ data class DeviceContext(
             return DeviceContext(
                 null, null, null, null, null, null,
                 null, null, null, null, null, null, null, null,
-                null, null, null, null, null, null,
+                null, null, null, null, null, null, null,
                 null, null, null, null, null, null, false, null, hashMapOf(), null
             )
         }
