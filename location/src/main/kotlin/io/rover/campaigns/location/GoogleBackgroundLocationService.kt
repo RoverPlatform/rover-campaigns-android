@@ -132,12 +132,12 @@ class GoogleBackgroundLocationService(
         .observeOn(mainScheduler)
         .shareHotAndReplay(1)
 
-    override val locationUpdatesLatest = Publishers.concat(Publishers.just(currentLocation).filterNulls(), locationUpdates)
+    override val locationUpdatesLatest = Publishers.concat(Publishers.just(currentLocation).filterNulls(), locationUpdates).shareHotAndReplay(1)
 
     init {
         startMonitoring()
 
-        Publishers.concat(Publishers.just(currentLocation).filterNulls(), locationUpdates)
+        locationUpdatesLatest
             .subscribe { location ->
                 if (currentLocation == null || currentLocation?.isWithinOneHundredMeters(location) == false) {
                     if (trackLocation) {
