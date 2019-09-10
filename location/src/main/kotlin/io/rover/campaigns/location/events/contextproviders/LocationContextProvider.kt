@@ -1,10 +1,10 @@
 package io.rover.campaigns.location.events.contextproviders
 
 import io.rover.campaigns.core.data.domain.DeviceContext
+import io.rover.campaigns.core.data.domain.Location
 import io.rover.campaigns.core.events.ContextProvider
 import io.rover.campaigns.core.streams.subscribe
 import io.rover.campaigns.location.GoogleBackgroundLocationServiceInterface
-import io.rover.campaigns.core.data.domain.Location
 
 class LocationContextProvider(
     googleBackgroundLocationService: GoogleBackgroundLocationServiceInterface
@@ -18,7 +18,7 @@ class LocationContextProvider(
     private var currentLocation: Location? = null
 
     init {
-        googleBackgroundLocationService.locationUpdatesLatest.subscribe { location ->
+        googleBackgroundLocationService.locationUpdates.subscribe { location ->
             currentLocation = location
         }
     }

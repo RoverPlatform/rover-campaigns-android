@@ -28,10 +28,10 @@ import io.rover.campaigns.core.platform.DateFormattingInterface
 import io.rover.campaigns.core.platform.LocalStorage
 import io.rover.campaigns.core.streams.Publishers
 import io.rover.campaigns.core.streams.filterNulls
+import io.rover.campaigns.core.streams.share
 import io.rover.campaigns.core.streams.shareAndReplay
 import org.json.JSONException
 import org.json.JSONObject
-import org.reactivestreams.Publisher
 import java.util.Date
 
 /**
@@ -86,7 +86,7 @@ class GoogleBackgroundLocationService(
             keyValueStorage[LOCATION_KEY] = value?.encodeJson(dateFormatting).toString()
         }
 
-    override val locationUpdates: Publisher<Location> = subject
+    private val locationChanges = subject
         .observeOn(ioScheduler)
         .map { locationResult ->
             // attempt to use Android's synchronous built-in geocoder api:
@@ -131,14 +131,14 @@ class GoogleBackgroundLocationService(
             )
         }
         .observeOn(mainScheduler)
-        .shareHotAndReplay(1)
+        .share()
 
-    override val locationUpdatesLatest = Publishers.concat(Publishers.just(currentLocation).filterNulls(), locationUpdates).shareAndReplay(1)
+    override val locationUpdates = Publishers.concat(Publishers.just(currentLocation).filterNulls(), locationChanges).shareAndReplay(1)
 
     init {
         startMonitoring()
 
-        locationUpdatesLatest
+        locationChanges
             .subscribe { location ->
                 if (currentLocation == null || currentLocation?.isWithinOneHundredMeters(location) == false) {
                     if (trackLocation) {
