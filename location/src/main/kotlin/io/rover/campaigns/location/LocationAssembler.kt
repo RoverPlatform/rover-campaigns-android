@@ -23,6 +23,7 @@ import io.rover.campaigns.core.data.sync.SyncParticipant
 import io.rover.campaigns.core.events.ContextProvider
 import io.rover.campaigns.core.events.EventQueueServiceInterface
 import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
+import io.rover.campaigns.core.platform.DateFormattingInterface
 import io.rover.campaigns.core.platform.LocalStorage
 import io.rover.campaigns.core.streams.Scheduler
 import io.rover.campaigns.location.events.contextproviders.LocationContextProvider
@@ -234,7 +235,9 @@ class LocationAssembler(
                     resolver.resolveSingletonOrFail(Geocoder::class.java),
                     resolver.resolveSingletonOrFail(Scheduler::class.java, "io"),
                     resolver.resolveSingletonOrFail(Scheduler::class.java, "main"),
-                    automaticLocationTracking
+                    automaticLocationTracking,
+                    resolver.resolveSingletonOrFail(LocalStorage::class.java),
+                    resolver.resolveSingletonOrFail(DateFormattingInterface::class.java)
                 )
             }
         }
