@@ -18,6 +18,8 @@ interface GoogleBackgroundLocationServiceInterface {
      * Be informed of location changes.
      */
     val locationUpdates: Publisher<Location>
+
+    val locationUpdatesLatest: Publisher<Location>
 }
 
 interface GoogleBeaconTrackerServiceInterface {

@@ -132,6 +132,8 @@ class GoogleBackgroundLocationService(
         .observeOn(mainScheduler)
         .shareHotAndReplay(1)
 
+    override val locationUpdatesLatest = Publishers.concat(Publishers.just(currentLocation).filterNulls(), locationUpdates)
+
     init {
         startMonitoring()
 

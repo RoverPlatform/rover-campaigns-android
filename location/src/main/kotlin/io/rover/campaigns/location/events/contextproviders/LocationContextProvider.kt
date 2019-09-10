@@ -18,7 +18,7 @@ class LocationContextProvider(
     private var currentLocation: Location? = null
 
     init {
-        googleBackgroundLocationService.locationUpdates.subscribe { location ->
+        googleBackgroundLocationService.locationUpdatesLatest.subscribe { location ->
             currentLocation = location
         }
     }
