@@ -28,6 +28,7 @@ import io.rover.campaigns.core.platform.DateFormattingInterface
 import io.rover.campaigns.core.platform.LocalStorage
 import io.rover.campaigns.core.streams.Publishers
 import io.rover.campaigns.core.streams.filterNulls
+import io.rover.campaigns.core.streams.shareAndReplay
 import org.json.JSONException
 import org.json.JSONObject
 import org.reactivestreams.Publisher
@@ -132,7 +133,7 @@ class GoogleBackgroundLocationService(
         .observeOn(mainScheduler)
         .shareHotAndReplay(1)
 
-    override val locationUpdatesLatest = Publishers.concat(Publishers.just(currentLocation).filterNulls(), locationUpdates).shareHotAndReplay(1)
+    override val locationUpdatesLatest = Publishers.concat(Publishers.just(currentLocation).filterNulls(), locationUpdates).shareAndReplay(1)
 
     init {
         startMonitoring()
