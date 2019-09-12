@@ -19,7 +19,9 @@ class PresentExperienceRoute(
         return when {
             (uri?.scheme == "https" || uri?.scheme == "http") && associatedDomains.contains(uri.host) -> {
                 // universal link!
-                presentExperienceIntents.displayExperienceIntentFromCampaignLink(uri)
+                val queryParameters = uri.query?.parseAsQueryParameters()
+                val screenID = queryParameters?.let {it["screenID"] }
+                presentExperienceIntents.displayExperienceIntentFromCampaignLink(uri, screenID)
             }
             urlSchemes.contains(uri?.scheme) && uri?.authority == "presentExperience" -> {
                 val queryParameters = uri.query.parseAsQueryParameters()
@@ -29,12 +31,14 @@ class PresentExperienceRoute(
                 // For Rover 3.0 devices, the Rover server will send deep links within push notifications using `experienceID` parameter. For backwards compatibility, `id` parameter is also supported.
                 val experienceId = queryParameters["experienceID"] ?: queryParameters["id"]
 
+                val screenID = queryParameters["screenID"]
+
                 if (experienceId == null) {
                     log.w("A presentExperience deep link lacked either a `campaignID` or `id` parameter.")
                     return null
                 }
 
-                presentExperienceIntents.displayExperienceIntentByExperienceId(experienceId, possibleCampaignId)
+                presentExperienceIntents.displayExperienceIntentByExperienceId(experienceId, possibleCampaignId, screenID)
             }
             else -> null // no match.
         }
@@ -48,11 +52,11 @@ class PresentExperienceRoute(
 open class PresentExperienceIntents(
     private val applicationContext: Context
 ) {
-    fun displayExperienceIntentByExperienceId(experienceId: String, possibleCampaignId: String?): Intent {
-        return RoverActivity.makeIntent(applicationContext, experienceId = experienceId, campaignId = possibleCampaignId)
+    fun displayExperienceIntentByExperienceId(experienceId: String, possibleCampaignId: String?, screenID: String? = null): Intent {
+        return RoverActivity.makeIntent(applicationContext, experienceId = experienceId, campaignId = possibleCampaignId, initialScreenId = screenID)
     }
 
-    fun displayExperienceIntentFromCampaignLink(universalLink: URI): Intent {
-        return RoverActivity.makeIntent(applicationContext, experienceUrl = universalLink.asAndroidUri())
+    fun displayExperienceIntentFromCampaignLink(universalLink: URI, screenID: String? = null): Intent {
+        return RoverActivity.makeIntent(applicationContext, experienceUrl = universalLink.asAndroidUri(), initialScreenId = screenID)
     }
 }
