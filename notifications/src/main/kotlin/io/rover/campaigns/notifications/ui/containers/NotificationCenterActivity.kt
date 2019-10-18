@@ -12,7 +12,7 @@ class NotificationCenterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val listView = NotificationCenterListView(
-            applicationContext
+            this
         )
 
         listView.activity = this
