@@ -57,6 +57,8 @@ class InMemoryBitmapCacheStage(
             PipelineStageResult.Successful(lruCache[input])
         } catch (e: UnableToCreateEntryException) {
             PipelineStageResult.Failed(e.reason)
+        } catch (e: IllegalStateException) {
+            PipelineStageResult.Failed(e)
         }
     }
 
