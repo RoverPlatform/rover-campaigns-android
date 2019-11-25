@@ -14,7 +14,7 @@ dependencies {
     repositories {
         // ...
         maven {
-            url "http://roverplatform.github.io/rover-campaigns-android/maven"
+            url "https://roverplatform.github.io/rover-campaigns-android/maven"
         }
     }
 }
