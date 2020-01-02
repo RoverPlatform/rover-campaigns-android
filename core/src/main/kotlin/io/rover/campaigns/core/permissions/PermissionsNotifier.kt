@@ -2,7 +2,7 @@ package io.rover.campaigns.core.permissions
 
 import android.content.Context
 import android.content.pm.PackageManager
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.streams.PublishSubject
 import io.rover.campaigns.core.streams.Publishers

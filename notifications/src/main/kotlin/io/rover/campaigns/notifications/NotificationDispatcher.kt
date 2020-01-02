@@ -7,10 +7,10 @@ import android.app.NotificationManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
-import android.support.annotation.DrawableRes
-import android.support.annotation.RequiresApi
-import android.support.v4.app.NotificationCompat
-import android.support.v4.app.NotificationManagerCompat
+import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import io.rover.campaigns.notifications.domain.NotificationAttachment
 import io.rover.campaigns.notifications.ui.concerns.NotificationsRepositoryInterface
 import io.rover.campaigns.core.R

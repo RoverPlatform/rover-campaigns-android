@@ -1,8 +1,8 @@
 package io.rover.campaigns.core.data.sync
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import io.rover.campaigns.core.events.EventQueueServiceInterface
 import io.rover.campaigns.core.logging.log
 

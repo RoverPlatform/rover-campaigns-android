@@ -3,12 +3,12 @@
 package io.rover.campaigns.core
 
 import android.app.Application
-import android.arch.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 import androidx.work.WorkManager
 import io.rover.campaigns.core.assets.AndroidAssetService
 import io.rover.campaigns.core.assets.AssetService
