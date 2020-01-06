@@ -26,11 +26,18 @@ android {
             multiDexEnabled true
         }
     }
+
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kotlinOptions { jvmTarget = "1.8" }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.0.0'
@@ -41,7 +48,7 @@ dependencies {
     implementation project(":notifications")
     implementation project(":debug")
     implementation project(":location")
-    implementation "io.rover:sdk:3.5.0"
+//    implementation "io.rover:sdk:3.5.0"
     implementation project(":experiences")
 //    implementation project(":advertising")
     implementation project(":ticketmaster")
