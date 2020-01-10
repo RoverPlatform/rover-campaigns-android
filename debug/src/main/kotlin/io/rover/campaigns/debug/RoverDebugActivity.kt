@@ -2,8 +2,8 @@ package io.rover.campaigns.debug
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.preference.PreferenceFragmentCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.preference.PreferenceFragmentCompat
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.logging.log
 

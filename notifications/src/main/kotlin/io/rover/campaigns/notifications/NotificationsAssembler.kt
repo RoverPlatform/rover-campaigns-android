@@ -3,11 +3,11 @@
 package io.rover.campaigns.notifications
 
 import android.app.Application
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ProcessLifecycleOwner
 import android.content.Context
 import android.content.Intent
-import android.support.annotation.DrawableRes
+import androidx.annotation.DrawableRes
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View

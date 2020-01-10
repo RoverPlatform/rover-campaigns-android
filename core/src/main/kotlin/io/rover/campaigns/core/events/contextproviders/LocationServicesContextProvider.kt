@@ -8,7 +8,7 @@ import io.rover.campaigns.core.events.ContextProvider
 import android.provider.Settings.Secure.LOCATION_MODE_OFF
 import android.provider.Settings.Secure.LOCATION_MODE
 import android.provider.Settings
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 
 class LocationServicesContextProvider(val applicationContext: android.content.Context) : ContextProvider {
     companion object {
