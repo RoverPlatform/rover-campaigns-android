@@ -1,6 +1,8 @@
 package io.rover.campaigns.ticketmaster
 
 import android.app.Application
+import android.content.IntentFilter
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.container.Assembler
 import io.rover.campaigns.core.container.Container
@@ -10,6 +12,12 @@ import io.rover.campaigns.core.data.sync.SyncCoordinatorInterface
 import io.rover.campaigns.core.data.sync.SyncParticipant
 import io.rover.campaigns.core.events.UserInfoInterface
 import io.rover.campaigns.core.platform.LocalStorage
+
+private const val MY_TICKET_SCREEN_SHOWED = "com.ticketmaster.presencesdk.eventanalytic.action.MYTICKETSCREENSHOWED"
+private const val MANAGE_TICKET_SCREEN_SHOWED = "com.ticketmaster.presencesdk.eventanalytic.action.MANAGETICKETSCREENSHOWED"
+private const val ADD_PAYMENT_INFO_SCREEN_SHOWED = "com.ticketmaster.presencesdk.eventanalytic.action.ADDPAYMENTINFOSCREENSHOWED"
+private const val MY_TICKET_BARCODE_SCREEN_SHOWED = "com.ticketmaster.presencesdk.eventanalytic.action.MYTICKETBARCODESCREENSHOWED"
+private const val TICKET_DETAIL_SCREEN_SHOWED = "com.ticketmaster.presencesdk.eventanalytic.action.TICKETDETAILSSCREENSHOWED"
 
 class TicketmasterAssembler : Assembler {
     override fun assemble(container: Container) {
@@ -45,6 +53,17 @@ class TicketmasterAssembler : Assembler {
                 "ticketmaster"
             )
         )
+
+        val analyticEventFilter = IntentFilter().apply {
+            addAction(MY_TICKET_SCREEN_SHOWED)
+            addAction(MANAGE_TICKET_SCREEN_SHOWED)
+            addAction(ADD_PAYMENT_INFO_SCREEN_SHOWED)
+            addAction(MY_TICKET_BARCODE_SCREEN_SHOWED)
+            addAction(TICKET_DETAIL_SCREEN_SHOWED)
+        }
+
+        LocalBroadcastManager.getInstance(resolver.resolveSingletonOrFail(Application::class.java).applicationContext)
+            .registerReceiver(TicketMasterAnalyticsBroadcastReceiver(), analyticEventFilter)
     }
 }
 
