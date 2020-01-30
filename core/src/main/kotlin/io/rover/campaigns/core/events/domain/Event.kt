@@ -20,7 +20,7 @@ data class Event(
             val attributes = mutableMapOf<String, Any>("screenName" to screenName)
 
             screenLabel?.let { attributes.put("screenLabel", it) }
-            contentID?.let { attributes.put("contentID", contentID) }
+            contentID?.let { attributes.put("contentID", it) }
 
             return Event("Screen Viewed", attributes)
         }
