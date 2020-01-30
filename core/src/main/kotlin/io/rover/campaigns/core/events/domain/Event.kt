@@ -16,7 +16,7 @@ data class Event(
     ): this(name, attributes, Date(), UUID.randomUUID())
 
     companion object {
-        fun screenViewedEvent(screenName: String, screenLabel: String? = null, contentID: String? = null): Event {
+        fun screenViewed(screenName: String, screenLabel: String? = null, contentID: String? = null): Event {
             val attributes = mutableMapOf<String, Any>("screenName" to screenName)
 
             screenLabel?.let { attributes.put("screenLabel", it) }
