@@ -17,7 +17,7 @@ class TicketMasterAnalyticsBroadcastReceiver : BroadcastReceiver() {
     }
 
     private fun trackTicketMasterScreenViewedEvent(intent: Intent, screenName: String) {
-        val eventQueue = RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)
+        val eventQueue = RoverCampaigns.shared?.resolve(EventQueueServiceInterface::class.java)
 
         val attributes = mutableMapOf<String, Any>("screenName" to screenName)
 
