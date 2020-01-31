@@ -525,20 +525,20 @@ fun addAutoTracker(application: Application) {
         override fun onActivityPaused(activity: Activity?) {}
 
         override fun onActivityResumed(activity: Activity?) {
-            // if (activity?.packageName?.startsWith(TM_PACKAGE_PREFIX) != true && (activity?.packageName?.startsWith(ROVER_PACKAGE_PREFIX) != true) && activity != null) {
+            if (activity?.packageName?.startsWith(TM_PACKAGE_PREFIX) != true && (activity?.packageName?.startsWith(ROVER_PACKAGE_PREFIX) != true) && activity != null) {
 
                 try {
-                    val activityInfo = activity!!.packageManager.getActivityInfo(activity.componentName, PackageManager.GET_META_DATA)
+                    val activityInfo = activity.packageManager.getActivityInfo(activity.componentName, PackageManager.GET_META_DATA)
                     val title: String = activityInfo.loadLabel(activity.packageManager).toString()
                     title
                 } catch (e: Exception) {
 
                 }
 
-                // activity::class.simpleName?.let { activityName ->
-                //     RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)?.trackEvent(Event.screenViewed(activityName))
-                // }
-           // }
+                activity::class.simpleName?.let { activityName ->
+                    RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)?.trackEvent(Event.screenViewed(activityName))
+                }
+           }
         }
 
         override fun onActivityStarted(activity: Activity?) {}
