@@ -74,6 +74,15 @@ class EventQueueService(
         flushEvents(flushAt)
     }
 
+    override fun trackScreenViewed(screenName: String, contentID: String?, contentName: String?) {
+        val attributes = mutableMapOf<String, Any>("screenName" to screenName)
+
+        contentName?.let { attributes.put("contentName", it) }
+        contentID?.let { attributes.put("contentID", it) }
+
+        trackEvent(Event("Screen Viewed", attributes))
+    }
+
     override fun flushNow() {
         flushEvents(1)
     }
