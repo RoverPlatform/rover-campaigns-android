@@ -7,37 +7,38 @@ import android.os.Bundle
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.events.EventQueueServiceInterface
 import io.rover.campaigns.core.events.domain.Event
+import io.rover.campaigns.core.logging.log
 import java.lang.Exception
 
 private const val TM_PACKAGE_PREFIX = "com.ticketmaster"
 private const val ROVER_PACKAGE_PREFIX = "io.rover"
+
 const val TRACKING_LABEL_KEY = "rvAutoTrackingLabelKey"
-const val TRACKING_KEY = "rvAutoTrackingEnabled"
-const val ACTIVITY_EXCLUDE_KEY = "rvAutoTrackingExcludeActivity"
+const val AUTO_TRACKING_ENABLED_KEY = "rvAutoTrackingEnabled"
+const val ACTIVITY_EXCLUDE_FROM_TRACKING = "rvAutoTrackingExcludeActivity"
 
 internal class AutoScreenTracker : Application.ActivityLifecycleCallbacks {
     override fun onActivityPaused(activity: Activity?) {}
 
     override fun onActivityResumed(activity: Activity?) {
-        if (activity?.packageName?.startsWith(TM_PACKAGE_PREFIX) != true
-            && (activity?.packageName?.startsWith(ROVER_PACKAGE_PREFIX) != true)
-            && activity != null) {
+        activity?.let {
             try {
-                val activityInfo = activity.packageManager?.getActivityInfo(activity.componentName, PackageManager.GET_META_DATA)
+                val activityInfo = it.packageManager?.getActivityInfo(it.componentName, PackageManager.GET_META_DATA)
                 val activityMetaData = activityInfo?.metaData
 
-                val applicationInfo = activity.application.packageManager?.getApplicationInfo(activity.application.packageName, PackageManager.GET_META_DATA)
+                val applicationInfo = it.packageManager?.getApplicationInfo(it.packageName, PackageManager.GET_META_DATA)
                 val applicationMetadata = applicationInfo?.metaData
 
-                if (applicationMetadata?.getBoolean(TRACKING_KEY) == true && activityMetaData?.getBoolean(ACTIVITY_EXCLUDE_KEY) != true) {
-                    val label = activityMetaData?.getString(TRACKING_LABEL_KEY) ?: activityInfo?.loadLabel(activity.packageManager).toString()
-                    RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)?.trackEvent(
-                        Event.screenViewed(label))
+                val autoTrackingEnabled = applicationMetadata?.getBoolean(AUTO_TRACKING_ENABLED_KEY) == true
+                val activityNotExcludedByUserFromTracking = activityMetaData?.getBoolean(ACTIVITY_EXCLUDE_FROM_TRACKING) != true
+                val activityNotExcludedByRoverFromTracking = it.packageName?.startsWith(TM_PACKAGE_PREFIX) != true && (it.packageName?.startsWith(ROVER_PACKAGE_PREFIX) != true)
+
+                if (autoTrackingEnabled && activityNotExcludedByUserFromTracking && activityNotExcludedByRoverFromTracking) {
+                    val label = activityMetaData?.getString(TRACKING_LABEL_KEY) ?: activityInfo?.loadLabel(it.packageManager).toString()
+                    RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)?.trackEvent(Event.screenViewed(label))
                 }
-            } catch (e: PackageManager.NameNotFoundException) {
-
             } catch (e: Exception) {
-
+                log.w("Failed to track screen. ${e.message}")
             }
         }
     }
