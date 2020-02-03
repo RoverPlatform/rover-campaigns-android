@@ -59,6 +59,13 @@ interface EventQueueServiceInterface {
     fun trackEvent(event: Event, namespace: String? = null)
 
     /**
+     * Track the given screen.  Enqueues it to be sent up to the Rover API.
+     *
+     * Asynchronous, will immediately return.
+     */
+    fun trackScreenViewed(screenName: String, contentID: String? = null, contentName: String? = null)
+
+    /**
      * Install the given context provider, so that all outgoing events can the given context
      * provider populate some of the fields in a [DeviceContext].
      */
