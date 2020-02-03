@@ -7,10 +7,17 @@ import android.app.Application
 import android.bluetooth.BluetoothAdapter
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import androidx.annotation.ColorInt
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.work.WorkManager
 import io.rover.campaigns.core.assets.AndroidAssetService
@@ -70,6 +77,7 @@ import io.rover.campaigns.core.streams.Scheduler
 import io.rover.campaigns.core.streams.forAndroidMainThread
 import io.rover.campaigns.core.streams.forExecutor
 import io.rover.campaigns.core.tracking.ApplicationSessionEmitter
+import io.rover.campaigns.core.tracking.AutoScreenTracker
 import io.rover.campaigns.core.tracking.SessionStore
 import io.rover.campaigns.core.tracking.SessionStoreInterface
 import io.rover.campaigns.core.tracking.SessionTracker
@@ -471,7 +479,7 @@ class CoreAssembler @JvmOverloads constructor(
             WorkManager.getInstance().cancelAllWorkByTag("rover-sync")
         }
 
-        addAutoTracker(application)
+        application.registerActivityLifecycleCallbacks(AutoScreenTracker())
     }
 }
 
@@ -515,42 +523,4 @@ val RoverCampaigns.deviceIdentification
 
 private fun missingDependencyError(name: String): Throwable {
     throw RuntimeException("Dependency not registered: $name.  Did you include CoreAssembler() in the assembler list?")
-}
-
-private const val TM_PACKAGE_PREFIX = "com.ticketmaster"
-private const val ROVER_PACKAGE_PREFIX = "io.rover"
-
-fun addAutoTracker(application: Application) {
-    val applicationActivityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
-        override fun onActivityPaused(activity: Activity?) {}
-
-        override fun onActivityResumed(activity: Activity?) {
-            if (activity?.packageName?.startsWith(TM_PACKAGE_PREFIX) != true && (activity?.packageName?.startsWith(ROVER_PACKAGE_PREFIX) != true) && activity != null) {
-
-                try {
-                    val activityInfo = activity.packageManager.getActivityInfo(activity.componentName, PackageManager.GET_META_DATA)
-                    val title: String = activityInfo.loadLabel(activity.packageManager).toString()
-                    title
-                } catch (e: Exception) {
-
-                }
-
-                activity::class.simpleName?.let { activityName ->
-                    RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)?.trackEvent(Event.screenViewed(activityName))
-                }
-           }
-        }
-
-        override fun onActivityStarted(activity: Activity?) {}
-
-        override fun onActivityDestroyed(activity: Activity?) {}
-
-        override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {}
-
-        override fun onActivityStopped(activity: Activity?) {}
-
-        override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {}
-    }
-
-    application.registerActivityLifecycleCallbacks(applicationActivityLifecycleCallbacks)
 }
