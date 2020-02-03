@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.events.EventQueueServiceInterface
-import io.rover.campaigns.core.events.domain.Event
 import io.rover.campaigns.core.logging.log
 import java.lang.Exception
 
@@ -35,7 +34,7 @@ internal class AutoScreenTracker : Application.ActivityLifecycleCallbacks {
 
                 if (autoTrackingEnabled && activityNotExcludedByUserFromTracking && activityNotExcludedByRoverFromTracking) {
                     val label = activityMetaData?.getString(TRACKING_LABEL_KEY) ?: activityInfo?.loadLabel(it.packageManager).toString()
-                    RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)?.trackEvent(Event.screenViewed(label))
+                    RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)?.trackScreenViewed(label)
                 }
             } catch (e: Exception) {
                 log.w("Failed to track screen. ${e.message}")

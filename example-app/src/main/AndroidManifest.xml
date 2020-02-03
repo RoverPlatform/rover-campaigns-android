@@ -28,7 +28,7 @@
             android:name="io.rover.example.ExampleMainActivity"
             android:label="@string/app_name" android:theme="@style/RoverDebugPreferencesActivityTheme">
 
-            <meta-data android:name="rvAutoTrackingExcludeActivity" android:value="false"></meta-data>
+            <meta-data android:name="rvAutoTrackingExcludeActivity" android:value="false" />
             <meta-data android:name="rvAutoTrackingLabel" android:value="Main Activity"></meta-data>
 
             <intent-filter>
