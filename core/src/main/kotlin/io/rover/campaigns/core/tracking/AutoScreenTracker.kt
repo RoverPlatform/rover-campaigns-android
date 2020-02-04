@@ -29,7 +29,10 @@ internal class AutoScreenTracker(private val activityAutoTrackingEnabled: Boolea
 
                 if (activityAutoTrackingEnabled && activityNotExcludedByUserFromTracking && activityNotExcludedByRoverFromTracking) {
                     val label = activityMetaData?.getString(TRACKING_LABEL_KEY) ?: activityInfo?.loadLabel(activity.packageManager).toString()
-                    RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)?.trackScreenViewed(label)
+
+                    val trackableContentScreen = (activity as? TrackableContentScreen)
+
+                    RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)?.trackScreenViewed(label, trackableContentScreen?.contentID, trackableContentScreen?.contentName)
                 }
             } catch (e: Exception) {
                 log.w("Failed to track screen. ${e.message}")
@@ -42,4 +45,9 @@ internal class AutoScreenTracker(private val activityAutoTrackingEnabled: Boolea
     override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {}
     override fun onActivityStopped(activity: Activity?) {}
     override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {}
+}
+
+interface TrackableContentScreen {
+    var contentName: String?
+    var contentID: String?
 }
