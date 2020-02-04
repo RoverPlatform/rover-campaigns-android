@@ -64,8 +64,4 @@ interface SessionTrackerInterface {
     )
 }
 
-interface TrackableContentScreen {
-    var screenName: String?
-    var contentName: String?
-    var contentID: String?
-}
+interface RoverAutoTrackingExcluded 
