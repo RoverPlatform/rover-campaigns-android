@@ -28,9 +28,12 @@ internal class AutoScreenTracker : Application.ActivityLifecycleCallbacks {
                 val activityNotExcludedByRoverFromTracking = activity.packageName?.startsWith(TM_PACKAGE_PREFIX) != true && (activity.packageName?.startsWith(ROVER_PACKAGE_PREFIX) != true)
 
                 if (activityNotExcludedByUserFromTracking && activityNotExcludedByRoverFromTracking) {
-                    val label = activityMetaData?.getString(TRACKING_LABEL_KEY) ?: activityInfo?.loadLabel(activity.packageManager).toString()
+                    val manifestLabel = activityMetaData?.getString(TRACKING_LABEL_KEY) ?: activityInfo?.loadLabel(activity.packageManager).toString()
 
                     val trackableContentScreen = (activity as? TrackableContentScreen)
+                    val trackableContentScreenName = trackableContentScreen?.screenName
+                    
+                    val label = if (trackableContentScreenName.isNullOrEmpty()) manifestLabel else trackableContentScreenName
 
                     RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)?.trackScreenViewed(label, trackableContentScreen?.contentID, trackableContentScreen?.contentName)
                 }
