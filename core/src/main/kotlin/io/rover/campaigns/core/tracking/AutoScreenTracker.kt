@@ -15,7 +15,7 @@ private const val ROVER_PACKAGE_PREFIX = "io.rover"
 private const val TRACKING_LABEL_KEY = "rvAutoTrackingLabelKey"
 private const val ACTIVITY_EXCLUDE_FROM_TRACKING = "rvAutoTrackingExcludeActivity"
 
-internal class AutoScreenTracker(private val activityAutoTrackingEnabled: Boolean) : Application.ActivityLifecycleCallbacks {
+internal class AutoScreenTracker : Application.ActivityLifecycleCallbacks {
     override fun onActivityPaused(activity: Activity?) {}
 
     override fun onActivityResumed(activity: Activity?) {
@@ -27,7 +27,7 @@ internal class AutoScreenTracker(private val activityAutoTrackingEnabled: Boolea
                 val activityNotExcludedByUserFromTracking = activityMetaData?.getBoolean(ACTIVITY_EXCLUDE_FROM_TRACKING) != true
                 val activityNotExcludedByRoverFromTracking = activity.packageName?.startsWith(TM_PACKAGE_PREFIX) != true && (activity.packageName?.startsWith(ROVER_PACKAGE_PREFIX) != true)
 
-                if (activityAutoTrackingEnabled && activityNotExcludedByUserFromTracking && activityNotExcludedByRoverFromTracking) {
+                if (activityNotExcludedByUserFromTracking && activityNotExcludedByRoverFromTracking) {
                     val label = activityMetaData?.getString(TRACKING_LABEL_KEY) ?: activityInfo?.loadLabel(activity.packageManager).toString()
 
                     val trackableContentScreen = (activity as? TrackableContentScreen)
@@ -45,9 +45,4 @@ internal class AutoScreenTracker(private val activityAutoTrackingEnabled: Boolea
     override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) {}
     override fun onActivityStopped(activity: Activity?) {}
     override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {}
-}
-
-interface TrackableContentScreen {
-    var contentName: String?
-    var contentID: String?
 }

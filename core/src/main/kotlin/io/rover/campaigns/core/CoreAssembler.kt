@@ -483,7 +483,7 @@ class CoreAssembler @JvmOverloads constructor(
             WorkManager.getInstance().cancelAllWorkByTag("rover-sync")
         }
 
-        application.registerActivityLifecycleCallbacks(AutoScreenTracker(analyticsActivityAutoTracking))
+        if (analyticsActivityAutoTracking) application.registerActivityLifecycleCallbacks(AutoScreenTracker())
     }
 }
 

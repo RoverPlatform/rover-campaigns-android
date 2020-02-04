@@ -63,3 +63,8 @@ interface SessionTrackerInterface {
         attributes: Attributes
     )
 }
+
+interface TrackableContentScreen {
+    var contentName: String?
+    var contentID: String?
+}
