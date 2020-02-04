@@ -156,7 +156,11 @@ class CoreAssembler @JvmOverloads constructor(
      * the Rover Location module installed, this will keep the monitored beacons and geofences up to
      * date).
      */
-    private val scheduleBackgroundSync: Boolean = true
+    private val scheduleBackgroundSync: Boolean = true,
+    /**
+     * Automatically tracks activities resumed to Rover analytics
+     */
+    private val analyticsActivityAutoTracking: Boolean = false
 ) : Assembler {
 
     override fun assemble(container: Container) {
@@ -479,7 +483,7 @@ class CoreAssembler @JvmOverloads constructor(
             WorkManager.getInstance().cancelAllWorkByTag("rover-sync")
         }
 
-        application.registerActivityLifecycleCallbacks(AutoScreenTracker())
+        application.registerActivityLifecycleCallbacks(AutoScreenTracker(analyticsActivityAutoTracking))
     }
 }
 

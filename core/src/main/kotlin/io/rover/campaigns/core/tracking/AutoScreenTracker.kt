@@ -12,28 +12,23 @@ import java.lang.Exception
 private const val TM_PACKAGE_PREFIX = "com.ticketmaster"
 private const val ROVER_PACKAGE_PREFIX = "io.rover"
 
-const val TRACKING_LABEL_KEY = "rvAutoTrackingLabelKey"
-const val AUTO_TRACKING_ENABLED_KEY = "rvAutoTrackingEnabled"
-const val ACTIVITY_EXCLUDE_FROM_TRACKING = "rvAutoTrackingExcludeActivity"
+private const val TRACKING_LABEL_KEY = "rvAutoTrackingLabelKey"
+private const val ACTIVITY_EXCLUDE_FROM_TRACKING = "rvAutoTrackingExcludeActivity"
 
-internal class AutoScreenTracker : Application.ActivityLifecycleCallbacks {
+internal class AutoScreenTracker(private val activityAutoTrackingEnabled: Boolean) : Application.ActivityLifecycleCallbacks {
     override fun onActivityPaused(activity: Activity?) {}
 
     override fun onActivityResumed(activity: Activity?) {
-        activity?.let {
+        activity?.let { activity ->
             try {
-                val activityInfo = it.packageManager?.getActivityInfo(it.componentName, PackageManager.GET_META_DATA)
+                val activityInfo = activity.packageManager?.getActivityInfo(activity.componentName, PackageManager.GET_META_DATA)
                 val activityMetaData = activityInfo?.metaData
 
-                val applicationInfo = it.packageManager?.getApplicationInfo(it.packageName, PackageManager.GET_META_DATA)
-                val applicationMetadata = applicationInfo?.metaData
-
-                val autoTrackingEnabled = applicationMetadata?.getBoolean(AUTO_TRACKING_ENABLED_KEY) == true
                 val activityNotExcludedByUserFromTracking = activityMetaData?.getBoolean(ACTIVITY_EXCLUDE_FROM_TRACKING) != true
-                val activityNotExcludedByRoverFromTracking = it.packageName?.startsWith(TM_PACKAGE_PREFIX) != true && (it.packageName?.startsWith(ROVER_PACKAGE_PREFIX) != true)
+                val activityNotExcludedByRoverFromTracking = activity.packageName?.startsWith(TM_PACKAGE_PREFIX) != true && (activity.packageName?.startsWith(ROVER_PACKAGE_PREFIX) != true)
 
-                if (autoTrackingEnabled && activityNotExcludedByUserFromTracking && activityNotExcludedByRoverFromTracking) {
-                    val label = activityMetaData?.getString(TRACKING_LABEL_KEY) ?: activityInfo?.loadLabel(it.packageManager).toString()
+                if (activityAutoTrackingEnabled && activityNotExcludedByUserFromTracking && activityNotExcludedByRoverFromTracking) {
+                    val label = activityMetaData?.getString(TRACKING_LABEL_KEY) ?: activityInfo?.loadLabel(activity.packageManager).toString()
                     RoverCampaigns.shared?.resolveSingletonOrFail(EventQueueServiceInterface::class.java)?.trackScreenViewed(label)
                 }
             } catch (e: Exception) {
