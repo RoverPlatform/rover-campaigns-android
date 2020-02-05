@@ -41,7 +41,7 @@ dependencies {
     implementation project(":notifications")
     implementation project(":debug")
     implementation project(":location")
-//    implementation "io.rover:sdk:3.5.0"
+    implementation "io.rover:sdk:3.6.0"
     implementation project(":experiences")
 //    implementation project(":advertising")
     implementation project(":ticketmaster")
