@@ -113,9 +113,7 @@ class GeofencesSqlStorage(
                     null,
                     null,
                     null
-                ).apply {
-                    moveToFirst()
-                }
+                )
 
                 return object : AbstractIterator<Geofence>(), CloseableIterator<Geofence> {
                     override fun computeNext() {

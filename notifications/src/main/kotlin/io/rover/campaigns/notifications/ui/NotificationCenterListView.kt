@@ -4,13 +4,11 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.graphics.Canvas
 import android.os.Handler
-import android.support.design.widget.CoordinatorLayout
-import android.support.design.widget.Snackbar
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import com.google.android.material.snackbar.Snackbar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ItemTouchHelper
 import android.util.AttributeSet
 import android.view.View
 import android.view.ViewGroup
@@ -46,10 +44,11 @@ import io.rover.campaigns.notifications.ui.concerns.NotificationItemViewModelInt
  * See the [Notification Center
  * Documentation](https://www.rover.io/docs/android/notification-center/).
  */
-open class NotificationCenterListView : CoordinatorLayout {
-    constructor(context: Context?) : super(context)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
-    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+open class NotificationCenterListView :
+    CoordinatorLayout {
+    constructor(context: Context) : super(context)
+    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
     /**
      * You must provide an Activity here before binding the view model.
@@ -184,9 +183,10 @@ open class NotificationCenterListView : CoordinatorLayout {
         }
     }
 
-    private val swipeRefreshLayout = SwipeRefreshLayout(
-        context
-    )
+    private val swipeRefreshLayout =
+        androidx.swiperefreshlayout.widget.SwipeRefreshLayout(
+            context
+        )
 
     private val emptySwitcherLayout = FrameLayout(
         context
@@ -195,7 +195,7 @@ open class NotificationCenterListView : CoordinatorLayout {
         this.addView(emptyLayout)
     }
 
-    private val itemsView = RecyclerView(
+    private val itemsView = androidx.recyclerview.widget.RecyclerView(
         context
     ).apply { emptySwitcherLayout.addView(this) }
 
@@ -203,7 +203,7 @@ open class NotificationCenterListView : CoordinatorLayout {
     private var currentNotificationsList: List<Notification>? = null
     private var currentStableIdsMap: Map<String, Int>? = null
 
-    private val adapter = object : RecyclerView.Adapter<NotificationViewHolder>() {
+    private val adapter = object : androidx.recyclerview.widget.RecyclerView.Adapter<NotificationViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
             return NotificationViewHolder(context, this@NotificationCenterListView, makeNotificationRowView(), makeSwipeToDeleteRevealBackgroundView())
         }
@@ -248,14 +248,19 @@ open class NotificationCenterListView : CoordinatorLayout {
 
         this.addView(swipeRefreshLayout)
 
-        itemsView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        itemsView.layoutManager =
+            androidx.recyclerview.widget.LinearLayoutManager(
+                context,
+                androidx.recyclerview.widget.LinearLayoutManager.VERTICAL,
+                false
+            )
         itemsView.adapter = adapter
 
         // TODO: in design mode, put a description!
 
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             // no drag and drop desired.
-            override fun onMove(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, target: RecyclerView.ViewHolder?): Boolean = false
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean = false
 
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
                 if (viewHolder != null) {
@@ -263,13 +268,13 @@ open class NotificationCenterListView : CoordinatorLayout {
                 }
             }
 
-            override fun onChildDrawOver(c: Canvas?, recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
+            override fun onChildDrawOver(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
                 if (viewHolder != null) {
                     ItemTouchHelper.Callback.getDefaultUIUtil().onDrawOver(c, recyclerView, (viewHolder as NotificationViewHolder).rowItemView.view, dX, dY, actionState, isCurrentlyActive)
                 }
             }
 
-            override fun clearView(recyclerView: RecyclerView?, viewHolder: RecyclerView.ViewHolder?) {
+            override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 if (viewHolder != null) {
                     ItemTouchHelper.Callback.getDefaultUIUtil().clearView((viewHolder as NotificationViewHolder).rowItemView.view)
                 }

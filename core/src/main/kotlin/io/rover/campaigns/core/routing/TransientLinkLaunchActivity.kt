@@ -1,8 +1,8 @@
 package io.rover.campaigns.core.routing
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.logging.log
 import java.net.URI

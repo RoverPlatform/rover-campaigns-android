@@ -1,6 +1,8 @@
 package io.rover.campaigns.ticketmaster
 
 import android.app.Application
+import android.content.IntentFilter
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.container.Assembler
 import io.rover.campaigns.core.container.Container
@@ -45,6 +47,13 @@ class TicketmasterAssembler : Assembler {
                 "ticketmaster"
             )
         )
+
+        val analyticEventFilter = IntentFilter().apply {
+            TMScreenActionToRoverNames.forEach { addAction(it.key) }
+        }
+
+        LocalBroadcastManager.getInstance(resolver.resolveSingletonOrFail(Application::class.java).applicationContext)
+            .registerReceiver(TicketMasterAnalyticsBroadcastReceiver(), analyticEventFilter)
     }
 }
 

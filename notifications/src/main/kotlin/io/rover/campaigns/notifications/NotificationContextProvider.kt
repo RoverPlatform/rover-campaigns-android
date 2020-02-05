@@ -1,6 +1,6 @@
 package io.rover.campaigns.notifications
 
-import android.support.v4.app.NotificationManagerCompat
+import androidx.core.app.NotificationManagerCompat
 import io.rover.campaigns.core.data.domain.DeviceContext
 import io.rover.campaigns.core.events.ContextProvider
 

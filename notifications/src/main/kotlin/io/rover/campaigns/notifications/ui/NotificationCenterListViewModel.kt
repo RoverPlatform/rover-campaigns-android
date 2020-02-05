@@ -1,8 +1,8 @@
 package io.rover.campaigns.notifications.ui
 
-import android.arch.lifecycle.Lifecycle
-import android.arch.lifecycle.LifecycleObserver
-import android.arch.lifecycle.OnLifecycleEvent
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.streams.PublishSubject
 import io.rover.campaigns.core.streams.Publishers
