@@ -37,16 +37,21 @@ class TicketmasterManager(
     }
 
     override fun setCredentials(backendNameOrdinal: Int, memberId: String?) {
-        member = Member(
-            ticketmasterID = memberId,
-            email = null,
-            firstName = null
-        )
-
-        updateUserInfoWithMemberAttributes()
+        if (memberId.isNullOrBlank()) {
+            clearCredentials()
+        } else {
+            member = Member(
+                ticketmasterID = memberId,
+                email = null,
+                firstName = null
+            )
+            updateUserInfoWithMemberAttributes()
+        }
     }
 
     override fun setCredentials(id: String, email: String?, firstName: String?) {
+        if (id.isBlank()) clearCredentials()
+
         member = Member(
             ticketmasterID = id,
             email = email,
