@@ -37,30 +37,21 @@ class TicketmasterManager(
     }
 
     override fun setCredentials(backendNameOrdinal: Int, memberId: String?) {
-        if (memberId.isNullOrBlank()) {
-            clearCredentials()
-        } else {
-            member = Member(
-                ticketmasterID = memberId,
-                email = null,
-                firstName = null
-            )
-            updateUserInfoWithMemberAttributes()
-        }
+        member = Member(
+            ticketmasterID = memberId,
+            email = null,
+            firstName = null
+        )
+        updateUserInfoWithMemberAttributes()
     }
 
     override fun setCredentials(id: String, email: String?, firstName: String?) {
-        if (id.isBlank()) {
-            clearCredentials()
-        } else {
-            member = Member(
-                ticketmasterID = id,
-                email = email,
-                firstName = firstName
-            )
-
-            updateUserInfoWithMemberAttributes()
-        }
+        member = Member(
+            ticketmasterID = id,
+            email = email,
+            firstName = firstName
+        )
+        updateUserInfoWithMemberAttributes()
     }
 
     @Suppress("UNCHECKED_CAST")
