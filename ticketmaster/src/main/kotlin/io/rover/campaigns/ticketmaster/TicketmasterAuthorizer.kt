@@ -22,7 +22,7 @@ interface TicketmasterAuthorizer {
      *
      * ```kotlin
      * override fun onMemberUpdated(backendName: TMLoginApi.BackendName, memberInfo: TMLoginApi.MemberInfo?) {
-     *     Rover.sharedInstance.ticketmasterAuthorizer.setCredentials(
+     *     RoverCampaigns.shared.resolve(TicketmasterAuthorizer::class.java)?.setCredentials(
      *         backendName.ordinal,
      *         memberInfo?.memberId
      *     )
@@ -31,7 +31,6 @@ interface TicketmasterAuthorizer {
     */
     @Deprecated("Use setCredentials(id: String, email: String?, firstName: String?) instead.")
     fun setCredentials(backendNameOrdinal: Int, memberId: String?)
-
 
     /**
      * Set the user's Ticketmaster credentials after a successful sign-in with the [Presence
@@ -53,11 +52,13 @@ interface TicketmasterAuthorizer {
      *
      * ```kotlin
      * override fun onMemberUpdated(backendName: TMLoginApi.BackendName, memberInfo: TMLoginApi.MemberInfo?) {
-     *     Rover.sharedInstance.ticketmasterAuthorizer.setCredentials(
-     *         memberInfo?.memberId,
-     *         memberInfo?.email,
-     *         memberInfo?.firstName
-     *     )
+     *     memberInfo?.let {
+     *           RoverCampaigns.shared.resolve(TicketmasterAuthorizer::class.java)?.setCredentials(
+     *               it.memberId,
+     *               it.email,
+     *               it..firstName
+     *           )
+     *      }
      * }
      * ```
      */
