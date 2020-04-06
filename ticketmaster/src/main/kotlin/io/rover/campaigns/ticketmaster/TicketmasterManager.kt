@@ -42,7 +42,6 @@ class TicketmasterManager(
             email = null,
             firstName = null
         )
-
         updateUserInfoWithMemberAttributes()
     }
 
@@ -52,7 +51,6 @@ class TicketmasterManager(
             email = email,
             firstName = firstName
         )
-
         updateUserInfoWithMemberAttributes()
     }
 
@@ -81,9 +79,11 @@ class TicketmasterManager(
     override fun initialRequest(): SyncRequest? {
         return member.whenNotNull { member ->
 
-            val params = listOfNotNull(
-                member.ticketmasterID.whenNotNull { Pair(TICKETMASTER_ID_KEY, it) }
-            )
+            val params = if (member.ticketmasterID.isNullOrEmpty()) {
+                emptyList()
+            } else {
+                listOf(Pair(TICKETMASTER_ID_KEY, member.ticketmasterID))
+            }
 
             if (params.isEmpty()) {
                 null
