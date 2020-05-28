@@ -24,7 +24,7 @@ interface ContextProvider {
     /**
      * Called when this Context Provider is registered with the events queue.
      */
-    fun registeredWithEventQueue(eventQueue: EventQueueServiceInterface) { }
+    fun registeredWithEventQueue(eventQueue: EventQueueServiceInterface) {}
 }
 
 /**
@@ -63,7 +63,11 @@ interface EventQueueServiceInterface {
      *
      * Asynchronous, will immediately return.
      */
-    fun trackScreenViewed(screenName: String, contentID: String? = null, contentName: String? = null)
+    fun trackScreenViewed(
+        screenName: String,
+        contentID: String? = null,
+        contentName: String? = null
+    )
 
     /**
      * Install the given context provider, so that all outgoing events can the given context
@@ -89,13 +93,24 @@ interface UserInfoInterface {
      * Call this to set custom attributes to be included along with the [DeviceContext] given alongside
      * outgoing events.
      *
-     * This will allow you to track any parameters you like set from device-side in Rover Audience
+     * This will allow you to track any parameters you set from device-side in Rover Audience
      * or BigQuery, or use them for segmentation in Campaigns, or for personalization.
      *
      * Note that you may not use these attributes to address Campaigns to specific users with
      * personalization, because the threat model does not allow these values to be trusted.
      */
     fun update(builder: (attributes: HashMap<String, Any>) -> Unit)
+
+    /**
+     * Adds a tag to the [DeviceContext] under the key tags.
+     */
+    fun addTag(tag: String)
+    fun addTag(tag: String, expiresInSeconds: Long?)
+
+    /**
+     * Remove a tag from the [DeviceContext]
+     */
+    fun removeTag(tag: String)
 
     /**
      * Clear all the custom attributes.
@@ -107,4 +122,9 @@ interface UserInfoInterface {
      * them in outgoing [Event]s.
      */
     val currentUserInfo: Attributes
+
+    /**
+     * Returns a list of non-expired tags from [DeviceContext]
+     */
+    fun tags(): Set<String>
 }
