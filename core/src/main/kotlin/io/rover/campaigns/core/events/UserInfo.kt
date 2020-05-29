@@ -1,7 +1,6 @@
 package io.rover.campaigns.core.events
 
 import io.rover.campaigns.core.data.domain.Attributes
-import io.rover.campaigns.core.data.graphql.getObjectIterable
 import io.rover.campaigns.core.data.graphql.operations.data.encodeJson
 import io.rover.campaigns.core.data.graphql.operations.data.toAttributesHash
 import io.rover.campaigns.core.logging.log
@@ -18,106 +17,72 @@ class UserInfo(
     override fun update(builder: (attributes: HashMap<String, Any>) -> Unit) {
         val mutableDraft = HashMap(currentUserInfo)
         builder(mutableDraft)
-        if (mutableDraft.containsKey("tags")) {
-            if (mutableDraft["tags"] is Collection<*>) {
-                val mutatedTags =
+
+        when {
+            mutableDraft.containsKey("tags") && mutableDraft["tags"] is Collection<*> -> {
+                val mutatedInfoTags =
                     (mutableDraft["tags"] as Collection<*>).filterIsInstance<String>().toSet()
 
                 val addedTags =
-                    mutatedTags.filter { !currentTags.contains(Tag(value = it, expires = null)) }
-                val removedTags = currentTags.filter { !mutatedTags.contains(it.value) }
+                    mutatedInfoTags.filter { !currentTags.contains(it) }
+                val removedTags = currentTags.values().filter { !mutatedInfoTags.contains(it) }
 
-                if (addedTags.isNotEmpty()) {
-                    log.w("Deprecation notice: Attempted to add tags directly instead of using addTag")
+                if (addedTags.isNotEmpty() || removedTags.isNotEmpty()) {
+                    log.w("Deprecation notice: Attempted to add or remove tags directly instead of using addTag or removeTag")
                     addedTags.forEach { addTag(it) }
+                    removedTags.forEach { removeTag(it) }
                 }
-                if (removedTags.isNotEmpty()) {
-                    log.w("Deprecation notice: Attempted to remove tags directly instead of using removeTag")
-                    removedTags.forEach { removeTag(it.value) }
-                }
-            } else {
+            }
+            mutableDraft.containsKey("tags") -> {
                 log.w("Attempted updating tags to a non collection type")
                 mutableDraft.remove("tags")
             }
         }
+
         currentUserInfo = mutableDraft
     }
 
-    override fun addTag(tag: String) {
-        addTag(tag, null)
-    }
-
     override fun addTag(tag: String, expiresInSeconds: Long?) {
-        val expires = if (expiresInSeconds != null) {
-            Date(Date().time + expiresInSeconds)
-        } else null
-
-        val mutableTags = currentTags.toMutableSet()
-        mutableTags.add(
-            Tag(
-                value = tag,
-                expires = expires
-            )
-        )
-
-        currentTags = mutableTags
+        currentTags = currentTags.add(tag, expiresInSeconds?.let { Date(Date().time + it * 1000) })
     }
 
     override fun removeTag(tag: String) {
-        val mutableTags = currentTags.toMutableSet()
-        mutableTags.remove(Tag(value = tag, expires = null))
-        currentTags = mutableTags
+        currentTags = currentTags.remove(tag)
     }
 
-    override fun tags(): Set<String> {
-        return currentTags.map { it.value }.toSet()
+    override fun tags(): List<String> {
+        return currentTags.values()
     }
 
     override fun clear() {
         currentUserInfo = hashMapOf()
-        currentTags = setOf()
+        currentTags = TagSet.empty()
     }
 
-    private var currentTags: Set<Tag> = try {
-        when (store[TAGS_KEY]) {
-            null -> setOf()
-            else -> decodeTags(store[TAGS_KEY]!!)
+    private var currentTags: TagSet = try {
+        when (val data = store[TAGS_KEY]) {
+            null -> TagSet.empty()
+            else -> TagSet.decodeJson(data).filterActiveTags()
         }
     } catch (throwable: Throwable) {
         log.w("Corrupted local tags, ignoring and starting fresh. Cause ${throwable.message}")
-        setOf()
+        TagSet.empty()
     }
-        get() {
-            val now = Date()
-            val unExpiredTags = field.filter {
-                when (it.expires) {
-                    null -> true
-                    else -> it.expires.after(now)
-                }
-            }.toSet()
-
-            if (unExpiredTags != field) {
-                // Some tags have expired update the value
-                currentTags = unExpiredTags
-            }
-            return unExpiredTags
-        }
+        get() = field.filterActiveTags()
         set(value) {
-            field = value
-            store[TAGS_KEY] = encodeTags(value)
+            field = value.filterActiveTags()
+            store[TAGS_KEY] = field.encodeJson()
         }
 
     override var currentUserInfo: Attributes = try {
-        when (store[USER_INFO_KEY]) {
+        when (val attributes = store[USER_INFO_KEY]) {
             null -> hashMapOf()
             else -> {
-                val info = JSONObject(store[USER_INFO_KEY]).toAttributesHash().toMutableMap()
+                val info = JSONObject(attributes).toAttributesHash().toMutableMap()
                 if (info.containsKey("tags")) {
-                    log.v("Migrating user info tags")
                     info["tags"]?.let { migrateTags(it) }
                     info.remove("tags")
                     store[USER_INFO_KEY] = info.encodeJson().toString()
-                    log.v("Migrated user info tags successfully")
                 }
                 info
             }
@@ -128,7 +93,7 @@ class UserInfo(
     }
         get() {
             val mutableInfo = HashMap(field)
-            mutableInfo["tags"] = tags()
+            mutableInfo["tags"] = currentTags.values()
             return mutableInfo
         }
         private set(value) {
@@ -154,48 +119,55 @@ class UserInfo(
     }
 }
 
-private fun encodeTags(tags: Set<Tag>): String = JSONArray(tags.map { it.encodeJSON() }).toString()
-
-private fun decodeTags(value: String): Set<Tag> =
-    JSONArray(value).getObjectIterable().map { Tag.decodeJSON(it) }.toSet()
-
-private data class Tag(
-    val value: String,
-    val expires: Date?
-
+private data class TagSet(
+    private val data: Map<String, Date?>
 ) {
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
 
-        other as Tag
-
-        if (value != other.value) return false
-
-        return true
+    fun add(tag: String, expires: Date?): TagSet {
+        val mutableData = data.toMutableMap()
+        mutableData[tag] = expires
+        return TagSet(data = mutableData)
     }
 
-    override fun hashCode(): Int {
-        return value.hashCode()
+    fun remove(tag: String): TagSet {
+        val mutableData = data.toMutableMap()
+        mutableData.remove(tag)
+        return TagSet(data = mutableData)
     }
 
-    companion object
-}
+    fun contains(tag: String): Boolean = data.containsKey(tag)
 
-private fun Tag.encodeJSON(): JSONObject {
-    return JSONObject().apply {
-        put("value", value)
-        expires?.let { put("expires", it.time) }
+    fun values(): List<String> = data.keys.toList()
+
+    fun filterActiveTags(): TagSet = TagSet(data = data.filter {
+        when (val value = it.value) {
+            null -> true
+            else -> Date().before(value)
+        }
+    })
+
+    fun encodeJson(): String {
+        return JSONObject(data.map {
+            val (key, value) = it
+            when (value) {
+                null -> Pair(key, JSONObject.NULL)
+                else -> Pair(key, value.time)
+            }
+        }.associate { it }).toString()
+    }
+
+    companion object {
+        fun decodeJson(input: String): TagSet {
+            val json = JSONObject(input)
+            val data = json.keys().asSequence().map {
+                val value = json.get(it)
+                val expires = if (value is Long) Date(value) else null
+                Pair(it, expires)
+            }.associate { it }.toMap()
+
+            return TagSet(data = data)
+        }
+
+        fun empty(): TagSet = TagSet(data = emptyMap())
     }
 }
-
-private fun Tag.Companion.decodeJSON(json: JSONObject): Tag {
-    return Tag(
-        value = json.getString("value"),
-        expires = if (json.has("expires")) Date(json.optLong("expires")) else null
-    )
-}
-
-
-
-

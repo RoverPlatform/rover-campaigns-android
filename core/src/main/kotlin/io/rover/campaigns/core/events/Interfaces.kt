@@ -104,8 +104,7 @@ interface UserInfoInterface {
     /**
      * Adds a tag to the [DeviceContext] under the key tags.
      */
-    fun addTag(tag: String)
-    fun addTag(tag: String, expiresInSeconds: Long?)
+    fun addTag(tag: String, expiresInSeconds: Long? = null)
 
     /**
      * Remove a tag from the [DeviceContext]
@@ -126,5 +125,5 @@ interface UserInfoInterface {
     /**
      * Returns a list of non-expired tags from [DeviceContext]
      */
-    fun tags(): Set<String>
+    fun tags(): List<String>
 }
