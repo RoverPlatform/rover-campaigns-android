@@ -8,6 +8,7 @@ import io.rover.campaigns.core.container.Container
 import io.rover.campaigns.core.container.Resolver
 import io.rover.campaigns.core.container.Scope
 import io.rover.campaigns.core.events.EventQueueServiceInterface
+import io.rover.campaigns.core.events.UserInfoInterface
 import io.rover.campaigns.core.routing.Router
 import io.rover.sdk.Rover
 import io.rover.sdk.services.EventEmitter
@@ -63,7 +64,8 @@ class ExperiencesAssembler : Assembler {
 
         EventReceiver(
             eventEmitter,
-            resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java)
+            resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java),
+            resolver.resolveSingletonOrFail(UserInfoInterface::class.java)
         ).startListening()
     }
 }

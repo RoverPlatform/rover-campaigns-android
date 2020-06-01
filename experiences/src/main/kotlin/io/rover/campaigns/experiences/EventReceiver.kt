@@ -2,10 +2,12 @@ package io.rover.campaigns.experiences
 
 import io.rover.campaigns.core.data.domain.Attributes
 import io.rover.campaigns.core.events.EventQueueServiceInterface
+import io.rover.campaigns.core.events.UserInfoInterface
 import io.rover.campaigns.core.events.domain.Event
 import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.streams.subscribe
 import io.rover.sdk.data.domain.Block
+import io.rover.sdk.data.domain.Conversion
 import io.rover.sdk.data.domain.Experience
 import io.rover.sdk.data.domain.Screen
 import io.rover.sdk.data.events.Option
@@ -17,12 +19,18 @@ import io.rover.sdk.services.EventEmitter
  */
 open class EventReceiver(
     private val eventEmitter: EventEmitter?,
-    private val eventQueueService: EventQueueServiceInterface
+    private val eventQueueService: EventQueueServiceInterface,
+    private val userInfo: UserInfoInterface
 ) {
     open fun startListening() {
         eventEmitter?.let {
             eventEmitter.trackedEvents.subscribe { event ->
                 eventQueueService.trackEvent(transformEvent(event), "rover")
+            }
+            eventEmitter.trackedEvents.subscribe { event ->
+                getConversion(event)?.let { (tag, expires) ->
+                    userInfo.addTag(tag, expires)
+                }
             }
         }
             ?: log.w("A Rover SDK event emitter wasn't available; Rover events will not be tracked.  Make sure you call Rover.initialize() before initializing the Campaigns SDK.")
@@ -40,6 +48,28 @@ open class EventReceiver(
             is RoverEvent.PollAnswered -> event.transformToEvent()
         }
     }
+
+    private fun getConversion(event: RoverEvent): Pair<String, Long>? =
+        when (event) {
+            is RoverEvent.BlockTapped -> event.block.conversion?.let {
+                Pair(
+                    it.tag,
+                    it.expires.seconds
+                )
+            }
+            is RoverEvent.ScreenPresented -> event.screen.conversion?.let {
+                Pair(
+                    it.tag,
+                    it.expires.seconds
+                )
+            }
+            // NOTE: We always append the poll's option to the tag
+            is RoverEvent.PollAnswered -> event.block.conversion?.let {
+                val pollTag = event.option.text.replace(" ", "_").toLowerCase()
+                Pair("${it.tag}_${pollTag}", it.expires.seconds)
+            }
+            else -> null
+        }
 }
 
 private fun experienceAttributes(experience: Experience, campaignId: String?) = mapOf(
@@ -90,7 +120,10 @@ private fun RoverEvent.BlockTapped.transformToEvent(): Event {
 }
 
 private fun RoverEvent.ExperienceDismissed.transformToEvent(): Event {
-    return Event("Experience Dismissed", mapOf("experience" to experienceAttributes(experience, campaignId)))
+    return Event(
+        "Experience Dismissed",
+        mapOf("experience" to experienceAttributes(experience, campaignId))
+    )
 }
 
 private fun RoverEvent.ScreenDismissed.transformToEvent(): Event {
@@ -103,7 +136,10 @@ private fun RoverEvent.ScreenDismissed.transformToEvent(): Event {
 }
 
 private fun RoverEvent.ExperiencePresented.transformToEvent(): Event {
-    return Event("Experience Presented", mapOf("experience" to experienceAttributes(experience, campaignId)))
+    return Event(
+        "Experience Presented",
+        mapOf("experience" to experienceAttributes(experience, campaignId))
+    )
 }
 
 private fun RoverEvent.ExperienceViewed.transformToEvent(): Event {
