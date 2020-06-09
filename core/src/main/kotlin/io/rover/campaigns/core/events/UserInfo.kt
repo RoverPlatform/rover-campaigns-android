@@ -16,27 +16,11 @@ class UserInfo(
 
     override fun update(builder: (attributes: HashMap<String, Any>) -> Unit) {
         val mutableDraft = HashMap(currentUserInfo)
+        val previousTags = mutableDraft["tags"]
         builder(mutableDraft)
 
-        when {
-            mutableDraft.containsKey("tags") && mutableDraft["tags"] is Collection<*> -> {
-                val mutatedInfoTags =
-                    (mutableDraft["tags"] as Collection<*>).filterIsInstance<String>().toSet()
-
-                val addedTags =
-                    mutatedInfoTags.filter { !currentTags.contains(it) }
-                val removedTags = currentTags.values().filter { !mutatedInfoTags.contains(it) }
-
-                if (addedTags.isNotEmpty() || removedTags.isNotEmpty()) {
-                    log.w("Deprecation notice: Attempted to add or remove tags directly instead of using addTag or removeTag")
-                    addedTags.forEach { addTag(it) }
-                    removedTags.forEach { removeTag(it) }
-                }
-            }
-            mutableDraft.containsKey("tags") -> {
-                log.w("Attempted updating tags to a non collection type")
-                mutableDraft.remove("tags")
-            }
+        if (mutableDraft["tags"] != previousTags) {
+            throw RuntimeException("Can not modify tags inside an update block. Please call addTag or removeTag")
         }
 
         currentUserInfo = mutableDraft
@@ -50,29 +34,10 @@ class UserInfo(
         currentTags = currentTags.remove(tag)
     }
 
-    override fun tags(): List<String> {
-        return currentTags.values()
-    }
-
     override fun clear() {
         currentUserInfo = hashMapOf()
         currentTags = TagSet.empty()
     }
-
-    private var currentTags: TagSet = try {
-        when (val data = store[TAGS_KEY]) {
-            null -> TagSet.empty()
-            else -> TagSet.decodeJson(data).filterActiveTags()
-        }
-    } catch (throwable: Throwable) {
-        log.w("Corrupted local tags, ignoring and starting fresh. Cause ${throwable.message}")
-        TagSet.empty()
-    }
-        get() = field.filterActiveTags()
-        set(value) {
-            field = value.filterActiveTags()
-            store[TAGS_KEY] = field.encodeJson()
-        }
 
     override var currentUserInfo: Attributes = try {
         when (val attributes = store[USER_INFO_KEY]) {
@@ -111,6 +76,21 @@ class UserInfo(
             }
         }
     }
+
+    private var currentTags: TagSet = try {
+        when (val data = store[TAGS_KEY]) {
+            null -> TagSet.empty()
+            else -> TagSet.decodeJson(data).filterActiveTags()
+        }
+    } catch (throwable: Throwable) {
+        log.w("Corrupted local tags, ignoring and starting fresh. Cause ${throwable.message}")
+        TagSet.empty()
+    }
+        get() = field.filterActiveTags()
+        set(value) {
+            field = value.filterActiveTags()
+            store[TAGS_KEY] = field.encodeJson()
+        }
 
     companion object {
         private const val STORAGE_CONTEXT_IDENTIFIER = "user-info"

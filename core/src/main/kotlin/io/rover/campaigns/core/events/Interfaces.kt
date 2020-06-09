@@ -121,9 +121,4 @@ interface UserInfoInterface {
      * them in outgoing [Event]s.
      */
     val currentUserInfo: Attributes
-
-    /**
-     * Returns a list of non-expired tags from [DeviceContext]
-     */
-    fun tags(): List<String>
 }
