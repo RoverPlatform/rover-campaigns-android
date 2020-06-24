@@ -7,9 +7,11 @@ import io.rover.campaigns.core.container.Assembler
 import io.rover.campaigns.core.container.Container
 import io.rover.campaigns.core.container.Resolver
 import io.rover.campaigns.core.container.Scope
+import io.rover.campaigns.core.events.ContextProvider
 import io.rover.campaigns.core.events.EventQueueServiceInterface
-import io.rover.campaigns.core.events.UserInfoInterface
+import io.rover.campaigns.core.platform.LocalStorage
 import io.rover.campaigns.core.routing.Router
+import io.rover.campaigns.experiences.events.contextproviders.ConversionsContextProvider
 import io.rover.sdk.Rover
 import io.rover.sdk.services.EventEmitter
 
@@ -34,6 +36,17 @@ class ExperiencesAssembler : Assembler {
                 resolver.resolveSingletonOrFail(Context::class.java)
             )
         }
+
+        container.register(
+            Scope.Singleton,
+            ContextProvider::class.java,
+            "conversions"
+        ) { resolver ->
+            ConversionsContextProvider(
+                null,
+                resolver.resolveSingletonOrFail(LocalStorage::class.java)
+            )
+        }
     }
 
     override fun afterAssembly(resolver: Resolver) {
@@ -45,7 +58,8 @@ class ExperiencesAssembler : Assembler {
                     urlSchemes = urlSchemes.schemes,
                     associatedDomains = urlSchemes.associatedDomains,
                     presentExperienceIntents = resolver.resolveSingletonOrFail(
-                        PresentExperienceIntents::class.java)
+                        PresentExperienceIntents::class.java
+                    )
                 )
             )
         }
@@ -64,8 +78,19 @@ class ExperiencesAssembler : Assembler {
 
         EventReceiver(
             eventEmitter,
-            resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java),
-            resolver.resolveSingletonOrFail(UserInfoInterface::class.java)
+            resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java)
         ).startListening()
+
+        (resolver.resolveSingletonOrFail(
+            ContextProvider::class.java,
+            "conversions"
+        ) as ConversionsContextProvider).apply {
+            this.eventEmitter = eventEmitter
+            startListening()
+        }
+
+        resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java).addContextProvider(
+            resolver.resolveSingletonOrFail(ContextProvider::class.java, "conversions")
+        )
     }
 }

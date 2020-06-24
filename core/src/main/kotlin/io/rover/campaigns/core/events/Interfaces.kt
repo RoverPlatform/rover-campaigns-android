@@ -102,16 +102,6 @@ interface UserInfoInterface {
     fun update(builder: (attributes: HashMap<String, Any>) -> Unit)
 
     /**
-     * Adds a tag to the [DeviceContext] under the key tags.
-     */
-    fun addTag(tag: String, expiresInSeconds: Long? = null)
-
-    /**
-     * Remove a tag from the [DeviceContext]
-     */
-    fun removeTag(tag: String)
-
-    /**
      * Clear all the custom attributes.
      */
     fun clear()
