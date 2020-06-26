@@ -11,6 +11,7 @@ import io.rover.campaigns.core.data.graphql.safeOptInt
 import io.rover.campaigns.core.data.graphql.safeOptString
 import io.rover.campaigns.core.platform.DateFormattingInterface
 import io.rover.campaigns.core.platform.whenNotNull
+import org.json.JSONArray
 import org.json.JSONObject
 
 /**
@@ -45,12 +46,12 @@ internal fun DeviceContext.asJson(dateFormatting: DateFormattingInterface): JSON
             DeviceContext::isBluetoothEnabled,
             DeviceContext::sdkVersion,
             DeviceContext::isTestDevice,
-            DeviceContext::advertisingIdentifier,
-            DeviceContext::conversions
+            DeviceContext::advertisingIdentifier
         )
 
         props.forEach { putProp(this@asJson, it) }
 
+        putProp(this@asJson, DeviceContext::conversions, "conversions") { JSONArray(it) }
         putProp(this@asJson, DeviceContext::userInfo, "userInfo") { it.encodeJson() }
 
         putProp(this@asJson, DeviceContext::notificationAuthorization, "notificationAuthorization") { it?.encodeJson() ?: JSONObject.NULL }
@@ -101,7 +102,7 @@ internal fun DeviceContext.Companion.decodeJson(json: JSONObject, dateFormatting
             Location.decodeJson(locationJson, dateFormatting)
         },
         advertisingIdentifier = json.safeOptString("advertisingIdentifier"),
-        conversions = json.optJSONArray("conversions").getStringIterable().toList()
+        conversions = json.optJSONArray("conversions")?.getStringIterable()?.toList() ?: emptyList()
     )
 }
 

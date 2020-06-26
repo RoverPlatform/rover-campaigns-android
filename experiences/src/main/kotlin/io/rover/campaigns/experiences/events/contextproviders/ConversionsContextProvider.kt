@@ -12,20 +12,16 @@ import java.util.Date
 import java.util.Locale
 
 class ConversionsContextProvider(
-    var eventEmitter: EventEmitter?,
     localStorage: LocalStorage
 ) : ContextProvider {
 
-    fun startListening() {
-        eventEmitter?.let {
-            it.trackedEvents.subscribe { event ->
-                getConversion(event)?.let { (tag, expires) ->
-                    currentConversions =
-                        currentConversions.add(tag, Date(Date().time + expires * 1000))
-                }
+    fun startListening(emitter: EventEmitter) {
+        emitter.trackedEvents.subscribe { event ->
+            getConversion(event)?.let { (tag, expires) ->
+                currentConversions =
+                    currentConversions.add(tag, Date(Date().time + expires * 1000))
             }
         }
-            ?: log.w("A Rover SDK event emitter wasn't available; Rover conversion events will not be tracked.  Make sure you call Rover.initialize() before initializing the Campaigns SDK.")
     }
 
     override fun captureContext(deviceContext: DeviceContext): DeviceContext {
@@ -105,7 +101,7 @@ private data class TagSet(
                 val value = json.get(it)
                 val expires = if (value is Long) Date(value) else Date()
                 Pair(it, expires)
-            }.associate { it }.toMap()
+            }.associate { it }
 
             return TagSet(data = data)
         }
