@@ -52,6 +52,7 @@ internal fun DeviceContext.asJson(dateFormatting: DateFormattingInterface): JSON
         props.forEach { putProp(this@asJson, it) }
 
         putProp(this@asJson, DeviceContext::conversions, "conversions") { JSONArray(it) }
+        
         putProp(this@asJson, DeviceContext::userInfo, "userInfo") { it.encodeJson() }
 
         putProp(this@asJson, DeviceContext::notificationAuthorization, "notificationAuthorization") { it?.encodeJson() ?: JSONObject.NULL }
