@@ -43,13 +43,7 @@ class ConversionsContextProvider(
         TagSet.empty()
     }
         get() {
-            // NOTE: whenever we try to read the value check to see if we can clean up local storage
-            val current = field
-            val nonExpired = current.filterActiveTags()
-            if (current != nonExpired) {
-                currentConversions = nonExpired
-            }
-            return nonExpired
+            return field.filterActiveTags()
         }
         set(value) {
             field = value.filterActiveTags()
