@@ -82,7 +82,12 @@ data class DeviceContext(
     /**
      * A platform specific advertising identifier.
      */
-    val advertisingIdentifier: String?
+    val advertisingIdentifier: String?,
+
+    /**
+     * A list of conversion tags
+     */
+    val conversions: List<String>
 ) {
     companion object {
         internal fun blank(): DeviceContext {
@@ -90,7 +95,7 @@ data class DeviceContext(
                 null, null, null, null, null, null,
                 null, null, null, null, null, null, null, null,
                 null, null, null, null, null, null, null,
-                null, null, null, null, null, null, false, null, hashMapOf(), null
+                null, null, null, null, null, null, false, null, hashMapOf(), null, listOf()
             )
         }
     }

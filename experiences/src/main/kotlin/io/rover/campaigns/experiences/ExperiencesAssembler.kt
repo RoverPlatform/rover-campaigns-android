@@ -7,8 +7,12 @@ import io.rover.campaigns.core.container.Assembler
 import io.rover.campaigns.core.container.Container
 import io.rover.campaigns.core.container.Resolver
 import io.rover.campaigns.core.container.Scope
+import io.rover.campaigns.core.events.ContextProvider
 import io.rover.campaigns.core.events.EventQueueServiceInterface
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.platform.LocalStorage
 import io.rover.campaigns.core.routing.Router
+import io.rover.campaigns.experiences.events.contextproviders.ConversionsContextProvider
 import io.rover.sdk.Rover
 import io.rover.sdk.services.EventEmitter
 
@@ -33,6 +37,16 @@ class ExperiencesAssembler : Assembler {
                 resolver.resolveSingletonOrFail(Context::class.java)
             )
         }
+
+        container.register(
+            Scope.Singleton,
+            ContextProvider::class.java,
+            "conversions"
+        ) { resolver ->
+            ConversionsContextProvider(
+                resolver.resolveSingletonOrFail(LocalStorage::class.java)
+            )
+        }
     }
 
     override fun afterAssembly(resolver: Resolver) {
@@ -44,7 +58,8 @@ class ExperiencesAssembler : Assembler {
                     urlSchemes = urlSchemes.schemes,
                     associatedDomains = urlSchemes.associatedDomains,
                     presentExperienceIntents = resolver.resolveSingletonOrFail(
-                        PresentExperienceIntents::class.java)
+                        PresentExperienceIntents::class.java
+                    )
                 )
             )
         }
@@ -61,9 +76,21 @@ class ExperiencesAssembler : Assembler {
          */
         val eventEmitter = Rover.shared?.eventEmitter
 
-        EventReceiver(
-            eventEmitter,
-            resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java)
-        ).startListening()
+        eventEmitter?.let {
+            EventReceiver(
+                resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java)
+            ).startListening(it)
+
+            (resolver.resolveSingletonOrFail(
+                ContextProvider::class.java,
+                "conversions"
+            ) as ConversionsContextProvider).startListening(it)
+        }
+            ?: log.w("A Rover SDK event emitter wasn't available; Rover events will not be tracked.  Make sure you call Rover.initialize() before initializing the Campaigns SDK.")
+
+
+        resolver.resolveSingletonOrFail(EventQueueServiceInterface::class.java).addContextProvider(
+            resolver.resolveSingletonOrFail(ContextProvider::class.java, "conversions")
+        )
     }
 }
