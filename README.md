@@ -2,7 +2,7 @@
 
 ## Rover Campaigns Android SDK 3.0
 
-The first step is to add the library dependencies.  We’ll start with a default
+The first step is to add the library dependencies. We’ll start with a default
 installation, featuring all of the Rover libraries.
 
 Ensure that you have Rover's maven repository added to the `dependencies` →
@@ -27,11 +27,11 @@ block.
 ```groovy
 dependencies {
     // ...
-    implementation "io.rover.campaigns:core:3.6.1"
-    implementation "io.rover.campaigns:notifications:3.6.1"
-    implementation "io.rover.campaigns:location:3.6.1"
-    implementation "io.rover.campaigns:debug:3.6.1"
-    implementation "io.rover.campaigns:experiences:3.6.1"
+    implementation "io.rover.campaigns:core:3.7.0"
+    implementation "io.rover.campaigns:notifications:3.7.0"
+    implementation "io.rover.campaigns:location:3.7.0"
+    implementation "io.rover.campaigns:debug:3.7.0"
+    implementation "io.rover.campaigns:experiences:3.7.0"
 }
 ```
 
