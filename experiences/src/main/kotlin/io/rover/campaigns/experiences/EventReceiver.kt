@@ -3,7 +3,6 @@ package io.rover.campaigns.experiences
 import io.rover.campaigns.core.data.domain.Attributes
 import io.rover.campaigns.core.events.EventQueueServiceInterface
 import io.rover.campaigns.core.events.domain.Event
-import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.streams.subscribe
 import io.rover.sdk.data.domain.Block
 import io.rover.sdk.data.domain.Experience
@@ -16,16 +15,12 @@ import io.rover.sdk.services.EventEmitter
  * Receive events emitted by the Rover SDK.
  */
 open class EventReceiver(
-    private val eventEmitter: EventEmitter?,
     private val eventQueueService: EventQueueServiceInterface
 ) {
-    open fun startListening() {
-        eventEmitter?.let {
-            eventEmitter.trackedEvents.subscribe { event ->
-                eventQueueService.trackEvent(transformEvent(event), "rover")
-            }
+    open fun startListening(emitter: EventEmitter) {
+        emitter.trackedEvents.subscribe { event ->
+            eventQueueService.trackEvent(transformEvent(event), "rover")
         }
-            ?: log.w("A Rover SDK event emitter wasn't available; Rover events will not be tracked.  Make sure you call Rover.initialize() before initializing the Campaigns SDK.")
     }
 
     private fun transformEvent(event: RoverEvent): Event {
@@ -90,7 +85,10 @@ private fun RoverEvent.BlockTapped.transformToEvent(): Event {
 }
 
 private fun RoverEvent.ExperienceDismissed.transformToEvent(): Event {
-    return Event("Experience Dismissed", mapOf("experience" to experienceAttributes(experience, campaignId)))
+    return Event(
+        "Experience Dismissed",
+        mapOf("experience" to experienceAttributes(experience, campaignId))
+    )
 }
 
 private fun RoverEvent.ScreenDismissed.transformToEvent(): Event {
@@ -103,7 +101,10 @@ private fun RoverEvent.ScreenDismissed.transformToEvent(): Event {
 }
 
 private fun RoverEvent.ExperiencePresented.transformToEvent(): Event {
-    return Event("Experience Presented", mapOf("experience" to experienceAttributes(experience, campaignId)))
+    return Event(
+        "Experience Presented",
+        mapOf("experience" to experienceAttributes(experience, campaignId))
+    )
 }
 
 private fun RoverEvent.ExperienceViewed.transformToEvent(): Event {

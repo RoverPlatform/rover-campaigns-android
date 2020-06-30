@@ -3,6 +3,7 @@ package io.rover.campaigns.core.data.graphql.operations.data
 import io.rover.campaigns.core.data.domain.DeviceContext
 import io.rover.campaigns.core.data.domain.Location
 import io.rover.campaigns.core.data.graphql.getDate
+import io.rover.campaigns.core.data.graphql.getStringIterable
 import io.rover.campaigns.core.data.graphql.putProp
 import io.rover.campaigns.core.data.graphql.safeGetString
 import io.rover.campaigns.core.data.graphql.safeOptBoolean
@@ -10,6 +11,7 @@ import io.rover.campaigns.core.data.graphql.safeOptInt
 import io.rover.campaigns.core.data.graphql.safeOptString
 import io.rover.campaigns.core.platform.DateFormattingInterface
 import io.rover.campaigns.core.platform.whenNotNull
+import org.json.JSONArray
 import org.json.JSONObject
 
 /**
@@ -49,6 +51,8 @@ internal fun DeviceContext.asJson(dateFormatting: DateFormattingInterface): JSON
 
         props.forEach { putProp(this@asJson, it) }
 
+        putProp(this@asJson, DeviceContext::conversions, "conversions") { JSONArray(it) }
+        
         putProp(this@asJson, DeviceContext::userInfo, "userInfo") { it.encodeJson() }
 
         putProp(this@asJson, DeviceContext::notificationAuthorization, "notificationAuthorization") { it?.encodeJson() ?: JSONObject.NULL }
@@ -98,7 +102,8 @@ internal fun DeviceContext.Companion.decodeJson(json: JSONObject, dateFormatting
         location = json.optJSONObject("location").whenNotNull { locationJson ->
             Location.decodeJson(locationJson, dateFormatting)
         },
-        advertisingIdentifier = json.safeOptString("advertisingIdentifier")
+        advertisingIdentifier = json.safeOptString("advertisingIdentifier"),
+        conversions = json.optJSONArray("conversions")?.getStringIterable()?.toList() ?: emptyList()
     )
 }
 
