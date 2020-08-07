@@ -19,20 +19,17 @@ open class EventReceiver(
 ) {
     open fun startListening(emitter: EventEmitter) {
         emitter.trackedEvents.subscribe { event ->
-            eventQueueService.trackEvent(transformEvent(event), "rover")
-        }
-    }
 
-    private fun transformEvent(event: RoverEvent): Event {
-        return when (event) {
-            is RoverEvent.BlockTapped -> event.transformToEvent()
-            is RoverEvent.ExperienceDismissed -> event.transformToEvent()
-            is RoverEvent.ScreenDismissed -> event.transformToEvent()
-            is RoverEvent.ExperiencePresented -> event.transformToEvent()
-            is RoverEvent.ExperienceViewed -> event.transformToEvent()
-            is RoverEvent.ScreenViewed -> event.transformToEvent()
-            is RoverEvent.ScreenPresented -> event.transformToEvent()
-            is RoverEvent.PollAnswered -> event.transformToEvent()
+            when (event) {
+                is RoverEvent.BlockTapped -> eventQueueService.trackEvent(event.transformToEvent(), "rover")
+                is RoverEvent.ExperienceDismissed -> eventQueueService.trackEvent(event.transformToEvent(), "rover")
+                is RoverEvent.ScreenDismissed -> eventQueueService.trackEvent(event.transformToEvent(), "rover")
+                is RoverEvent.ExperiencePresented -> eventQueueService.trackEvent(event.transformToEvent(), "rover")
+                is RoverEvent.ExperienceViewed -> eventQueueService.trackEvent(event.transformToEvent(), "rover")
+                is RoverEvent.ScreenViewed -> eventQueueService.trackEvent(event.transformToEvent(), "rover")
+                is RoverEvent.ScreenPresented -> eventQueueService.trackEvent(event.transformToEvent(), "rover")
+                is RoverEvent.PollAnswered -> eventQueueService.trackEvent(event.transformToEvent(), "rover")
+            }
         }
     }
 }
