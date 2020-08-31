@@ -1,6 +1,9 @@
 package io.rover.campaigns.core.events.contextproviders
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.telephony.TelephonyManager
+import androidx.core.app.ActivityCompat
 import io.rover.campaigns.core.data.domain.DeviceContext
 import io.rover.campaigns.core.events.ContextProvider
 
@@ -8,7 +11,7 @@ import io.rover.campaigns.core.events.ContextProvider
  * Captures and adds the mobile carrier and data connection details to a [DeviceContext].
  */
 class TelephonyContextProvider(
-    applicationContext: android.content.Context
+    private val applicationContext: android.content.Context
 ) : ContextProvider {
     private val telephonyManager = applicationContext.applicationContext.getSystemService(android.content.Context.TELEPHONY_SERVICE) as TelephonyManager
 
@@ -40,9 +43,14 @@ class TelephonyContextProvider(
     }
 
     override fun captureContext(deviceContext: DeviceContext): DeviceContext {
-        return deviceContext.copy(
-            radio = getNetworkTypeName(telephonyManager.networkType),
-            carrierName = telephonyManager.networkOperatorName
-        )
+        val targetSdkVersion = applicationContext.applicationInfo.targetSdkVersion
+
+        val networkTypeName = if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED || targetSdkVersion < 30) {
+            getNetworkTypeName(telephonyManager.networkType)
+        } else {
+            null
+        }
+
+        return deviceContext.copy(radio = networkTypeName, carrierName = telephonyManager.networkOperatorName)
     }
 }

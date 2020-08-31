@@ -2,6 +2,7 @@ package io.rover.example
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.core.app.ActivityCompat
@@ -43,15 +44,13 @@ class ExampleMainActivity : AppCompatActivity() {
         notification_center.activity = this
 
         selectTab(R.id.navigation_notifications)
+
         makePermissionsAttempt()
     }
 
     // Request fine location permission for Location module functionality
     private fun makePermissionsAttempt() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
-
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // Does Android want us to show an explanation of why the permission is needed first?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -60,34 +59,57 @@ class ExampleMainActivity : AppCompatActivity() {
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
 
-                AlertDialog.Builder(this)
-                    .setMessage("Debug App would like to use your location to discover Geofences and Beacons.")
-                    .setNeutralButton("Got it") { _, _ ->
-                        makePermissionsAttempt()
-                    }
+                showLocationExplanationDialog()
             } else {
                 // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    0
-                )
+                requestLocationPermission()
             }
         } else {
             // Permission has already been granted
-            RoverCampaigns.shared?.resolveSingletonOrFail(PermissionsNotifierInterface::class.java)?.permissionGranted(
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
+            RoverCampaigns.shared?.resolveSingletonOrFail(PermissionsNotifierInterface::class.java)?.permissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
+            makeBackgroundLocationPermissionAttempt()
         }
+    }
+
+    private fun requestLocationPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_BACKGROUND_LOCATION), 0)
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0)
+        }
+    }
+
+    private fun makeBackgroundLocationPermissionAttempt() {
+        ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION), 0)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         val perms = permissions.zip(grantResults.toList()).associate { it }
 
         if(perms[Manifest.permission.ACCESS_FINE_LOCATION] == PackageManager.PERMISSION_GRANTED) {
+            RoverCampaigns.shared?.resolveSingletonOrFail(PermissionsNotifierInterface::class.java)?.permissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) makeBackgroundLocationPermissionAttempt()
+        }
+
+        if(perms[Manifest.permission.ACCESS_BACKGROUND_LOCATION] == PackageManager.PERMISSION_GRANTED) {
             RoverCampaigns.shared?.resolveSingletonOrFail(PermissionsNotifierInterface::class.java)?.permissionGranted(
-                Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
             )
         }
+    }
+
+    private fun showLocationExplanationDialog() {
+        AlertDialog.Builder(this)
+            .setMessage("Debug App would like to use your location to discover Geofences and Beacons.")
+            .setNeutralButton("Got it") { _, _ ->
+                makePermissionsAttempt()
+            }
+    }
+    private fun showBackgroundLocationExplanationDialog() {
+        AlertDialog.Builder(this)
+            .setMessage("Debug App would like to use your location in the background to discover Geofences and Beacons.")
+            .setNeutralButton("Got it") { _, _ ->
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION), 0)
+            }
     }
 }
