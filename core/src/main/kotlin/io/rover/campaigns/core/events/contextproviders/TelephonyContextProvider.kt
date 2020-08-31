@@ -2,7 +2,6 @@ package io.rover.campaigns.core.events.contextproviders
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Build
 import android.telephony.TelephonyManager
 import androidx.core.app.ActivityCompat
 import io.rover.campaigns.core.data.domain.DeviceContext
@@ -46,13 +45,12 @@ class TelephonyContextProvider(
     override fun captureContext(deviceContext: DeviceContext): DeviceContext {
         val targetSdkVersion = applicationContext.applicationInfo.targetSdkVersion
 
-        return if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED || targetSdkVersion < 30) {
-            deviceContext.copy(
-                radio = getNetworkTypeName(telephonyManager.networkType),
-                carrierName = telephonyManager.networkOperatorName
-            )
+        val networkTypeName = if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED || targetSdkVersion < 30) {
+            getNetworkTypeName(telephonyManager.networkType)
         } else {
-            deviceContext
+            null
         }
+
+        return deviceContext.copy(radio = networkTypeName, carrierName = telephonyManager.networkOperatorName)
     }
 }
