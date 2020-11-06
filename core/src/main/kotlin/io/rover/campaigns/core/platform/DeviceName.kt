@@ -25,6 +25,7 @@ import android.os.Build
 fun getDeviceName(): String {
     return getDeviceName(Build.DEVICE, Build.MODEL, Build.MODEL.capitalize())
 }
+
 /**
  * Get the consumer friendly name of a device.
  *
@@ -41,6 +42,7 @@ fun getDeviceName(): String {
  * "ro.product.model" ([Build.MODEL])
  * @return the market name of a device or `fallback` if the device is unknown.
  */
+
 fun getDeviceName(codename: String?, model: String?, fallback: String): String {
     // ----------------------------------------------------------------------------
     // Acer
@@ -63,41 +65,61 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
     if (codename != null && codename == "sailfish") {
         return "Pixel"
     }
+    if (codename != null && codename == "marlin") {
+        return "Pixel XL"
+    }
+    if (codename != null && codename == "dragon") {
+        return "Pixel C"
+    }
     if (codename != null && codename == "walleye") {
         return "Pixel 2"
     }
     if (codename != null && codename == "taimen") {
         return "Pixel 2 XL"
     }
-    if (codename != null && codename == "dragon") {
-        return "Pixel C"
+    if (codename != null && codename == "blueline") {
+        return "Pixel 3"
     }
-    if (codename != null && codename == "marlin") {
-        return "Pixel XL"
+    if (codename != null && codename == "crosshatch") {
+        return "Pixel 3 XL"
     }
-    // ----------------------------------------------------------------------------
-    // HTC
+    if (codename != null && codename == "sargo") {
+        return "Pixel 3a"
+    }
+    if (codename != null && codename == "bonito") {
+        return "Pixel 3a XL"
+    }
+    if (codename != null && codename == "flame") {
+        return "Pixel 4"
+    }
+    if (codename != null && codename == "coral") {
+        return "Pixel 4 XL"
+    }
     if (codename != null && codename == "flounder") {
         return "Nexus 9"
     }
     // ----------------------------------------------------------------------------
     // Huawei
-    if (codename != null && codename == "HWBND-H" || model != null && (model == "BND-L21" || model == "BND-L24")) {
+    if (codename != null && codename == "HWBND-H"
+        || model != null && (model == "BND-L21" || model == "BND-L24" || model == "BND-L31")
+    ) {
         return "Honor 7X"
     }
-    if (codename != null && codename == "HWBKL" || model != null && model == "BKL-L09") {
+    if (codename != null && codename == "HWBKL"
+        || model != null && (model == "BKL-L04" || model == "BKL-L09")
+    ) {
         return "Honor View 10"
     }
-    if (codename != null && codename == "HWALP" || model != null && (model == "ALP-AL00" ||
-            model == "ALP-L09" ||
-            model == "ALP-L29" ||
-            model == "ALP-TL00")) {
+    if (codename != null && codename == "HWALP"
+        || model != null && (model == "ALP-AL00" || model == "ALP-L09" || model == "ALP-L29" ||
+            model == "ALP-TL00")
+    ) {
         return "Mate 10"
     }
-    if (codename != null && codename == "HWMHA" || model != null && (model == "MHA-AL00" ||
-            model == "MHA-L09" ||
-            model == "MHA-L29" ||
-            model == "MHA-TL00")) {
+    if (codename != null && codename == "HWMHA"
+        || model != null && (model == "MHA-AL00" || model == "MHA-L09" || model == "MHA-L29" ||
+            model == "MHA-TL00")
+    ) {
         return "Mate 9"
     }
     if (codename != null && codename == "angler") {
@@ -117,7 +139,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "LG-F320L" ||
             model == "LG-F320S" ||
             model == "LG-LS980" ||
-            model == "VS980 4G")) {
+            model == "VS980 4G")
+    ) {
         return "LG G2"
     }
     if (codename != null && codename == "g3" || model != null && (model == "AS985" ||
@@ -139,7 +162,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "LGLS990" ||
             model == "LGUS990" ||
             model == "LGV31" ||
-            model == "VS985 4G")) {
+            model == "VS985 4G")
+    ) {
         return "LG G3"
     }
     if (codename != null && codename == "p1" || model != null && (model == "AS986" ||
@@ -157,44 +181,45 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "LGLS991" ||
             model == "LGUS991" ||
             model == "LGV32" ||
-            model == "VS986")) {
+            model == "VS986")
+    ) {
         return "LG G4"
     }
-    if (codename != null && codename == "h1" || model != null && (model == "LG-F700K" ||
-            model == "LG-F700L" ||
-            model == "LG-F700S" ||
-            model == "LG-H820" ||
-            model == "LG-H820PR" ||
-            model == "LG-H830" ||
-            model == "LG-H831" ||
-            model == "LG-H850" ||
-            model == "LG-H858" ||
-            model == "LG-H860" ||
-            model == "LG-H868" ||
-            model == "LGAS992" ||
-            model == "LGLS992" ||
-            model == "LGUS992" ||
-            model == "RS988" ||
-            model == "VS987")) {
+    if (codename != null && codename == "h1" ||
+        model != null && (
+            model == "LG-F700K" ||
+                model == "LG-F700L" ||
+                model == "LG-F700S" ||
+                model == "LG-H820" ||
+                model == "LG-H820PR" ||
+                model == "LG-H830" ||
+                model == "LG-H831" ||
+                model == "LG-H850" ||
+                model == "LG-H858" ||
+                model == "LG-H860" ||
+                model == "LG-H868" ||
+                model == "LGAS992" ||
+                model == "LGLS992" ||
+                model == "LGUS992" ||
+                model == "RS988" ||
+                model == "VS987")
+    ) {
         return "LG G5"
     }
     if (codename != null && codename == "lucye" || model != null && (model == "LG-AS993" ||
-            model == "LG-H870" ||
-            model == "LG-H870AR" ||
-            model == "LG-H870DS" ||
-            model == "LG-H870I" ||
-            model == "LG-H870S" ||
-            model == "LG-H871" ||
-            model == "LG-H872" ||
-            model == "LG-H872PR" ||
-            model == "LG-H873" ||
-            model == "LG-LS993" ||
-            model == "LGM-G600K" ||
-            model == "LGM-G600L" ||
-            model == "LGM-G600S" ||
-            model == "LGUS997" ||
-            model == "VS988")) {
+            model == "LG-H870" || model == "LG-H870AR" || model == "LG-H870DS" ||
+            model == "LG-H870I" || model == "LG-H870S" || model == "LG-H871" ||
+            model == "LG-H871S" || model == "LG-H872" ||
+            model == "LG-H872PR" || model == "LG-H873" || model == "LG-LS993" ||
+            model == "LGM-G600K" || model == "LGM-G600L" || model == "LGM-G600S" ||
+            model == "LGUS997" || model == "VS988")
+    ) {
         return "LG G6"
+    }
+    if (codename != null && codename == "flashlmdd"
+        || model != null && (model == "LM-V500" || model == "LM-V500N")
+    ) {
+        return "LG V50 ThinQ"
     }
     if (codename != null && codename == "mako") {
         return "Nexus 4"
@@ -207,8 +232,23 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
     }
     // ----------------------------------------------------------------------------
     // Motorola
+    if (codename != null && codename == "griffin"
+        || model != null && (model == "XT1650" || model == "XT1650-05")
+    ) {
+        return "Moto Z"
+    }
     if (codename != null && codename == "shamu") {
         return "Nexus 6"
+    }
+    // ----------------------------------------------------------------------------
+    // Nokia
+    if (codename != null && (codename == "RHD" || codename == "ROO" || codename == "ROON_sprout" ||
+            codename == "ROO_sprout")
+    ) {
+        return "Nokia 3.1 Plus"
+    }
+    if (codename != null && codename == "CTL_sprout") {
+        return "Nokia 7.1"
     }
     // ----------------------------------------------------------------------------
     // OnePlus
@@ -223,6 +263,27 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
     }
     if (codename != null && codename == "OnePlus5T" || model != null && model == "ONEPLUS A5010") {
         return "OnePlus5T"
+    }
+    if (codename != null && codename == "OnePlus6"
+        || model != null && (model == "ONEPLUS A6000" || model == "ONEPLUS A6003")
+    ) {
+        return "OnePlus 6"
+    }
+    if (codename != null && (codename == "OnePlus6T" || codename == "OnePlus6TSingle")
+        || model != null && model == "ONEPLUS A6013"
+    ) {
+        return "OnePlus 6T"
+    }
+    if (codename != null && codename == "OnePlus7"
+        || model != null && model == "GM1905"
+    ) {
+        return "OnePlus 7"
+    }
+    if (codename != null && (codename == "OP7ProNRSpr" || codename == "OnePlus7Pro" ||
+            codename == "OnePlus7ProTMO") || model != null && (model == "GM1915" ||
+            model == "GM1917" || model == "GM1925")
+    ) {
+        return "OnePlus 7 Pro"
     }
     // ----------------------------------------------------------------------------
     // Samsung
@@ -251,13 +312,15 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-A500X" ||
             model == "SM-A500XZ" ||
             model == "SM-A500Y" ||
-            model == "SM-A500YZ")) {
+            model == "SM-A500YZ")
+    ) {
         return "Galaxy A5"
     }
     if (codename != null && codename == "vivaltods5m" || model != null && (model == "SM-G313HU" ||
             model == "SM-G313HY" ||
             model == "SM-G313M" ||
-            model == "SM-G313MY")) {
+            model == "SM-G313MY")
+    ) {
         return "Galaxy Ace 4"
     }
     if (codename != null && (codename == "GT-S6352" ||
@@ -271,7 +334,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "GT-S6802B" ||
             model == "SCH-I589" ||
             model == "SCH-i579" ||
-            model == "SCH-i589")) {
+            model == "SCH-i589")
+    ) {
         return "Galaxy Ace Duos"
     }
     if (codename != null && (codename == "GT-S7500" ||
@@ -282,7 +346,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "GT-S7500L" ||
             model == "GT-S7500T" ||
             model == "GT-S7500W" ||
-            model == "GT-S7508")) {
+            model == "GT-S7508")
+    ) {
         return "Galaxy Ace Plus"
     }
     if (codename != null && (codename == "heat3gtfnvzw" ||
@@ -290,7 +355,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             codename == "heatqlte") || model != null && (model == "SM-G310HN" ||
             model == "SM-G357FZ" ||
             model == "SM-S765C" ||
-            model == "SM-S766C")) {
+            model == "SM-S766C")
+    ) {
         return "Galaxy Ace Style"
     }
     if (codename != null && (codename == "vivalto3g" ||
@@ -304,7 +370,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-G316H" ||
             model == "SM-G316HU" ||
             model == "SM-G316M" ||
-            model == "SM-G316MY")) {
+            model == "SM-G316MY")
+    ) {
         return "Galaxy Ace4"
     }
     if (codename != null && (codename == "core33g" ||
@@ -339,7 +406,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-G361H" ||
             model == "SM-G361HU" ||
             model == "SM-G361M" ||
-            model == "SM-S820L")) {
+            model == "SM-S820L")
+    ) {
         return "Galaxy Core Prime"
     }
     if (codename != null && (codename == "kanas" ||
@@ -352,7 +420,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-G355H" ||
             model == "SM-G355HN" ||
             model == "SM-G355HQ" ||
-            model == "SM-G355M")) {
+            model == "SM-G355M")
+    ) {
         return "Galaxy Core2"
     }
     if (codename != null && (codename == "e53g" ||
@@ -362,7 +431,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-E500H" ||
             model == "SM-E500M" ||
             model == "SM-E500YZ" ||
-            model == "SM-S978L")) {
+            model == "SM-S978L")
+    ) {
         return "Galaxy E5"
     }
     if (codename != null && (codename == "e73g" ||
@@ -373,7 +443,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-E7009" ||
             model == "SM-E700F" ||
             model == "SM-E700H" ||
-            model == "SM-E700M")) {
+            model == "SM-E700M")
+    ) {
         return "Galaxy E7"
     }
     if (codename != null && (codename == "SCH-I629" ||
@@ -400,7 +471,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "GT-S6812i" ||
             model == "GT-S6818" ||
             model == "GT-S6818V" ||
-            model == "SCH-I629")) {
+            model == "SCH-I629")
+    ) {
         return "Galaxy Fame"
     }
     if (codename != null && codename == "grandprimelteatt" || model != null && model == "SAMSUNG-SM-G530A") {
@@ -413,7 +485,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "GT-I9063T" ||
             model == "GT-I9082C" ||
             model == "GT-I9168" ||
-            model == "GT-I9168I")) {
+            model == "GT-I9168I")
+    ) {
         return "Galaxy Grand Neo"
     }
     if (codename != null && (codename == "fortuna3g" ||
@@ -459,7 +532,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-G531M" ||
             model == "SM-G531Y" ||
             model == "SM-S920L" ||
-            model == "gprimelteacg")) {
+            model == "gprimelteacg")
+    ) {
         return "Galaxy Grand Prime"
     }
     if (codename != null && (codename == "ms013g" ||
@@ -479,7 +553,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-G7109" ||
             model == "SM-G710K" ||
             model == "SM-G710L" ||
-            model == "SM-G710S")) {
+            model == "SM-G710S")
+    ) {
         return "Galaxy Grand2"
     }
     if (codename != null && (codename == "j13g" ||
@@ -509,7 +584,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-J120P" ||
             model == "SM-J120W" ||
             model == "SM-S120VL" ||
-            model == "SM-S777C")) {
+            model == "SM-S777C")
+    ) {
         return "Galaxy J1"
     }
     if (codename != null && (codename == "j1acelte" ||
@@ -521,7 +597,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-J110L" ||
             model == "SM-J110M" ||
             model == "SM-J111F" ||
-            model == "SM-J111M")) {
+            model == "SM-J111M")
+    ) {
         return "Galaxy J1 Ace"
     }
     if (codename != null && (codename == "j53g" ||
@@ -537,7 +614,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-J500H" ||
             model == "SM-J500M" ||
             model == "SM-J500N0" ||
-            model == "SM-J500Y")) {
+            model == "SM-J500Y")
+    ) {
         return "Galaxy J5"
     }
     if (codename != null && (codename == "j75ltektt" ||
@@ -547,12 +625,50 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-J700F" ||
             model == "SM-J700H" ||
             model == "SM-J700K" ||
-            model == "SM-J700M")) {
+            model == "SM-J700M")
+    ) {
         return "Galaxy J7"
+    }
+    if (codename != null && codename == "a50"
+        || model != null && (model == "SM-A505F" || model == "SM-A505FM" || model == "SM-A505FN" ||
+            model == "SM-A505G" || model == "SM-A505GN" || model == "SM-A505GT" ||
+            model == "SM-A505N" || model == "SM-A505U" || model == "SM-A505U1" ||
+            model == "SM-A505W" || model == "SM-A505YN" || model == "SM-S506DL")
+    ) {
+        return "Galaxy A50"
+    }
+    if (codename != null && (codename == "a6elteaio" || codename == "a6elteatt"
+            || codename == "a6eltemtr" || codename == "a6eltespr" || codename == "a6eltetmo"
+            || codename == "a6elteue" || codename == "a6lte" || codename == "a6lteks")
+        || model != null && (model == "SM-A600A" || model == "SM-A600AZ" || model == "SM-A600F"
+            || model == "SM-A600FN" || model == "SM-A600G" || model == "SM-A600GN" ||
+            model == "SM-A600N" || model == "SM-A600P" || model == "SM-A600T" ||
+            model == "SM-A600T1" || model == "SM-A600U")
+    ) {
+        return "Galaxy A6"
+    }
+    if (codename != null && (codename == "SC-01J" || codename == "SCV34" ||
+            codename == "gracelte" || codename == "graceltektt" || codename == "graceltelgt" ||
+            codename == "gracelteskt" || codename == "graceqlteacg" || codename == "graceqlteatt" ||
+            codename == "graceqltebmc" || codename == "graceqltechn" || codename == "graceqltedcm" ||
+            codename == "graceqltelra" || codename == "graceqltespr" ||
+            codename == "graceqltetfnvzw" || codename == "graceqltetmo" ||
+            codename == "graceqlteue" || codename == "graceqlteusc" ||
+            codename == "graceqltevzw")
+        || model != null && (model == "SAMSUNG-SM-N930A" || model == "SC-01J" || model == "SCV34" ||
+            model == "SGH-N037" || model == "SM-N9300" || model == "SM-N930F" ||
+            model == "SM-N930K" || model == "SM-N930L" || model == "SM-N930P" ||
+            model == "SM-N930R4" || model == "SM-N930R6" || model == "SM-N930R7" ||
+            model == "SM-N930S" || model == "SM-N930T" || model == "SM-N930U" ||
+            model == "SM-N930V" || model == "SM-N930VL" || model == "SM-N930W8" ||
+            model == "SM-N930X")
+    ) {
+        return "Galaxy Note7"
     }
     if (codename != null && (codename == "maguro" ||
             codename == "toro" ||
-            codename == "toroplus") || model != null && model == "Galaxy X") {
+            codename == "toroplus") || model != null && model == "Galaxy X"
+    ) {
         return "Galaxy Nexus"
     }
     if (codename != null && (codename == "lt033g" ||
@@ -591,7 +707,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-P605K" ||
             model == "SM-P605L" ||
             model == "SM-P605S" ||
-            model == "SPH-P600")) {
+            model == "SPH-P600")
+    ) {
         return "Galaxy Note 10.1"
     }
     if (codename != null && (codename == "SC-01G" ||
@@ -622,7 +739,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-N915T3" ||
             model == "SM-N915V" ||
             model == "SM-N915W8" ||
-            model == "SM-N915X")) {
+            model == "SM-N915X")
+    ) {
         return "Galaxy Note Edge"
     }
     if (codename != null && (codename == "v1a3g" ||
@@ -637,7 +755,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-P905" ||
             model == "SM-P905F0" ||
             model == "SM-P905M" ||
-            model == "SM-P905V")) {
+            model == "SM-P905V")
+    ) {
         return "Galaxy Note Pro 12.2"
     }
     if (codename != null && (codename == "tre3caltektt" ||
@@ -680,7 +799,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-N910X" ||
             model == "SM-N916K" ||
             model == "SM-N916L" ||
-            model == "SM-N916S")) {
+            model == "SM-N916S")
+    ) {
         return "Galaxy Note4"
     }
     if (codename != null && (codename == "noblelte" ||
@@ -714,7 +834,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-N920T" ||
             model == "SM-N920V" ||
             model == "SM-N920W8" ||
-            model == "SM-N920X")) {
+            model == "SM-N920X")
+    ) {
         return "Galaxy Note5"
     }
     if (codename != null && (codename == "SC-01J" ||
@@ -752,27 +873,19 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-N930V" ||
             model == "SM-N930VL" ||
             model == "SM-N930W8" ||
-            model == "SM-N930X")) {
+            model == "SM-N930X")
+    ) {
         return "Galaxy Note7"
     }
-    if (codename != null && (codename == "SC-01K" ||
-            codename == "SCV37" ||
-            codename == "greatlte" ||
-            codename == "greatlteks" ||
-            codename == "greatqlte" ||
-            codename == "greatqltechn" ||
-            codename == "greatqltecmcc" ||
-            codename == "greatqltecs" ||
-            codename == "greatqlteue") || model != null && (model == "SC-01K" ||
-            model == "SCV37" ||
-            model == "SM-N9500" ||
-            model == "SM-N9508" ||
-            model == "SM-N950F" ||
-            model == "SM-N950N" ||
-            model == "SM-N950U" ||
-            model == "SM-N950U1" ||
-            model == "SM-N950W" ||
-            model == "SM-N950XN")) {
+    if (codename != null && (codename == "SC-01K" || codename == "SCV37" ||
+            codename == "greatlte" || codename == "greatlteks" || codename == "greatqlte" ||
+            codename == "greatqltechn" || codename == "greatqltecmcc" ||
+            codename == "greatqltecs" || codename == "greatqlteue")
+        || model != null && (model == "SC-01K" || model == "SCV37" || model == "SM-N9500" ||
+            model == "SM-N9508" || model == "SM-N950F" || model == "SM-N950N" ||
+            model == "SM-N950U" || model == "SM-N950U1" || model == "SM-N950W" ||
+            model == "SM-N950XN")
+    ) {
         return "Galaxy Note8"
     }
     if (codename != null && (codename == "o5lte" ||
@@ -785,14 +898,16 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-G550T" ||
             model == "SM-G550T1" ||
             model == "SM-G550T2" ||
-            model == "SM-S550TL")) {
+            model == "SM-S550TL")
+    ) {
         return "Galaxy On5"
     }
     if (codename != null && (codename == "o7lte" ||
             codename == "o7ltechn" ||
             codename == "on7elte") || model != null && (model == "SM-G6000" ||
             model == "SM-G600F" ||
-            model == "SM-G600FY")) {
+            model == "SM-G600FY")
+    ) {
         return "Galaxy On7"
     }
     if (codename != null && (codename == "GT-I9000" ||
@@ -835,12 +950,14 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SGH-T959W" ||
             model == "SHW-M110S" ||
             model == "SHW-M190S" ||
-            model == "SPH-D700")) {
+            model == "SPH-D700")
+    ) {
         return "Galaxy S"
     }
     if (codename != null && (codename == "kylechn" ||
             codename == "kyleopen" ||
-            codename == "kyletdcmcc") || model != null && (model == "GT-S7562" || model == "GT-S7568")) {
+            codename == "kyletdcmcc") || model != null && (model == "GT-S7562" || model == "GT-S7568")
+    ) {
         return "Galaxy S Duos"
     }
     if (codename != null && codename == "kyleprods" || model != null && (model == "GT-S7582" || model == "GT-S7582L")) {
@@ -912,7 +1029,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SHV-E210S" ||
             model == "SHW-M440S" ||
             model == "SPH-L710" ||
-            model == "SPH-L710T")) {
+            model == "SPH-L710T")
+    ) {
         return "Galaxy S3"
     }
     if (codename != null && (codename == "golden" ||
@@ -926,12 +1044,14 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "GT-I8200L" ||
             model == "SAMSUNG-SM-G730A" ||
             model == "SM-G730V" ||
-            model == "SM-G730W8")) {
+            model == "SM-G730W8")
+    ) {
         return "Galaxy S3 Mini"
     }
     if (codename != null && (codename == "goldenve3g" || codename == "goldenvess3g") || model != null && (model == "GT-I8200" ||
             model == "GT-I8200N" ||
-            model == "GT-I8200Q")) {
+            model == "GT-I8200Q")
+    ) {
         return "Galaxy S3 Mini Value Edition"
     }
     if (codename != null && (codename == "s3ve3g" ||
@@ -939,7 +1059,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             codename == "s3ve3gds" ||
             codename == "s3ve3gdsdd") || model != null && (model == "GT-I9300I" ||
             model == "GT-I9301I" ||
-            model == "GT-I9301Q")) {
+            model == "GT-I9301Q")
+    ) {
         return "Galaxy S3 Neo"
     }
     if (codename != null && (codename == "SC-04E" ||
@@ -1003,7 +1124,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SHV-E330L" ||
             model == "SM-S975L" ||
             model == "SPH-L720" ||
-            model == "SPH-L720T")) {
+            model == "SPH-L720T")
+    ) {
         return "Galaxy S4"
     }
     if (codename != null && (codename == "serrano3g" ||
@@ -1034,309 +1156,177 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SGH-I257M" ||
             model == "SHV-E370D" ||
             model == "SHV-E370K" ||
-            model == "SPH-L520")) {
+            model == "SPH-L520")
+    ) {
         return "Galaxy S4 Mini"
     }
-    if (codename != null && (codename == "SC-04F" ||
-            codename == "SCL23" ||
-            codename == "k3g" ||
-            codename == "klte" ||
-            codename == "klteMetroPCS" ||
-            codename == "klteacg" ||
-            codename == "klteaio" ||
-            codename == "klteatt" ||
-            codename == "kltecan" ||
-            codename == "klteduoszn" ||
-            codename == "kltektt" ||
-            codename == "kltelgt" ||
-            codename == "kltelra" ||
-            codename == "klteskt" ||
-            codename == "kltespr" ||
-            codename == "kltetfnvzw" ||
-            codename == "kltetmo" ||
-            codename == "klteusc" ||
-            codename == "kltevzw" ||
-            codename == "kwifi" ||
-            codename == "lentisltektt" ||
-            codename == "lentisltelgt" ||
-            codename == "lentislteskt") || model != null && (model == "SAMSUNG-SM-G900A" ||
-            model == "SAMSUNG-SM-G900AZ" ||
-            model == "SC-04F" ||
-            model == "SCL23" ||
-            model == "SM-G9006W" ||
-            model == "SM-G9008W" ||
-            model == "SM-G9009W" ||
-            model == "SM-G900F" ||
-            model == "SM-G900FQ" ||
-            model == "SM-G900H" ||
-            model == "SM-G900I" ||
-            model == "SM-G900K" ||
-            model == "SM-G900L" ||
-            model == "SM-G900M" ||
-            model == "SM-G900MD" ||
-            model == "SM-G900P" ||
-            model == "SM-G900R4" ||
-            model == "SM-G900R6" ||
-            model == "SM-G900R7" ||
-            model == "SM-G900S" ||
-            model == "SM-G900T" ||
-            model == "SM-G900T1" ||
-            model == "SM-G900T3" ||
-            model == "SM-G900T4" ||
-            model == "SM-G900V" ||
-            model == "SM-G900W8" ||
-            model == "SM-G900X" ||
-            model == "SM-G906K" ||
-            model == "SM-G906L" ||
-            model == "SM-G906S" ||
-            model == "SM-S903VL")) {
+    if (codename != null && (codename == "SC-01L" || codename == "SCV40" ||
+            codename == "crownlte" || codename == "crownlteks" || codename == "crownqltechn" ||
+            codename == "crownqltecs" || codename == "crownqltesq" || codename == "crownqlteue")
+        || model != null && (model == "SC-01L" || model == "SCV40" || model == "SM-N9600" ||
+            model == "SM-N960F" || model == "SM-N960N" || model == "SM-N960U" ||
+            model == "SM-N960U1" || model == "SM-N960W")
+    ) {
+        return "Galaxy Note9"
+    }
+    if (codename != null && (codename == "SC-03L" || codename == "SCV41" || codename == "beyond1" ||
+            codename == "beyond1q")
+        || model != null && (model == "SC-03L" || model == "SCV41" || model == "SM-G9730" ||
+            model == "SM-G9738" || model == "SM-G973C" || model == "SM-G973F" ||
+            model == "SM-G973N" || model == "SM-G973U" || model == "SM-G973U1" || model == "SM-G973W")
+    ) {
+        return "Galaxy S10"
+    }
+    if (codename != null && (codename == "SC-04L" || codename == "SCV42" || codename == "beyond2" ||
+            codename == "beyond2q") || model != null && (model == "SC-04L" || model == "SCV42" ||
+            model == "SM-G9750" || model == "SM-G9758" || model == "SM-G975F" ||
+            model == "SM-G975N" || model == "SM-G975U" || model == "SM-G975U1" || model == "SM-G975W")
+    ) {
+        return "Galaxy S10+"
+    }
+    if (codename != null && (codename == "beyond0" || codename == "beyond0q")
+        || model != null && (model == "SM-G9700" || model == "SM-G9708" || model == "SM-G970F" ||
+            model == "SM-G970N" || model == "SM-G970U" || model == "SM-G970U1" ||
+            model == "SM-G970W")
+    ) {
+        return "Galaxy S10e"
+    }
+    if (codename != null && (codename == "SC-04F" || codename == "SCL23" || codename == "k3g" ||
+            codename == "klte" || codename == "klteMetroPCS" || codename == "klteacg" ||
+            codename == "klteaio" || codename == "klteatt" || codename == "kltecan" ||
+            codename == "klteduoszn" || codename == "kltektt" || codename == "kltelgt" ||
+            codename == "kltelra" || codename == "klteskt" || codename == "kltespr" ||
+            codename == "kltetfnvzw" || codename == "kltetmo" || codename == "klteusc" ||
+            codename == "kltevzw" || codename == "kwifi" || codename == "lentisltektt" ||
+            codename == "lentisltelgt" || codename == "lentislteskt")
+        || model != null && (model == "SAMSUNG-SM-G900A" || model == "SAMSUNG-SM-G900AZ" ||
+            model == "SC-04F" || model == "SCL23" || model == "SM-G9006W" || model == "SM-G9008W" ||
+            model == "SM-G9009W" || model == "SM-G900F" || model == "SM-G900FQ" ||
+            model == "SM-G900H" || model == "SM-G900I" || model == "SM-G900K" ||
+            model == "SM-G900L" || model == "SM-G900M" || model == "SM-G900MD" ||
+            model == "SM-G900P" || model == "SM-G900R4" || model == "SM-G900R6" ||
+            model == "SM-G900R7" || model == "SM-G900S" || model == "SM-G900T" ||
+            model == "SM-G900T1" || model == "SM-G900T3" || model == "SM-G900T4" ||
+            model == "SM-G900V" || model == "SM-G900W8" || model == "SM-G900X" ||
+            model == "SM-G906K" || model == "SM-G906L" || model == "SM-G906S" || model == "SM-S903VL")
+    ) {
         return "Galaxy S5"
     }
-    if (codename != null && (codename == "s5neolte" || codename == "s5neoltecan") || model != null && (model == "SM-G903F" ||
-            model == "SM-G903M" ||
-            model == "SM-G903W")) {
+    if (codename != null && (codename == "s5neolte" || codename == "s5neoltecan")
+        || model != null && (model == "SM-G903F" || model == "SM-G903M" || model == "SM-G903W")
+    ) {
         return "Galaxy S5 Neo"
     }
-    if (codename != null && (codename == "SC-05G" ||
-            codename == "zeroflte" ||
-            codename == "zeroflteacg" ||
-            codename == "zeroflteaio" ||
-            codename == "zeroflteatt" ||
-            codename == "zerofltebmc" ||
-            codename == "zerofltechn" ||
-            codename == "zerofltectc" ||
-            codename == "zerofltektt" ||
-            codename == "zerofltelgt" ||
-            codename == "zerofltelra" ||
-            codename == "zerofltemtr" ||
-            codename == "zeroflteskt" ||
-            codename == "zerofltespr" ||
-            codename == "zerofltetfnvzw" ||
-            codename == "zerofltetmo" ||
-            codename == "zeroflteusc" ||
-            codename == "zerofltevzw") || model != null && (model == "SAMSUNG-SM-G920A" ||
-            model == "SAMSUNG-SM-G920AZ" ||
-            model == "SC-05G" ||
-            model == "SM-G9200" ||
-            model == "SM-G9208" ||
-            model == "SM-G9209" ||
-            model == "SM-G920F" ||
-            model == "SM-G920I" ||
-            model == "SM-G920K" ||
-            model == "SM-G920L" ||
-            model == "SM-G920P" ||
-            model == "SM-G920R4" ||
-            model == "SM-G920R6" ||
-            model == "SM-G920R7" ||
-            model == "SM-G920S" ||
-            model == "SM-G920T" ||
-            model == "SM-G920T1" ||
-            model == "SM-G920V" ||
-            model == "SM-G920W8" ||
-            model == "SM-G920X" ||
-            model == "SM-S906L" ||
-            model == "SM-S907VL")) {
+    if (codename != null && (codename == "SC-05G" || codename == "zeroflte" ||
+            codename == "zeroflteacg" || codename == "zeroflteaio" || codename == "zeroflteatt" ||
+            codename == "zerofltebmc" || codename == "zerofltechn" || codename == "zerofltectc" ||
+            codename == "zerofltektt" || codename == "zerofltelgt" || codename == "zerofltelra" ||
+            codename == "zerofltemtr" || codename == "zeroflteskt" || codename == "zerofltespr" ||
+            codename == "zerofltetfnvzw" || codename == "zerofltetmo" ||
+            codename == "zeroflteusc" || codename == "zerofltevzw")
+        || model != null && (model == "SAMSUNG-SM-G920A" || model == "SAMSUNG-SM-G920AZ" ||
+            model == "SC-05G" || model == "SM-G9200" || model == "SM-G9208" ||
+            model == "SM-G9209" || model == "SM-G920F" || model == "SM-G920I" ||
+            model == "SM-G920K" || model == "SM-G920L" || model == "SM-G920P" ||
+            model == "SM-G920R4" || model == "SM-G920R6" || model == "SM-G920R7" ||
+            model == "SM-G920S" || model == "SM-G920T" || model == "SM-G920T1" ||
+            model == "SM-G920V" || model == "SM-G920W8" || model == "SM-G920X" ||
+            model == "SM-S906L" || model == "SM-S907VL")
+    ) {
         return "Galaxy S6"
     }
-    if (codename != null && (codename == "404SC" ||
-            codename == "SC-04G" ||
-            codename == "SCV31" ||
-            codename == "zerolte" ||
-            codename == "zerolteacg" ||
-            codename == "zerolteatt" ||
-            codename == "zeroltebmc" ||
-            codename == "zeroltechn" ||
-            codename == "zeroltektt" ||
-            codename == "zeroltelgt" ||
-            codename == "zeroltelra" ||
-            codename == "zerolteskt" ||
-            codename == "zeroltespr" ||
-            codename == "zeroltetmo" ||
-            codename == "zerolteusc" ||
-            codename == "zeroltevzw") || model != null && (model == "404SC" ||
-            model == "SAMSUNG-SM-G925A" ||
-            model == "SC-04G" ||
-            model == "SCV31" ||
-            model == "SM-G9250" ||
-            model == "SM-G925F" ||
-            model == "SM-G925I" ||
-            model == "SM-G925K" ||
-            model == "SM-G925L" ||
-            model == "SM-G925P" ||
-            model == "SM-G925R4" ||
-            model == "SM-G925R6" ||
-            model == "SM-G925R7" ||
-            model == "SM-G925S" ||
-            model == "SM-G925T" ||
-            model == "SM-G925V" ||
-            model == "SM-G925W8" ||
-            model == "SM-G925X")) {
+    if (codename != null && (codename == "404SC" || codename == "SC-04G" || codename == "SCV31" ||
+            codename == "zerolte" || codename == "zerolteacg" || codename == "zerolteatt" ||
+            codename == "zeroltebmc" || codename == "zeroltechn" || codename == "zeroltektt" ||
+            codename == "zeroltelra" || codename == "zerolteskt" || codename == "zeroltespr" ||
+            codename == "zeroltetmo" || codename == "zerolteusc" || codename == "zeroltevzw")
+        || model != null && (model == "404SC" || model == "SAMSUNG-SM-G925A" || model == "SC-04G" ||
+            model == "SCV31" || model == "SM-G9250" || model == "SM-G925I" || model == "SM-G925K" ||
+            model == "SM-G925P" || model == "SM-G925R4" || model == "SM-G925R6" ||
+            model == "SM-G925R7" || model == "SM-G925S" || model == "SM-G925T" ||
+            model == "SM-G925V" || model == "SM-G925W8" || model == "SM-G925X")
+    ) {
         return "Galaxy S6 Edge"
     }
-    if (codename != null && (codename == "zenlte" ||
-            codename == "zenlteatt" ||
-            codename == "zenltebmc" ||
-            codename == "zenltechn" ||
-            codename == "zenltektt" ||
-            codename == "zenltekx" ||
-            codename == "zenltelgt" ||
-            codename == "zenlteskt" ||
-            codename == "zenltespr" ||
-            codename == "zenltetmo" ||
-            codename == "zenlteusc" ||
-            codename == "zenltevzw") || model != null && (model == "SAMSUNG-SM-G928A" ||
-            model == "SM-G9280" ||
-            model == "SM-G9287" ||
-            model == "SM-G9287C" ||
-            model == "SM-G928C" ||
-            model == "SM-G928F" ||
-            model == "SM-G928G" ||
-            model == "SM-G928I" ||
-            model == "SM-G928K" ||
-            model == "SM-G928L" ||
-            model == "SM-G928N0" ||
-            model == "SM-G928P" ||
-            model == "SM-G928R4" ||
-            model == "SM-G928S" ||
-            model == "SM-G928T" ||
-            model == "SM-G928V" ||
-            model == "SM-G928W8" ||
-            model == "SM-G928X")) {
+    if (codename != null && (codename == "zenlte" || codename == "zenlteatt" ||
+            codename == "zenltebmc" || codename == "zenltechn" || codename == "zenltektt" ||
+            codename == "zenltekx" || codename == "zenltelgt" || codename == "zenlteskt" ||
+            codename == "zenltespr" || codename == "zenltetmo" || codename == "zenlteusc" ||
+            codename == "zenltevzw")
+        || model != null && (model == "SAMSUNG-SM-G928A" || model == "SM-G9280" ||
+            model == "SM-G9287C" || model == "SM-G928C" || model == "SM-G928G" ||
+            model == "SM-G928I" || model == "SM-G928K" || model == "SM-G928L" ||
+            model == "SM-G928N0" || model == "SM-G928P" || model == "SM-G928R4" ||
+            model == "SM-G928S" || model == "SM-G928T" || model == "SM-G928V" ||
+            model == "SM-G928W8" || model == "SM-G928X")
+    ) {
         return "Galaxy S6 Edge+"
     }
-    if (codename != null && (codename == "herolte" ||
-            codename == "heroltebmc" ||
-            codename == "heroltektt" ||
-            codename == "heroltelgt" ||
-            codename == "herolteskt" ||
-            codename == "heroqlteacg" ||
-            codename == "heroqlteaio" ||
-            codename == "heroqlteatt" ||
-            codename == "heroqltecctvzw" ||
-            codename == "heroqltechn" ||
-            codename == "heroqltelra" ||
-            codename == "heroqltemtr" ||
-            codename == "heroqltespr" ||
-            codename == "heroqltetfnvzw" ||
-            codename == "heroqltetmo" ||
-            codename == "heroqlteue" ||
-            codename == "heroqlteusc" ||
-            codename == "heroqltevzw") || model != null && (model == "SAMSUNG-SM-G930A" ||
-            model == "SAMSUNG-SM-G930AZ" ||
-            model == "SM-G9300" ||
-            model == "SM-G9308" ||
-            model == "SM-G930F" ||
-            model == "SM-G930K" ||
-            model == "SM-G930L" ||
-            model == "SM-G930P" ||
-            model == "SM-G930R4" ||
-            model == "SM-G930R6" ||
-            model == "SM-G930R7" ||
-            model == "SM-G930S" ||
-            model == "SM-G930T" ||
-            model == "SM-G930T1" ||
-            model == "SM-G930U" ||
-            model == "SM-G930V" ||
-            model == "SM-G930VC" ||
-            model == "SM-G930VL" ||
-            model == "SM-G930W8" ||
-            model == "SM-G930X")) {
+    if (codename != null && (codename == "herolte" || codename == "heroltebmc" ||
+            codename == "heroltektt" || codename == "heroltelgt" || codename == "herolteskt" ||
+            codename == "heroqlteacg" || codename == "heroqlteaio" || codename == "heroqlteatt" ||
+            codename == "heroqltecctvzw" || codename == "heroqltechn" || codename == "heroqltelra" ||
+            codename == "heroqltemtr" || codename == "heroqltespr" || codename == "heroqltetfnvzw" ||
+            codename == "heroqltetmo" || codename == "heroqlteue" || codename == "heroqlteusc" ||
+            codename == "heroqltevzw")
+        || model != null && (model == "SAMSUNG-SM-G930A" || model == "SAMSUNG-SM-G930AZ" ||
+            model == "SM-G9300" || model == "SM-G9308" || model == "SM-G930F" || model == "SM-G930K" ||
+            model == "SM-G930L" || model == "SM-G930P" || model == "SM-G930R4" || model == "SM-G930R6" ||
+            model == "SM-G930R7" || model == "SM-G930S" || model == "SM-G930T" || model == "SM-G930T1" ||
+            model == "SM-G930U" || model == "SM-G930V" || model == "SM-G930VC" || model == "SM-G930VL" ||
+            model == "SM-G930W8" || model == "SM-G930X")
+    ) {
         return "Galaxy S7"
     }
-    if (codename != null && (codename == "SC-02H" ||
-            codename == "SCV33" ||
-            codename == "hero2lte" ||
-            codename == "hero2ltebmc" ||
-            codename == "hero2ltektt" ||
-            codename == "hero2ltelgt" ||
-            codename == "hero2lteskt" ||
-            codename == "hero2qlteatt" ||
-            codename == "hero2qltecctvzw" ||
-            codename == "hero2qltechn" ||
-            codename == "hero2qltespr" ||
-            codename == "hero2qltetmo" ||
-            codename == "hero2qlteue" ||
-            codename == "hero2qlteusc" ||
-            codename == "hero2qltevzw") || model != null && (model == "SAMSUNG-SM-G935A" ||
-            model == "SC-02H" ||
-            model == "SCV33" ||
-            model == "SM-G9350" ||
-            model == "SM-G935F" ||
-            model == "SM-G935K" ||
-            model == "SM-G935L" ||
-            model == "SM-G935P" ||
-            model == "SM-G935R4" ||
-            model == "SM-G935S" ||
-            model == "SM-G935T" ||
-            model == "SM-G935U" ||
-            model == "SM-G935V" ||
-            model == "SM-G935VC" ||
-            model == "SM-G935W8" ||
-            model == "SM-G935X")) {
+    if (codename != null && (codename == "SC-02H" || codename == "SCV33" ||
+            codename == "hero2lte" || codename == "hero2ltebmc" || codename == "hero2ltektt" ||
+            codename == "hero2lteskt" || codename == "hero2qlteatt" ||
+            codename == "hero2qltecctvzw" || codename == "hero2qltespr" ||
+            codename == "hero2qltetmo" || codename == "hero2qlteusc" || codename == "hero2qltevzw")
+        || model != null && (model == "SAMSUNG-SM-G935A" || model == "SC-02H" ||
+            model == "SCV33" || model == "SM-G935K" || model == "SM-G935P" ||
+            model == "SM-G935R4" || model == "SM-G935S" || model == "SM-G935T" ||
+            model == "SM-G935V" || model == "SM-G935VC" || model == "SM-G935W8" ||
+            model == "SM-G935X")
+    ) {
         return "Galaxy S7 Edge"
     }
-    if (codename != null && (codename == "SC-02J" ||
-            codename == "SCV36" ||
-            codename == "dreamlte" ||
-            codename == "dreamlteks" ||
-            codename == "dreamqltecan" ||
-            codename == "dreamqltechn" ||
-            codename == "dreamqltecmcc" ||
-            codename == "dreamqltesq" ||
-            codename == "dreamqlteue") || model != null && (model == "SC-02J" ||
-            model == "SCV36" ||
-            model == "SM-G9500" ||
-            model == "SM-G9508" ||
-            model == "SM-G950F" ||
-            model == "SM-G950N" ||
-            model == "SM-G950U" ||
-            model == "SM-G950U1" ||
-            model == "SM-G950W")) {
+    if (codename != null && (codename == "SC-02J" || codename == "SCV36" ||
+            codename == "dreamlte" || codename == "dreamlteks" || codename == "dreamqltecan" ||
+            codename == "dreamqltechn" || codename == "dreamqltecmcc" || codename == "dreamqltesq" ||
+            codename == "dreamqlteue")
+        || model != null && (model == "SC-02J" || model == "SCV36" || model == "SM-G9500" ||
+            model == "SM-G9508" || model == "SM-G950F" || model == "SM-G950N" ||
+            model == "SM-G950U" || model == "SM-G950U1" || model == "SM-G950W")
+    ) {
         return "Galaxy S8"
     }
-    if (codename != null && (codename == "SC-03J" ||
-            codename == "SCV35" ||
-            codename == "dream2lte" ||
-            codename == "dream2lteks" ||
-            codename == "dream2qltecan" ||
-            codename == "dream2qltechn" ||
-            codename == "dream2qltesq" ||
-            codename == "dream2qlteue") || model != null && (model == "SC-03J" ||
-            model == "SCV35" ||
-            model == "SM-G9550" ||
-            model == "SM-G955F" ||
-            model == "SM-G955N" ||
-            model == "SM-G955U" ||
-            model == "SM-G955U1" ||
-            model == "SM-G955W")) {
+    if (codename != null && (codename == "SC-03J" || codename == "SCV35" ||
+            codename == "dream2lte" || codename == "dream2lteks" || codename == "dream2qltecan" ||
+            codename == "dream2qltechn" || codename == "dream2qltesq" || codename == "dream2qlteue")
+        || model != null && (model == "SC-03J" || model == "SCV35" || model == "SM-G9550" ||
+            model == "SM-G955F" || model == "SM-G955N" || model == "SM-G955U" ||
+            model == "SM-G955U1" || model == "SM-G955W")
+    ) {
         return "Galaxy S8+"
     }
-    if (codename != null && (codename == "starlte" ||
-            codename == "starlteks" ||
-            codename == "starqltechn" ||
-            codename == "starqltecmcc" ||
-            codename == "starqltecs" ||
-            codename == "starqltesq" ||
-            codename == "starqlteue") || model != null && (model == "SM-G9600" ||
-            model == "SM-G9608" ||
-            model == "SM-G960F" ||
-            model == "SM-G960N" ||
-            model == "SM-G960U" ||
-            model == "SM-G960U1" ||
-            model == "SM-G960W")) {
+    if (codename != null && (codename == "SC-02K" || codename == "SCV38" ||
+            codename == "starlte" || codename == "starlteks" || codename == "starqltechn" ||
+            codename == "starqltecmcc" || codename == "starqltecs" || codename == "starqltesq" ||
+            codename == "starqlteue")
+        || model != null && (model == "SC-02K" || model == "SCV38" || model == "SM-G9600" ||
+            model == "SM-G9608" || model == "SM-G960F" || model == "SM-G960N" ||
+            model == "SM-G960U" || model == "SM-G960U1" || model == "SM-G960W")
+    ) {
         return "Galaxy S9"
     }
-    if (codename != null && (codename == "star2lte" ||
-            codename == "star2lteks" ||
-            codename == "star2qltechn" ||
-            codename == "star2qltecs" ||
-            codename == "star2qltesq" ||
-            codename == "star2qlteue") || model != null && (model == "SM-G9650" ||
-            model == "SM-G965F" ||
-            model == "SM-G965N" ||
-            model == "SM-G965U" ||
-            model == "SM-G965U1" ||
-            model == "SM-G965W")) {
+    if (codename != null && (codename == "SC-03K" || codename == "SCV39" ||
+            codename == "star2lte" || codename == "star2lteks" || codename == "star2qltechn" ||
+            codename == "star2qltecs" || codename == "star2qltesq" || codename == "star2qlteue")
+        || model != null && (model == "SC-03K" || model == "SCV39" || model == "SM-G9650" ||
+            model == "SM-G965F" || model == "SM-G965N" || model == "SM-G965U" ||
+            model == "SM-G965U1" || model == "SM-G965W")
+    ) {
         return "Galaxy S9+"
     }
     if (codename != null && (codename == "GT-P7500" ||
@@ -1359,7 +1349,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SHW-M300W" ||
             model == "SHW-M380K" ||
             model == "SHW-M380S" ||
-            model == "SHW-M380W")) {
+            model == "SHW-M380W")
+    ) {
         return "Galaxy Tab 10.1"
     }
     if (codename != null && (codename == "GT-P6200" ||
@@ -1376,7 +1367,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "GT-P6211" ||
             model == "SC-02D" ||
             model == "SGH-T869" ||
-            model == "SHW-M430W")) {
+            model == "SHW-M430W")
+    ) {
         return "Galaxy Tab 7.0 Plus"
     }
     if (codename != null && (codename == "gteslteatt" ||
@@ -1395,7 +1387,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-T377R4" ||
             model == "SM-T377T" ||
             model == "SM-T377V" ||
-            model == "SM-T377W")) {
+            model == "SM-T377W")
+    ) {
         return "Galaxy Tab E 8.0"
     }
     if (codename != null && (codename == "gtel3g" ||
@@ -1408,7 +1401,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-T561M" ||
             model == "SM-T561Y" ||
             model == "SM-T562" ||
-            model == "SM-T567V")) {
+            model == "SM-T567V")
+    ) {
         return "Galaxy Tab E 9.6"
     }
     if (codename != null && (codename == "403SC" ||
@@ -1440,7 +1434,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "SM-T239" ||
             model == "SM-T2397" ||
             model == "SM-T239C" ||
-            model == "SM-T239M")) {
+            model == "SM-T239M")
+    ) {
         return "Galaxy Tab4 7.0"
     }
     if (codename != null && (codename == "gvlte" ||
@@ -1451,7 +1446,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             codename == "gvwifiue") || model != null && (model == "SAMSUNG-SM-T677A" ||
             model == "SM-T670" ||
             model == "SM-T677" ||
-            model == "SM-T677V")) {
+            model == "SM-T677V")
+    ) {
         return "Galaxy View"
     }
     if (codename != null && codename == "manta") {
@@ -1468,21 +1464,24 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             codename == "D2243") || model != null && (model == "D2202" ||
             model == "D2203" ||
             model == "D2206" ||
-            model == "D2243")) {
+            model == "D2243")
+    ) {
         return "Xperia E3"
     }
     if (codename != null && (codename == "E5603" ||
             codename == "E5606" ||
             codename == "E5653") || model != null && (model == "E5603" ||
             model == "E5606" ||
-            model == "E5653")) {
+            model == "E5653")
+    ) {
         return "Xperia M5"
     }
     if (codename != null && (codename == "E5633" ||
             codename == "E5643" ||
             codename == "E5663") || model != null && (model == "E5633" ||
             model == "E5643" ||
-            model == "E5663")) {
+            model == "E5663")
+    ) {
         return "Xperia M5 Dual"
     }
     if (codename != null && codename == "LT26i" || model != null && model == "LT26i") {
@@ -1496,7 +1495,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "D5306" ||
             model == "D5316" ||
             model == "D5316N" ||
-            model == "D5322")) {
+            model == "D5322")
+    ) {
         return "Xperia T2 Ultra"
     }
     if (codename != null && codename == "txs03" || model != null && (model == "SGPT12" || model == "SGPT13")) {
@@ -1508,7 +1508,8 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             codename == "SGP351") || model != null && (model == "SGP311" ||
             model == "SGP312" ||
             model == "SGP321" ||
-            model == "SGP351")) {
+            model == "SGP351")
+    ) {
         return "Xperia Tablet Z"
     }
     if (codename != null && (codename == "D6502" ||
@@ -1517,8 +1518,56 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             codename == "SO-03F") || model != null && (model == "D6502" ||
             model == "D6503" ||
             model == "D6543" ||
-            model == "SO-03F")) {
+            model == "SO-03F")
+    ) {
         return "Xperia Z2"
+    }
+    if (codename != null && (codename == "802SO" || codename == "J8110" || codename == "J8170" ||
+            codename == "J9110" || codename == "J9180" || codename == "SO-03L" || codename == "SOV40")
+        || model != null && (model == "802SO" || model == "J8110" || model == "J8170" ||
+            model == "J9110" || model == "J9180" || model == "SO-03L" || model == "SOV40")
+    ) {
+        return "Xperia 1"
+    }
+    if (codename != null && (codename == "I3113" || codename == "I3123" || codename == "I4113" ||
+            codename == "I4193")
+        || model != null && (model == "I3113" || model == "I3123" || model == "I4113" ||
+            model == "I4193")
+    ) {
+        return "Xperia 10"
+    }
+    if (codename != null && (codename == "I3213" || codename == "I3223" || codename == "I4213" ||
+            codename == "I4293")
+        || model != null && (model == "I3213" || model == "I3223" || model == "I4213" ||
+            model == "I4293")
+    ) {
+        return "Xperia 10 Plus"
+    }
+    if (codename != null && (codename == "702SO" || codename == "H8216" || codename == "H8266" ||
+            codename == "H8276" || codename == "H8296" || codename == "SO-03K" || codename == "SOV37")
+        || model != null && (model == "702SO" || model == "H8216" || model == "H8266" ||
+            model == "H8276" || model == "H8296" || model == "SO-03K" || model == "SOV37")
+    ) {
+        return "Xperia XZ2"
+    }
+    if (codename != null && (codename == "SGP311" ||
+            codename == "SGP312" ||
+            codename == "SGP321" ||
+            codename == "SGP351") || model != null && (model == "SGP311" ||
+            model == "SGP312" ||
+            model == "SGP321" ||
+            model == "SGP351")
+    ) {
+        return "Xperia Tablet Z"
+    }
+    if (codename != null && codename == "txs03" || model != null && (model == "SGPT12" || model == "SGPT13")) {
+        return "Xperia Tablet S"
+    }
+    if (codename != null && (codename == "H8116" || codename == "H8166" || codename == "SO-04K" ||
+            codename == "SOV38")
+        || model != null && (model == "H8116" || model == "H8166" || model == "SO-04K" || model == "SOV38")
+    ) {
+        return "Xperia XZ2 Premium"
     }
     if (codename != null && (codename == "401SO" ||
             codename == "D6603" ||
@@ -1535,22 +1584,32 @@ fun getDeviceName(codename: String?, model: String?, fallback: String): String {
             model == "D6646" ||
             model == "D6653" ||
             model == "SO-01G" ||
-            model == "SOL26")) {
+            model == "SOL26")
+    ) {
         return "Xperia Z3"
     }
     if (codename != null && (codename == "402SO" ||
             codename == "SO-03G" ||
             codename == "SOV31") || model != null && (model == "402SO" ||
             model == "SO-03G" ||
-            model == "SOV31")) {
+            model == "SOV31")
+    ) {
         return "Xperia Z4"
     }
     if (codename != null && (codename == "E5803" ||
             codename == "E5823" ||
             codename == "SO-02H") || model != null && (model == "E5803" ||
             model == "E5823" ||
-            model == "SO-02H")) {
+            model == "SO-02H")
+    ) {
         return "Xperia Z5 Compact"
+    }
+    if (codename != null && (codename == "801SO" || codename == "H8416" ||
+            codename == "H9436" || codename == "H9493" || codename == "SO-01L" || codename == "SOV39")
+        || model != null && (model == "801SO" || model == "H8416" || model == "H9436" ||
+            model == "H9493" || model == "SO-01L" || model == "SOV39")
+    ) {
+        return "Xperia XZ3"
     }
     // ----------------------------------------------------------------------------
     // Sony Ericsson
