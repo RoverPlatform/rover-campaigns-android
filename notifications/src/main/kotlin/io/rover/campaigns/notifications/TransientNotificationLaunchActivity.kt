@@ -60,8 +60,14 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
 
         log.v("Transient notification launch activity running.")
 
+        if (intent.getStringExtra(NOTIFICATION_JSON) == null) {
+            log.e("No notification json passed, finishing activity")
+            finish()
+            return
+        }
+
         // grab the notification back out of the arguments.
-        val notificationJson = this.intent.extras.getString(NOTIFICATION_JSON)
+        val notificationJson = intent.getStringExtra(NOTIFICATION_JSON)
 
         // this will also do the side-effect of issuing the Notification Opened event, which
         // is the whole reason for this activity existing.
