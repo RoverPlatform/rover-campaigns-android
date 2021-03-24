@@ -3,7 +3,7 @@
   <groupId>io.rover.campaigns</groupId>
   <artifactId>ticketmaster</artifactId>
   <versioning>
-    <release>3.7.3</release>
+    <release>3.7.4</release>
     <versions>
       <version>3.0.0-beta.1</version>
       <version>3.0.0-beta.2</version>
@@ -24,7 +24,8 @@
       <version>3.7.1</version>
       <version>3.7.2</version>
       <version>3.7.3</version>
+      <version>3.7.4</version>
     </versions>
-    <lastUpdated>20201109211000</lastUpdated>
+    <lastUpdated>20210324164042</lastUpdated>
   </versioning>
 </metadata>
