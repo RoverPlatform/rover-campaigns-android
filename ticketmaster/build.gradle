@@ -13,8 +13,6 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode rover_campaigns_sdk_version_code
-        versionName rover_campaigns_sdk_version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -97,23 +95,6 @@ task ktlintFormat(type: JavaExec, group: "formatting") {
 dokka {
     outputFormat = 'html'
     outputDirectory = "$buildDir/javadoc"
-}
-
-task webDocsDokka (type: org.jetbrains.dokka.gradle.DokkaTask, overwrite: true) {
-    outputFormat = 'jekyll'
-    outputDirectory = "$buildDir/jekylldoc"
-
-    // Suppress a package
-    packageOptions {
-        prefix = "io.rover.shaded"
-        suppress = true
-    }
-
-    // Suppress a package
-    packageOptions {
-        prefix = "android"
-        suppress = true
-    }
 }
 
 ext {
