@@ -8,11 +8,13 @@ apply plugin: 'maven-publish'
 apply plugin: "de.mannodermaus.android-junit5"
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 30
+        versionCode rover_campaigns_sdk_version_code
+        versionName rover_campaigns_sdk_version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

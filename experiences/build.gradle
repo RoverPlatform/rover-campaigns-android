@@ -7,11 +7,13 @@ apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'maven-publish'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 30
 
     defaultConfig {
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 30
+        versionCode rover_campaigns_sdk_version_code
+        versionName rover_campaigns_sdk_version
     }
 
     buildTypes {
