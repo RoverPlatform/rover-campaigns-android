@@ -72,8 +72,8 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
         // this will also do the side-effect of issuing the Notification Opened event, which
         // is the whole reason for this activity existing.
 
-        val intent = notificationOpen.intentForOpeningNotificationFromJson(notificationJson)
-        
+        val intent = notificationJson?.let { notificationOpen.intentForOpeningNotificationFromJson(it) }
+
         if (intent?.resolveActivityInfo(this.packageManager, PackageManager.GET_SHARED_LIBRARY_FILES) == null) {
             log.e(
                 "No activity could be found to handle the Intent needed to start the notification.\n" +

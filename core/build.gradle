@@ -2,7 +2,6 @@ import org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDepen
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'maven-publish'
 apply plugin: "de.mannodermaus.android-junit5"
@@ -17,6 +16,8 @@ android {
         versionName rover_campaigns_sdk_version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String","VERSION_NAME","\"${defaultConfig.versionName}\"")
 
     }
     buildTypes {
@@ -45,12 +46,6 @@ android {
     }
 
     kotlinOptions { jvmTarget = "1.8" }
-}
-
-androidExtensions {
-    // So we can use @Parcelize.  This does not expose risk to consumers; this is a build time-only
-    // consideration.
-    experimental = true
 }
 
 dependencies {

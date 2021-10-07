@@ -160,7 +160,7 @@ class CoreAssembler @JvmOverloads constructor(
 
         if (openAppIntent != null || application.packageManager.getLaunchIntentForPackage(application.packageName) != null) {
             container.register(Scope.Singleton, Intent::class.java, "openApp") { _ ->
-                openAppIntent ?: application.packageManager.getLaunchIntentForPackage(application.packageName)
+                openAppIntent ?: application.packageManager.getLaunchIntentForPackage(application.packageName) ?: Intent()
             }
         }
 
@@ -463,7 +463,7 @@ class CoreAssembler @JvmOverloads constructor(
                 .ensureBackgroundSyncScheduled()
         } else {
             // deschedule any prior rover sync jobs.
-            WorkManager.getInstance().cancelAllWorkByTag("rover-sync")
+            WorkManager.getInstance(application).cancelAllWorkByTag("rover-sync")
         }
     }
 }

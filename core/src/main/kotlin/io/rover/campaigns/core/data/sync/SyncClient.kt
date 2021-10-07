@@ -13,6 +13,7 @@ import io.rover.campaigns.core.platform.DateFormattingInterface
 import org.json.JSONArray
 import org.reactivestreams.Publisher
 import java.net.URL
+import java.util.Locale
 
 class SyncClient(
     private val endpoint: URL,
@@ -98,7 +99,7 @@ val SyncQuery.signature: String?
         }
 
         return arguments.joinToString(", ") {
-            "\$$name${it.name.capitalize()}:${it.type}"
+            "\$$name${it.name.capitalize(Locale.ROOT)}:${it.type}"
         }
     }
 

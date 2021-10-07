@@ -10,11 +10,10 @@ import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import androidx.fragment.app.FragmentContainerView
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
-import kotlinx.android.synthetic.main.activity_example_main.navigation
-import kotlinx.android.synthetic.main.activity_example_main.notification_center
-import kotlinx.android.synthetic.main.activity_example_main.settings_fragment
+import io.rover.example.databinding.ActivityExampleMainBinding
 
 class ExampleMainActivity : AppCompatActivity() {
 
@@ -24,24 +23,32 @@ class ExampleMainActivity : AppCompatActivity() {
     }
 
     private fun selectTab(itemId: Int) {
+        val fragment = this.findViewById<FragmentContainerView>(R.id.settings_fragment)
         if(itemId == R.id.navigation_settings) {
             // show
-            supportFragmentManager.beginTransaction().show(this.settings_fragment).commit()
+
+            supportFragmentManager.beginTransaction().show(fragment.).commit()
         } else {
             // hide
-            supportFragmentManager.beginTransaction().hide(this.settings_fragment).commit()
+            supportFragmentManager.beginTransaction().hide(fragment).commit()
         }
-        this.notification_center.visibility = if(itemId == R.id.navigation_notifications) View.VISIBLE else View.GONE
+        binding.notificationCenter.visibility = if(itemId == R.id.navigation_notifications) View.VISIBLE else View.GONE
     }
+
+    private lateinit var binding: ActivityExampleMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_example_main)
 
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        binding = ActivityExampleMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        notification_center.activity = this
+        binding.navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        binding.notificationCenter.activity = this
 
         selectTab(R.id.navigation_notifications)
 

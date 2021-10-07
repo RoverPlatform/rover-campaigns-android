@@ -165,7 +165,7 @@ class SessionStore(
             .map { expiryTimeMsEpoch ->
                 ((expiryTimeMsEpoch - Date().time) / 1000).toInt()
             }
-            .min()
+            .minOrNull()
 
         // if there's a negative number, return 0 because there's already expired entries that need
         // to be dealt with now.
