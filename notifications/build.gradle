@@ -122,17 +122,6 @@ afterEvaluate {
                 groupId "io.rover.campaigns"
                 artifactId artifactId
                 version rover_campaigns_sdk_version
-
-//                pom.withXml {
-//                    def dependenciesNode = asNode().appendNode('dependencies')
-//
-//                    // notice that project scope dependencies are not handled. Instead, we must add them
-//                    // as external dependencies manually.
-//                    def dependencyNode = dependenciesNode.appendNode('dependency')
-//                    dependencyNode.appendNode('groupId', 'io.rover.campaigns')
-//                    dependencyNode.appendNode('artifactId', 'core')
-//                    dependencyNode.appendNode('version', rover_campaigns_sdk_version)
-//                }
             }
         }
     }
