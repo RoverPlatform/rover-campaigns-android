@@ -1,9 +1,8 @@
-package io.rover.example
+package io.rover.Example
 
 import android.app.Application
 import android.content.Intent
 import android.util.Log
-import com.google.firebase.messaging.FirebaseMessaging
 import io.rover.campaigns.core.CoreAssembler
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.debug.DebugAssembler
@@ -11,15 +10,10 @@ import io.rover.campaigns.experiences.ExperiencesAssembler
 import io.rover.campaigns.location.LocationAssembler
 import io.rover.campaigns.notifications.NotificationsAssembler
 import io.rover.campaigns.ticketmaster.TicketmasterAssembler
-import timber.log.Timber
 
-class ExampleApplication : Application() {
+class ExampleApplication: Application() {
     override fun onCreate() {
         super.onCreate()
-
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
 
         RoverCampaigns.installSaneGlobalHttpCache(this)
 
@@ -33,19 +27,19 @@ class ExampleApplication : Application() {
             ),
             NotificationsAssembler(
                 applicationContext = this,
-                smallIconResId = R.mipmap.rover_notification_icon,
-                notificationCenterIntent = Intent(applicationContext, ExampleMainActivity::class.java)
+                smallIconResId = R.mipmap.rover_notification_icon
             ) { tokenCallback ->
-                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                    if (!task.isSuccessful) {
-                        Log.w("RoverExampleApplication", "Fetching FCM registration token failed", task.exception)
-                        return@addOnCompleteListener
-                    }
-
-                    // Get new FCM registration token
-                    val token = task.result
-                    tokenCallback(token)
-                }
+                // TODO
+                // FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                //     if (!task.isSuccessful) {
+                //         Log.w("RoverExampleApplication", "Fetching FCM registration token failed", task.exception)
+                //         return@addOnCompleteListener
+                //     }
+                //
+                //     // Get new FCM registration token
+                //     val token = task.result
+                //     tokenCallback(token)
+                // }
             },
             LocationAssembler(),
             DebugAssembler(),

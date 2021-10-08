@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/compose-model-1633651066754.xml" value="0.6714801444043321" />
+        <entry key="example-app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.36770833333333336" />
+        <entry key="example-app/src/main/res/drawable/ic_launcher_background.xml" value="0.36770833333333336" />
         <entry key="example-app/src/main/res/layout/activity_example_main.xml" value="0.2015625" />
       </map>
     </option>
