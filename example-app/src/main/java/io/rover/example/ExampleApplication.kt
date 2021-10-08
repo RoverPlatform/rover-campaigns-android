@@ -3,6 +3,7 @@ package io.rover.Example
 import android.app.Application
 import android.content.Intent
 import android.util.Log
+import com.google.firebase.messaging.FirebaseMessaging
 import io.rover.campaigns.core.CoreAssembler
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.debug.DebugAssembler
@@ -29,17 +30,16 @@ class ExampleApplication: Application() {
                 applicationContext = this,
                 smallIconResId = R.mipmap.rover_notification_icon
             ) { tokenCallback ->
-                // TODO
-                // FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                //     if (!task.isSuccessful) {
-                //         Log.w("RoverExampleApplication", "Fetching FCM registration token failed", task.exception)
-                //         return@addOnCompleteListener
-                //     }
-                //
-                //     // Get new FCM registration token
-                //     val token = task.result
-                //     tokenCallback(token)
-                // }
+                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        Log.w("RoverExampleApplication", "Fetching FCM registration token failed", task.exception)
+                        return@addOnCompleteListener
+                    }
+
+                    // Get new FCM registration token
+                    val token = task.result
+                    tokenCallback(token)
+                }
             },
             LocationAssembler(),
             DebugAssembler(),
