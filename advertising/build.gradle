@@ -2,7 +2,6 @@ import org.gradle.api.internal.artifacts.dependencies.DefaultExternalModuleDepen
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'maven-publish'
 
 android {
@@ -76,99 +75,37 @@ task ktlintFormat(type: JavaExec, group: "formatting") {
     args "-F", "src/**/*.kt"
 }
 
-
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "$buildDir/javadoc"
-}
-
 ext {
     groupId = 'io.rover.campaigns' // package name of the project
     artifactId = "advertising" // module name of the library
     libVersion = rover_campaigns_sdk_version
 }
 
-//just copy paste the lines below
-if (project.hasProperty("kotlin")) { //Kotlin libraries
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from android.sourceSets.main.java.srcDirs
-    }
-
-    task javadoc(type: Javadoc, dependsOn: dokka) {
-
-    }
-} else if (project.hasProperty("android")) {
-    task sourcesJar(type: Jar) {
-        classifier = 'sources'
-        from android.sourceSets.main.java.srcDirs
-    }
-
-    task javadoc(type: Javadoc) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    }
-} else { // Java libraries
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-    // options.encoding = 'UTF-8'
-}
-
-publishing {
-    repositories {
-        maven {
-            url System.getenv('DEPLOY_MAVEN_PATH')
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                url System.getenv('DEPLOY_MAVEN_PATH')
+            }
         }
-    }
 
-    publications {
-        production(MavenPublication) {
-            artifact("$buildDir/outputs/aar/$artifactId-release.aar")
-            groupId "io.rover.campaigns"
-            artifactId artifactId
-            version rover_campaigns_sdk_version
+        publications {
+            production(MavenPublication) {
+                from components.release
 
-            //The publication doesn't know about our dependencies, so we have to manually add them to the pom
-            pom.withXml {
-                def dependenciesNode = asNode().appendNode('dependencies')
+                groupId "io.rover.campaigns"
+                artifactId artifactId
+                version rover_campaigns_sdk_version
 
-                //Iterate over the compile dependencies (we don't want the test ones), adding a <dependency> node for each
-
-                def apiAndImplementationDeps = configurations.implementation.allDependencies + configurations.compile.allDependencies
-
-                // get all the api *and* implementation dependencies
-                apiAndImplementationDeps.each {
-                    if(it instanceof DefaultExternalModuleDependency) {
-                        println("ITERATING OVER DEPENDENCY: $it")
-                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', it.group)
-                        dependencyNode.appendNode('artifactId', it.name)
-                        dependencyNode.appendNode('version', it.version)
-                        dependencyNode.appendNode('scope', "compile")
-                    }
-                }
-
-                // notice that project scope dependencies are not handled. Instead, we must add them
-                // as external dependencies manually.
-                def dependencyNode = dependenciesNode.appendNode('dependency')
-                dependencyNode.appendNode('groupId', 'io.rover.campaigns')
-                dependencyNode.appendNode('artifactId', 'core')
-                dependencyNode.appendNode('version', rover_campaigns_sdk_version)
-            }
-
-            artifact sourcesJar {
-                classifier "sources"
-            }
-
-            artifact javadocJar {
-                classifier 'javadoc'
+//                pom.withXml {
+//                    def dependenciesNode = asNode().appendNode('dependencies')
+//                    // notice that project scope dependencies are not handled. Instead, we must add them
+//                    // as external dependencies manually.
+//                    def dependencyNode = dependenciesNode.appendNode('dependency')
+//                    dependencyNode.appendNode('groupId', 'io.rover.campaigns')
+//                    dependencyNode.appendNode('artifactId', 'core')
+//                    dependencyNode.appendNode('version', rover_campaigns_sdk_version)
+//                }
             }
         }
     }
