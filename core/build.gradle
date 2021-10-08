@@ -16,6 +16,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        // While this used to be default, now explicitly add VERSION_NAME to BuildConfig.
         buildConfigField("String","VERSION_NAME","\"${defaultConfig.versionName}\"")
 
     }
