@@ -1,5 +1,4 @@
 <resources>
-    <string name="rover_endpoint">https://api.rover.io</string>
     <!-- Put your own Rover Campaigns API token here! -->
     <string name="rover_api_token">blank</string>
 
@@ -11,4 +10,7 @@
     <!-- The Rover Campaigns SDK has several built-in deep link handlers.  This field should be set
     to match the URL Scheme set in your Rover Settings. -->
     <string name="rover_campaigns_uri_scheme">rv-example</string>
+
+    <!-- This is only used by Rover engineers for debugging, please disregard -->
+    <string name="rover_endpoint">https://api.rover.io</string>
 </resources>
