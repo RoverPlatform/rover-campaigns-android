@@ -38,17 +38,17 @@ class MainActivity : ComponentActivity() {
 
                         Button(onClick = {
                             startActivity(
-                                NotificationCenterActivity.makeIntent(this@MainActivity)
+                                Intent(
+                                    this@MainActivity,
+                                    RoverDebugActivity::class.java
+                                )
                             )
                         }) {
                             Text(text = "Open Rover Settings")
                         }
                         Button(onClick = {
                             startActivity(
-                                Intent(
-                                    this@MainActivity,
-                                    RoverDebugActivity::class.java
-                                )
+                                NotificationCenterActivity.makeIntent(this@MainActivity)
                             )
                         }) {
                             Text(text = "Open Rover Notification Center")

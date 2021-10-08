@@ -3,6 +3,7 @@ package io.rover.campaigns.location
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -167,7 +168,7 @@ class GoogleBackgroundLocationService(
                         applicationContext,
                         0,
                         Intent(applicationContext, LocationBroadcastReceiver::class.java),
-                        0
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { FLAG_IMMUTABLE } else { 0 }
                     )
                 ).addOnFailureListener { error ->
                     log.w("Unable to configure Rover location updates receiver because: $error")

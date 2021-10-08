@@ -1,9 +1,11 @@
 package io.rover.campaigns.notifications
 
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
 import io.rover.campaigns.core.RoverCampaigns
@@ -132,7 +134,7 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
                         NOTIFICATION_JSON, notificationJson.toString()
                     )
                 },
-                PendingIntent.FLAG_ONE_SHOT
+                PendingIntent.FLAG_ONE_SHOT or if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { FLAG_IMMUTABLE } else { 0 }
             )
         }
 

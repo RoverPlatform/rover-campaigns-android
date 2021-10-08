@@ -3,9 +3,11 @@ package io.rover.campaigns.location
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_IMMUTABLE
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
 import com.google.android.gms.location.GeofencingClient
@@ -199,7 +201,7 @@ class GoogleGeofenceService(
             applicationContext,
             0,
             Intent(applicationContext, GeofenceBroadcastReceiver::class.java),
-            PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_UPDATE_CURRENT or if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { FLAG_IMMUTABLE } else { 0 }
         )
     }
 
