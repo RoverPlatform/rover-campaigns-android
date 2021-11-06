@@ -13,11 +13,13 @@ interface PermissionsNotifierInterface {
      */
     fun permissionGranted(permissionId: String)
 
+    fun notifyForPermission(permissionId: String): Publisher<String>
+
     /**
-     * Subscribe to be notified of the given permission being available.  Yields when the permission
-     * is available, not before.
+     * Subscribe to be notified of the given permission(s) being available.  Yields when the
+     * permission is available, not before.
      *
      * If the permission is already available, will yield immediately.
      */
-    fun notifyForPermission(permissionId: String): Publisher<String>
+    fun notifyForAnyOfPermission(permissions: Set<String>): Publisher<String>
 }

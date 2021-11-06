@@ -56,8 +56,8 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation project(':core')
 
-    implementation 'com.google.android.gms:play-services-nearby:17.0.0'
-    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.android.gms:play-services-nearby:18.0.0'
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
 }
 
 configurations {

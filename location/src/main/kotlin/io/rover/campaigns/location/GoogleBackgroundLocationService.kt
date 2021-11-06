@@ -9,7 +9,11 @@ import android.content.Context
 import android.content.Intent
 import android.location.Geocoder
 import android.os.Build
+import android.os.Looper
+import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationAvailability
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import io.rover.campaigns.core.RoverCampaigns
@@ -154,27 +158,50 @@ class GoogleBackgroundLocationService(
 
     @SuppressLint("MissingPermission")
     private fun startMonitoring() {
-        permissionsNotifier.notifyForPermission(Manifest.permission.ACCESS_FINE_LOCATION).subscribe {
-            log.v("Starting up location tracking.")
+        permissionsNotifier.notifyForAnyOfPermission(
+            setOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        ).subscribe {
+            val locationRequest = LocationRequest
+                .create()
+                .setInterval(LOCATION_UPDATE_INTERVAL)
+                .setFastestInterval(LOCATION_UPDATE_INTERVAL)
+                .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+                .setSmallestDisplacement(MINIMUM_DISPLACEMENT_DISTANCE)
+
+            log.v("Starting up foreground-only location tracking.")
+
             fusedLocationProviderClient
-                .requestLocationUpdates(
-                    LocationRequest
-                        .create()
-                        .setInterval(LOCATION_UPDATE_INTERVAL)
-                        .setFastestInterval(LOCATION_UPDATE_INTERVAL)
-                        .setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
-                        .setSmallestDisplacement(MINIMUM_DISPLACEMENT_DISTANCE),
-                    PendingIntent.getBroadcast(
-                        applicationContext,
-                        0,
-                        Intent(applicationContext, LocationBroadcastReceiver::class.java),
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { FLAG_IMMUTABLE } else { 0 }
-                    )
-                ).addOnFailureListener { error ->
-                    log.w("Unable to configure Rover location updates receiver because: $error")
-                }.addOnSuccessListener { _ ->
-                    log.v("Now monitoring location updates.")
-                }
+                .requestLocationUpdates(locationRequest, object : LocationCallback() {
+                    override fun onLocationResult(locationResult: LocationResult) {
+                        newGoogleLocationResult(locationResult)
+                    }
+                }, Looper.getMainLooper())
+
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                // The background version of Google's Fused Location Provider (that uses a
+                // PendingIntent) appears to be incompatible with Android 12. FusedLocationProvider
+                // expects a mutable pending intent, and Android 12 forbids you from creating one. 🤪
+                log.v("Starting up background location tracking.")
+                fusedLocationProviderClient
+                    .requestLocationUpdates(
+                        locationRequest,
+                        PendingIntent.getBroadcast(
+                            applicationContext,
+                            0,
+                            Intent(applicationContext, LocationBroadcastReceiver::class.java),
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                FLAG_IMMUTABLE
+                            } else {
+                                0
+                            }
+                        )
+                    ).addOnFailureListener { error ->
+                        log.w("Unable to configure Rover location updates receiver because: $error")
+                    }.addOnSuccessListener { _ ->
+                        log.v("Now monitoring location updates.")
+                    }
+
+            }
         }
     }
 }
