@@ -59,7 +59,7 @@ class RoverCampaigns(
                 throw RuntimeException("Rover Campaigns already initialized.  This is most likely a bug.")
             }
             sharedInstanceBackingField = rover
-            log.i("Started Rover Android SDK v${BuildConfig.VERSION_NAME}.")
+            log.i("Started Rover Campaigns Android SDK v${BuildConfig.VERSION_NAME}.")
         }
 
         /**

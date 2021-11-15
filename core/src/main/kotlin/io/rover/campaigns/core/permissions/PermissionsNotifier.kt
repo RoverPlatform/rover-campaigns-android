@@ -20,19 +20,30 @@ class PermissionsNotifier(
         grantedPermissions.onNext(permissionId)
     }
 
-    override fun notifyForPermission(permissionId: String): Publisher<String> {
-        return Publishers.concat(
-            Publishers.just(
-                if (ContextCompat.checkSelfPermission(
+    override fun notifyForAnyOfPermission(permissions: Set<String>): Publisher<String> {
+        val alreadyGranted = permissions.filter { permissionId ->
+            ContextCompat.checkSelfPermission(
                     applicationContext,
                     permissionId
-                ) == PackageManager.PERMISSION_GRANTED) {
-                    log.v("Permission $permissionId already granted.")
-                    permissionId
+            ) == PackageManager.PERMISSION_GRANTED
+        }
+
+        if(alreadyGranted.isNotEmpty()) {
+            log.v("Permissions ${alreadyGranted.joinToString(", ")} already granted.")
+        }
+
+        return Publishers.concat(
+            Publishers.just(
+                if (alreadyGranted.isNotEmpty()) {
+                    alreadyGranted.first()
                 } else null
             ),
-            updates.filter { it == permissionId }
+            updates.filter { permissions.contains(it) }
         ).filterNulls().first()
+    }
+
+    override fun notifyForPermission(permissionId: String): Publisher<String> {
+        return notifyForAnyOfPermission(setOf(permissionId))
     }
 
     private val grantedPermissions = PublishSubject<String>()

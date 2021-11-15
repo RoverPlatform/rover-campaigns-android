@@ -227,22 +227,22 @@ class EventQueueService(
         // TODO: wire up Application-level activity callbacks after all to flush queue whenever an activity pauses.
         application.registerActivityLifecycleCallbacks(
             object : Application.ActivityLifecycleCallbacks {
-                override fun onActivityPaused(activity: Activity?) {
+                override fun onActivityPaused(activity: Activity) {
                     log.d("An Activity is pausing, flushing Rover Campaigns events queue.")
                     flushNow()
                 }
 
-                override fun onActivityResumed(activity: Activity?) { }
+                override fun onActivityResumed(activity: Activity) { }
 
-                override fun onActivityStarted(activity: Activity?) { }
+                override fun onActivityStarted(activity: Activity) { }
 
-                override fun onActivityDestroyed(activity: Activity?) { }
+                override fun onActivityDestroyed(activity: Activity) { }
 
-                override fun onActivitySaveInstanceState(activity: Activity?, outState: Bundle?) { }
+                override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) { }
 
-                override fun onActivityStopped(activity: Activity?) { }
+                override fun onActivityStopped(activity: Activity) { }
 
-                override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) { }
+                override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) { }
             }
         )
     }
