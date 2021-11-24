@@ -19,7 +19,7 @@ then
     exit -1
 fi
 
-export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jre/jdk/Contents/Home
+export JAVA_HOME=/Applications/Android\ Studio.app/Contents/jre/Contents/Home
 
 set -x
 set -e
