@@ -31,7 +31,6 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url "https://dl.bintray.com/jetbrains/spek" }
         maven {
             url "https://roverplatform.github.io/rover-android/maven"
         }
