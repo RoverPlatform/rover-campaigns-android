@@ -54,7 +54,14 @@ class InMemoryBitmapCacheStage(
 
     override fun request(input: URL): PipelineStageResult<Bitmap> {
         return try {
-            PipelineStageResult.Successful(lruCache[input])
+            val value: Bitmap? = lruCache[input]
+            if(value == null) {
+                // this means that the LRUCache was not able to create a new value for any number
+                // of possible reasons. If so, fault directly to next layer and skip the cache.
+                faultTo.request(input)
+            } else {
+                PipelineStageResult.Successful(lruCache[input])
+            }
         } catch (e: UnableToCreateEntryException) {
             PipelineStageResult.Failed(e.reason)
         } catch (e: IllegalStateException) {
