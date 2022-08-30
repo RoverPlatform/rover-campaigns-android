@@ -44,9 +44,18 @@ class DeviceIdentification(
     // On many manufacturers' Android devices, the set device name manifests as the Bluetooth name,
     // but not as the device hostname.  So, we'll ignore the device hostname and use the Bluetooth
     // name, if available.
-    override val deviceName: String? = Settings.Secure.getString(
-        applicationContext.contentResolver, "bluetooth_name"
-    )
+    override val deviceName: String?
+        get() {
+            return if (Build.VERSION.SDK_INT < 31) {
+                return Settings.Secure.getString(
+                    applicationContext.contentResolver,
+                    "bluetooth_name"
+                )
+            } else {
+                // TODO: fallback to getting hostname or similar.
+                null
+            }
+        }
 
     private fun getAndClearSdk2IdentifierIfPresent(): String? {
         val legacySharedPreferences = applicationContext.getSharedPreferences(
