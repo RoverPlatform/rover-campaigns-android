@@ -11,10 +11,6 @@ on:
 
   # (other approaches to triggering this workflow were considered, including release PR approvals, comments, etc. However they each had serious drawbacks.)
 
-#  to work on this workflow definition, comment the above and uncomment the following:
-  push:
-    branches: [ "my-workflow-dev-branch" ]
-
 jobs:
   release:
     runs-on: ubuntu-latest
