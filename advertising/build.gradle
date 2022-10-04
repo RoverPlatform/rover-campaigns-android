@@ -10,8 +10,6 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode rover_campaigns_sdk_version_code
-        versionName rover_campaigns_sdk_version
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 

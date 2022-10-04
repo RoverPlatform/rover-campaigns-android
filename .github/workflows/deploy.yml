@@ -8,13 +8,12 @@ on:
         description: 'Branch to deploy'
         required: true
         default: 'master'
-      version_number:
-        required: true
+
   # (other approaches to triggering this workflow were considered, including release PR approvals, comments, etc. However they each had serious drawbacks.)
 
-  # to work on this workflow definition, comment the above and uncomment the following:
-  # push:
-  #   branches: [ "my-workflow-dev-branch" ]
+#  to work on this workflow definition, comment the above and uncomment the following:
+  push:
+    branches: [ "my-workflow-dev-branch" ]
 
 jobs:
   release:
@@ -57,9 +56,15 @@ jobs:
         cd ${{ github.workspace }}/rover-campaigns-android
         ./gradlew test :core:assembleRelease :core:publishProductionPublicationToMavenRepository notifications:assembleRelease notifications:publishProductionPublicationToMavenRepository location:assembleRelease location:publishProductionPublicationToMavenRepository debug:assembleRelease debug:publishProductionPublicationToMavenRepository ticketmaster:assembleRelease ticketmaster:publishProductionPublicationToMavenRepository advertising:assembleRelease advertising:publishProductionPublicationToMavenRepository experiences:assembleRelease experiences:publishProductionPublicationToMavenRepository
 
+    - name: Get version number
+      id: get_version
+      run: |
+        cd ${{ github.workspace }}/rover-campaigns-android
+        echo ::set-output name=VERSION::$(./get-version.sh)
+
     - name: Push to Maven
       run: |
         cd ${{ github.workspace }}/judo-maven
         git add maven
-        git commit -a -m "Releasing Rover Campaigns Android ${{ github.event.inputs.version_number }}"
+        git commit -a -m "Releasing Rover Campaigns Android ${{ steps.get_version.outputs.VERSION }}"
         git push

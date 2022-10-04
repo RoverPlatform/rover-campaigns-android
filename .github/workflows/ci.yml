@@ -21,6 +21,16 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+
+    # get the version number by running get-version.sh script
+    - name: Get version number
+      id: get_version
+      run: echo ::set-output name=VERSION::$(./get-version.sh)
+
+    # print the version number
+    - name: Print version number
+      run: echo ${{ steps.get_version.outputs.VERSION }}
+
     - name: Build with Gradle
       env:
           DEPLOY_MAVEN_PATH: /tmp/m2

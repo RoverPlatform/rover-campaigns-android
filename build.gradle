@@ -40,3 +40,10 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+// This target can be used to interrogate the SDK for its versino number at build time.
+task printVersionNumber {
+    doLast {
+        println "ROVER_CAMPAIGNS_VERSION=${rover_campaigns_sdk_version}"
+    }
+}
