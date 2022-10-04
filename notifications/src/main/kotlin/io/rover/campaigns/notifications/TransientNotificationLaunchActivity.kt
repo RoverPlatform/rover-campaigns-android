@@ -2,12 +2,12 @@ package io.rover.campaigns.notifications
 
 import android.app.PendingIntent
 import android.app.PendingIntent.FLAG_IMMUTABLE
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
-import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import io.rover.campaigns.core.RoverCampaigns
 import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.platform.DateFormattingInterface
@@ -74,18 +74,6 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
         // this will also do the side-effect of issuing the Notification Opened event, which
         // is the whole reason for this activity existing.
 
-        val intent = notificationJson?.let { notificationOpen.intentForOpeningNotificationFromJson(it) }
-
-        if (intent?.resolveActivityInfo(this.packageManager, PackageManager.GET_SHARED_LIBRARY_FILES) == null) {
-            log.e(
-                "No activity could be found to handle the Intent needed to start the notification.\n" +
-                    "This could be because the deep link scheme slug you set on NotificationsAssembler does not match what is set in your Rover account, or that an Activity is missing from your manifest.\n\n" +
-                    "Intent was: $intent"
-            )
-            finish()
-            return
-        }
-
         try {
             val notification = Notification.decodeJson(
                 JSONObject(notificationJson),
@@ -98,12 +86,23 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
 
         influenceTracker.notificationOpenedDirectly()
 
-        ContextCompat.startActivity(
-            this,
-            intent,
-            null
-        )
+        val intent = notificationJson?.let { notificationOpen.intentForOpeningNotificationFromJson(it) } ?: return
 
+        try {
+            ContextCompat.startActivity(
+                this,
+                intent,
+                null
+            )
+        } catch (e: ActivityNotFoundException) {
+            log.e(
+                "No activity could be found to handle the Intent needed to start the notification.\n" +
+                    "This could be because the deep link scheme slug you set on NotificationsAssembler does not match what is set in your Rover account, or that an Activity is missing from your manifest.\n\n" +
+                    "Intent was: $intent"
+            )
+            finish()
+            return
+        }
 
         finish()
     }
@@ -113,10 +112,11 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
             context: Context,
             notification: Notification
         ): PendingIntent {
-
             val notificationJson = notification.encodeJson(
-                (RoverCampaigns.shared
-                    ?: throw RuntimeException("Cannot generate Rover Campaigns intent when Rover Campaigns is not initialized."))
+                (
+                    RoverCampaigns.shared
+                        ?: throw RuntimeException("Cannot generate Rover Campaigns intent when Rover Campaigns is not initialized.")
+                    )
                     .resolveSingletonOrFail(DateFormattingInterface::class.java)
             )
 
@@ -131,7 +131,8 @@ class TransientNotificationLaunchActivity : AppCompatActivity() {
                     TransientNotificationLaunchActivity::class.java
                 ).apply {
                     putExtra(
-                        NOTIFICATION_JSON, notificationJson.toString()
+                        NOTIFICATION_JSON,
+                        notificationJson.toString()
                     )
                 },
                 PendingIntent.FLAG_ONE_SHOT or if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { FLAG_IMMUTABLE } else { 0 }
