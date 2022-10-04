@@ -52,6 +52,13 @@ jobs:
         cd ${{ github.workspace }}/rover-campaigns-android
         ./gradlew test :core:assembleRelease :core:publishProductionPublicationToMavenRepository notifications:assembleRelease notifications:publishProductionPublicationToMavenRepository location:assembleRelease location:publishProductionPublicationToMavenRepository debug:assembleRelease debug:publishProductionPublicationToMavenRepository ticketmaster:assembleRelease ticketmaster:publishProductionPublicationToMavenRepository advertising:assembleRelease advertising:publishProductionPublicationToMavenRepository experiences:assembleRelease experiences:publishProductionPublicationToMavenRepository
 
+    # get the version number
+    - name: Get version number from gradle task that sets VERSION output variable
+      id: get_version
+      run: |
+        cd ${{ github.workspace }}/rover-campaigns-android
+        ./gradlew printVersionNumber
+
     - name: Get version number
       id: get_version
       run: |

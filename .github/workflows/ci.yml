@@ -22,10 +22,10 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    # get the version number by running get-version.sh script
-    - name: Get version number
+    # get the version number
+    - name: Get version number from gradle task that sets VERSION output variable
       id: get_version
-      run: echo ::set-output name=VERSION::$(./get-version.sh)
+      run: ./gradlew printVersionNumber
 
     # print the version number
     - name: Print version number
