@@ -40,3 +40,13 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+// This target can be used to interrogate the SDK for its version number at build time.
+task printVersionNumber {
+    doLast {
+        println "Rover Campaigns Android version ${rover_campaigns_sdk_version}"
+        // GitHub Actions detects this syntax on stdout and sets an output variable (`VERSION` in this case)
+        // that we can use later on within the workflow.
+        println "::set-output name=VERSION::${rover_campaigns_sdk_version}"
+    }
+}
