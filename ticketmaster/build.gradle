@@ -6,14 +6,13 @@ apply plugin: 'maven-publish'
 apply plugin: "de.mannodermaus.android-junit5"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 33
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -39,6 +38,7 @@ android {
     }
 
     kotlinOptions { jvmTarget = "1.8" }
+    namespace 'io.rover.campaigns.ticketmaster'
 }
 
 dependencies {
@@ -46,6 +46,8 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    implementation "androidx.localbroadcastmanager:localbroadcastmanager:1.1.0"
 
     implementation project(':core')
 
@@ -56,37 +58,7 @@ dependencies {
     testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
     testImplementation "org.spekframework.spek2:spek-runner-junit5:$spek_version"
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-}
-
-configurations {
-    ktlint
-}
-
-dependencies {
-    ktlint "com.github.shyiko:ktlint:0.27.0"
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-    // additional 3rd party ruleset(s) can be specified here
-    // just add them to the classpath (ktlint 'groupId:artifactId:version') and
-    // ktlint will pick them up
-}
-
-task ktlint(type: JavaExec, group: "verification") {
-    description = "Check Kotlin code style."
-    main = "com.github.shyiko.ktlint.Main"
-    classpath = configurations.ktlint
-    args "src/**/*.kt"
-    // to generate report in checkstyle format prepend following args:
-    // "--reporter=plain", "--reporter=checkstyle,output=${buildDir}/ktlint.xml"
-    // see https://github.com/shyiko/ktlint#usage for more
-}
-check.dependsOn ktlint
-
-task ktlintFormat(type: JavaExec, group: "formatting") {
-    description = "Fix Kotlin code style deviations."
-    main = "com.github.shyiko.ktlint.Main"
-    classpath = configurations.ktlint
-    args "-F", "src/**/*.kt"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
 
 ext {

@@ -27,10 +27,6 @@ jobs:
       id: get_version
       run: ./gradlew printVersionNumber
 
-    # print the version number
-    - name: Print version number
-      run: echo ${{ steps.get_version.outputs.VERSION }}
-
     - name: Build with Gradle
       env:
           DEPLOY_MAVEN_PATH: /tmp/m2

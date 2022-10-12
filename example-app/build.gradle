@@ -5,16 +5,16 @@ plugins {
 }
 
 ext {
-    compose_version = '1.0.3'
+    compose_version = '1.2.1'
 }
 
 android {
-    compileSdk 31
+    compileSdk 33
 
     defaultConfig {
         applicationId "io.rover.Example"
         minSdk 26
-        targetSdk 31
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -49,6 +49,7 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    namespace 'io.rover.Example'
 }
 
 dependencies {

@@ -52,18 +52,21 @@ class GoogleBeaconTrackerService(
     permissionsNotifier: PermissionsNotifierInterface
 ) : GoogleBeaconTrackerServiceInterface {
     override fun newGoogleBeaconMessage(intent: Intent) {
-        nearbyMessagesClient.handleIntent(intent, object : MessageListener() {
-            override fun onFound(message: Message) {
-                log.v("A beacon found: $message")
+        nearbyMessagesClient.handleIntent(
+            intent,
+            object : MessageListener() {
+                override fun onFound(message: Message) {
+                    log.v("A beacon found: $message")
 
-                emitEventForPossibleBeacon(message, true)
-            }
+                    emitEventForPossibleBeacon(message, true)
+                }
 
-            override fun onLost(message: Message) {
-                log.v("A beacon lost: $message")
-                emitEventForPossibleBeacon(message, false)
+                override fun onLost(message: Message) {
+                    log.v("A beacon lost: $message")
+                    emitEventForPossibleBeacon(message, false)
+                }
             }
-        })
+        )
     }
 
     /**
@@ -99,9 +102,12 @@ class GoogleBeaconTrackerService(
 
     @SuppressLint("MissingPermission")
     private fun startMonitoringBeacons(uuids: Set<UUID>) {
-        val messagesClient = Nearby.getMessagesClient(applicationContext, MessagesOptions.Builder()
-            .setPermissions(NearbyPermissions.BLE)
-            .build())
+        val messagesClient = Nearby.getMessagesClient(
+            applicationContext,
+            MessagesOptions.Builder()
+                .setPermissions(NearbyPermissions.BLE)
+                .build()
+        )
 
         val messageFilters = uuids.map { uuid ->
             // for now we only support iBeacon filters. No Eddystone for now.
@@ -136,15 +142,21 @@ class GoogleBeaconTrackerService(
     }
 
     init {
-        val fineLocationSource = Publishers.concat(Publishers.just(false), permissionsNotifier.notifyForPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-            .map { it == Manifest.permission.ACCESS_FINE_LOCATION })
+        val fineLocationSource = Publishers.concat(
+            Publishers.just(false),
+            permissionsNotifier.notifyForPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .map { it == Manifest.permission.ACCESS_FINE_LOCATION }
+        )
 
-        val backgroundLocationSource = Publishers.concat(Publishers.just(false), permissionsNotifier.notifyForPermission(BACKGROUND_LOCATION_PERMISSION_CODE)
-            .map { it == BACKGROUND_LOCATION_PERMISSION_CODE })
+        val backgroundLocationSource = Publishers.concat(
+            Publishers.just(false),
+            permissionsNotifier.notifyForPermission(BACKGROUND_LOCATION_PERMISSION_CODE)
+                .map { it == BACKGROUND_LOCATION_PERMISSION_CODE }
+        )
 
         // This publisher emits whenever all necessary permissions for starting beacon monitoring are granted.
         val permissionGranted = Publishers.combineLatest(fineLocationSource, backgroundLocationSource) {
-            fineLocationGranted, _ ->
+                fineLocationGranted, _ ->
             val backgroundPermissionGranted = (ContextCompat.checkSelfPermission(applicationContext, BACKGROUND_LOCATION_PERMISSION_CODE) == PackageManager.PERMISSION_GRANTED)
 
             // The BACKGROUND_LOCATION_PERMISSION_CODE permission is required for monitoring for
