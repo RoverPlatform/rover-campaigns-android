@@ -2,7 +2,6 @@
 
 val roverCampaignsVersion by extra("3.9.1")
 val kotlinVersion by extra("1.7.10")
-val spekVersion by extra("2.0.1")
 
 buildscript {
     repositories {
@@ -14,7 +13,6 @@ buildscript {
         classpath("com.android.tools.build:gradle:7.3.0")
         // somehow `kotlinVersion` isn't in scope here. wtf.
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10")
-        classpath("de.mannodermaus.gradle.plugins:android-junit5:1.6.1.0")
         classpath("com.google.gms:google-services:4.3.14")
     }
 }
