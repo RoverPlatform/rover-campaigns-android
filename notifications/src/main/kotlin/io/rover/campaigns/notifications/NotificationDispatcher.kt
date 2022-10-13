@@ -11,8 +11,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import io.rover.campaigns.notifications.domain.NotificationAttachment
-import io.rover.campaigns.notifications.ui.concerns.NotificationsRepositoryInterface
 import io.rover.campaigns.core.R
 import io.rover.campaigns.core.assets.AssetService
 import io.rover.campaigns.core.data.NetworkResult
@@ -25,6 +23,8 @@ import io.rover.campaigns.core.streams.onErrorReturn
 import io.rover.campaigns.core.streams.subscribe
 import io.rover.campaigns.core.streams.subscribeOn
 import io.rover.campaigns.core.streams.timeout
+import io.rover.campaigns.notifications.domain.NotificationAttachment
+import io.rover.campaigns.notifications.ui.concerns.NotificationsRepositoryInterface
 import org.reactivestreams.Publisher
 import java.util.concurrent.TimeUnit
 
@@ -76,7 +76,7 @@ class NotificationDispatcher(
     }
 
     /**
-     * By default, if running on Oreo and later, and the [PushReceiver.defaultChannelId] you
+     * By default, if running on Oreo and later, and the [NotificationsAssembler.defaultChannelId] you
      * gave does not exist, then we will lazily create it at notification reception time to
      * avoid the
      *
@@ -86,8 +86,10 @@ class NotificationDispatcher(
      */
     @RequiresApi(Build.VERSION_CODES.O)
     fun registerDefaultChannelId() {
-        log.w("Rover is registering a default channel ID for you.  This isn't optimal; if you are targeting Android SDK >= 26 then you should create your Notification Channels.\n" +
-            "See https://developer.android.com/training/notify-user/channels.html")
+        log.w(
+            "Rover is registering a default channel ID for you.  This isn't optimal; if you are targeting Android SDK >= 26 then you should create your Notification Channels.\n" +
+                "See https://developer.android.com/training/notify-user/channels.html"
+        )
         // Create the NotificationChannel
         val name = applicationContext.getString(R.string.default_notification_channel_name)
         val description = applicationContext.getString(R.string.default_notification_description)
@@ -98,7 +100,8 @@ class NotificationDispatcher(
         // Register the channel with the system; you can't change the importance
         // or other notification behaviors after this
         val notificationManager = applicationContext.getSystemService(
-            Context.NOTIFICATION_SERVICE) as NotificationManager
+            Context.NOTIFICATION_SERVICE
+        ) as NotificationManager
         notificationManager.createNotificationChannel(mChannel)
     }
 
@@ -165,6 +168,9 @@ class NotificationDispatcher(
                     is NetworkResult.Error -> {
                         log.w("Unable to retrieve notification image: ${notification.attachment?.url}, because: ${attachmentBitmapResult.throwable.message}")
                         log.w("Will create image without the rich media.")
+                    }
+                    null -> {
+                        /* no-op, from errors handled previously in pipeline */
                     }
                 }
 

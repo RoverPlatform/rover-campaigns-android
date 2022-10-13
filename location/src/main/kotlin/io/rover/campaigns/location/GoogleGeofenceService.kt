@@ -69,7 +69,12 @@ class GoogleGeofenceService(
     override fun newGoogleGeofenceEvent(geofencingEvent: GeofencingEvent) {
         // have to do processing here because we need to know what the regions are.
         if (!geofencingEvent.hasError()) {
-            val transitioningGeofences = geofencingEvent.triggeringGeofences.mapNotNull { fence ->
+            val triggeringGeofences = geofencingEvent.triggeringGeofences
+            if (triggeringGeofences == null) {
+                log.w("Unable to obtain list of geofences that triggered a GeofencingEvent from Google.")
+                return
+            }
+            val transitioningGeofences = triggeringGeofences.mapNotNull { fence ->
                 val geofence = geofencesRepository.geofenceByIdentifier(
                     fence.requestId
                 ).blockForResult().firstOrNull()
@@ -237,7 +242,7 @@ class GoogleGeofenceService(
             log.v("Determining $geofenceMonitorLimit closest geofences for monitoring.")
             fences.iterator().use { it.asSequence().sortedBy { it.center.asLocation().distanceTo(location) }.take(geofenceMonitorLimit).toList() }
         }.observeOn(mainScheduler).subscribe { fences ->
-            log.v("Got location permission, geofences, and current location.  Ready to start monitoring.")
+            log.v("Got location permission, geofences, and current location.  Ready to start monitoring for ${fences.count()} geofence(s).")
             startMonitoringGeofences(fences)
         }
     }
@@ -260,8 +265,13 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
             log.e("Received a geofence result from Google, but GoogleGeofenceServiceInterface is not registered in the Rover Campaigns container. Ensure LocationAssembler() is in RoverCampaigns.initialize(). Ignoring.")
             return
         }
+        val geofencingEvent = GeofencingEvent.fromIntent(intent)
+        if (geofencingEvent == null) {
+            log.w("Unable to hydrate a GeofencingEvent from an incoming broadcast receive intent.")
+            return
+        }
         geofenceService.newGoogleGeofenceEvent(
-            GeofencingEvent.fromIntent(intent)
+            geofencingEvent
         )
     }
 }

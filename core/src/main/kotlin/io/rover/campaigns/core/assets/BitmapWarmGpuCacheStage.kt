@@ -20,6 +20,7 @@ class BitmapWarmGpuCacheStage(
             // case Android's framework maintains the LRU itself.
             when (this) {
                 is PipelineStageResult.Successful -> this.output.prepareToDraw()
+                is PipelineStageResult.Failed -> this.reason
             }
         }
     }

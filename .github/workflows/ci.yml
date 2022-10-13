@@ -27,11 +27,7 @@ jobs:
       id: get_version
       run: ./gradlew printVersionNumber
 
-    # print the version number
-    - name: Print version number
-      run: echo ${{ steps.get_version.outputs.VERSION }}
-
     - name: Build with Gradle
       env:
           DEPLOY_MAVEN_PATH: /tmp/m2
-      run: ./gradlew test :core:assembleRelease :core:publishProductionPublicationToMavenRepository notifications:assembleRelease notifications:publishProductionPublicationToMavenRepository location:assembleRelease location:publishProductionPublicationToMavenRepository debug:assembleRelease debug:publishProductionPublicationToMavenRepository ticketmaster:assembleRelease ticketmaster:publishProductionPublicationToMavenRepository advertising:assembleRelease advertising:publishProductionPublicationToMavenRepository experiences:assembleRelease experiences:publishProductionPublicationToMavenRepository
+      run: ./gradlew test :core:assembleRelease :core:publishReleasePublicationToMavenRepository notifications:assembleRelease notifications:publishReleasePublicationToMavenRepository location:assembleRelease location:publishReleasePublicationToMavenRepository debug:assembleRelease debug:publishReleasePublicationToMavenRepository ticketmaster:assembleRelease ticketmaster:publishReleasePublicationToMavenRepository advertising:assembleRelease advertising:publishReleasePublicationToMavenRepository experiences:assembleRelease experiences:publishReleasePublicationToMavenRepository

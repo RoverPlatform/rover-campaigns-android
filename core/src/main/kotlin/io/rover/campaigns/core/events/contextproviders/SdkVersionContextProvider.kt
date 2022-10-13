@@ -12,7 +12,7 @@ class SdkVersionContextProvider : ContextProvider {
         return deviceContext.copy(
             // cloud-side campaigns services have issues with meta/prerelease version strings.
             // Drop it.  https://github.com/RoverPlatform/rover/issues/2481
-            sdkVersion = BuildConfig.VERSION_NAME.substringBefore("-")
+            sdkVersion = BuildConfig.ROVER_CAMPAIGNS_VERSION.substringBefore("-")
         )
     }
 }

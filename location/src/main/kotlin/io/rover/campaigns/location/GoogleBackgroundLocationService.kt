@@ -10,32 +10,29 @@ import android.content.Intent
 import android.location.Geocoder
 import android.os.Build
 import android.os.Looper
-import android.util.Log
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationAvailability
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import io.rover.campaigns.core.RoverCampaigns
-import io.rover.campaigns.core.logging.log
-import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
-import io.rover.campaigns.core.platform.whenNotNull
-import io.rover.campaigns.core.streams.PublishSubject
-import io.rover.campaigns.core.streams.Scheduler
-import io.rover.campaigns.core.streams.map
-import io.rover.campaigns.core.streams.observeOn
-import io.rover.campaigns.core.streams.shareHotAndReplay
-import io.rover.campaigns.core.streams.subscribe
 import io.rover.campaigns.core.data.domain.Location
 import io.rover.campaigns.core.data.domain.Location.Companion.MINIMUM_DISPLACEMENT_DISTANCE
 import io.rover.campaigns.core.data.graphql.operations.data.decodeJson
 import io.rover.campaigns.core.data.graphql.operations.data.encodeJson
+import io.rover.campaigns.core.logging.log
+import io.rover.campaigns.core.permissions.PermissionsNotifierInterface
 import io.rover.campaigns.core.platform.DateFormattingInterface
 import io.rover.campaigns.core.platform.LocalStorage
+import io.rover.campaigns.core.platform.whenNotNull
+import io.rover.campaigns.core.streams.PublishSubject
 import io.rover.campaigns.core.streams.Publishers
+import io.rover.campaigns.core.streams.Scheduler
 import io.rover.campaigns.core.streams.filterNulls
+import io.rover.campaigns.core.streams.map
+import io.rover.campaigns.core.streams.observeOn
 import io.rover.campaigns.core.streams.share
 import io.rover.campaigns.core.streams.shareAndReplay
+import io.rover.campaigns.core.streams.subscribe
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.Date
@@ -83,7 +80,7 @@ class GoogleBackgroundLocationService(
                 location?.let {
                     Location.decodeJson(JSONObject(it), dateFormatting)
                 }
-            } catch (e : JSONException) {
+            } catch (e: JSONException) {
                 log.w("Failed to decode last known location JSON: $e")
                 null
             }
@@ -95,13 +92,14 @@ class GoogleBackgroundLocationService(
     private val locationChanges = subject
         .observeOn(ioScheduler)
         .map { locationResult ->
+            val lastLocation = locationResult.lastLocation ?: return@map null
             // attempt to use Android's synchronous built-in geocoder api:
             val androidGeocoderAddress = try {
                 geocoder.getFromLocation(
-                    locationResult.lastLocation.latitude,
-                    locationResult.lastLocation.longitude,
+                    lastLocation.latitude,
+                    lastLocation.longitude,
                     1
-                ).firstOrNull()
+                )?.firstOrNull()
             } catch (exception: Exception) {
                 log.w("Unable to use Android Geocoder API: $exception")
                 null
@@ -127,15 +125,16 @@ class GoogleBackgroundLocationService(
             Location(
                 address = address,
                 coordinate = Location.Coordinate(
-                    locationResult.lastLocation.latitude,
-                    locationResult.lastLocation.longitude
+                    lastLocation.latitude,
+                    lastLocation.longitude
                 ),
-                altitude = locationResult.lastLocation.altitude,
-                verticalAccuracy = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && locationResult.lastLocation.hasVerticalAccuracy()) locationResult.lastLocation.verticalAccuracyMeters.toDouble() else -1.0,
-                horizontalAccuracy = if (locationResult.lastLocation.hasAccuracy()) locationResult.lastLocation.accuracy.toDouble() else -1.0,
+                altitude = lastLocation.altitude,
+                verticalAccuracy = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && lastLocation.hasVerticalAccuracy()) lastLocation.verticalAccuracyMeters.toDouble() else -1.0,
+                horizontalAccuracy = if (lastLocation.hasAccuracy()) lastLocation.accuracy.toDouble() else -1.0,
                 timestamp = Date()
             )
         }
+        .filterNulls()
         .observeOn(mainScheduler)
         .share()
 
@@ -171,11 +170,15 @@ class GoogleBackgroundLocationService(
             log.v("Starting up foreground-only location tracking.")
 
             fusedLocationProviderClient
-                .requestLocationUpdates(locationRequest, object : LocationCallback() {
-                    override fun onLocationResult(locationResult: LocationResult) {
-                        newGoogleLocationResult(locationResult)
-                    }
-                }, Looper.getMainLooper())
+                .requestLocationUpdates(
+                    locationRequest,
+                    object : LocationCallback() {
+                        override fun onLocationResult(locationResult: LocationResult) {
+                            newGoogleLocationResult(locationResult)
+                        }
+                    },
+                    Looper.getMainLooper()
+                )
 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
                 // The background version of Google's Fused Location Provider (that uses a
@@ -200,7 +203,6 @@ class GoogleBackgroundLocationService(
                     }.addOnSuccessListener { _ ->
                         log.v("Now monitoring location updates.")
                     }
-
             }
         }
     }
@@ -210,6 +212,10 @@ class LocationBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (LocationResult.hasResult(intent)) {
             val result = LocationResult.extractResult(intent)
+            if (result == null) {
+                log.w("Received a location result from Google, but result could not be extracted.")
+                return
+            }
             val rover = RoverCampaigns.shared
             if (rover == null) {
                 log.e("Received a location result from Google, but Rover Campaigns is not initialized.  Ignoring.")
@@ -219,7 +225,7 @@ class LocationBroadcastReceiver : BroadcastReceiver() {
             if (backgroundLocationService == null) {
                 log.e("Received a location result from Google, but the Rover Campaigns GoogleBackgroundLocationServiceInterface is missing. Ensure that LocationAssembler is added to RoverCampaigns.initialize(). Ignoring.")
                 return
-            } else  {
+            } else {
                 backgroundLocationService.newGoogleLocationResult(result)
             }
         } else {

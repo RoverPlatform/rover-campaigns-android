@@ -1,4 +1,4 @@
-package io.rover.Example
+package io.rover.example
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

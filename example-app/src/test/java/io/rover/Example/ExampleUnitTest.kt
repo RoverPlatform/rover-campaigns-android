@@ -1,4 +1,4 @@
-package io.rover.Example
+package io.rover.example
 
 import org.junit.Test
 

@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.rover.campaigns.notifications">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity android:name="TransientNotificationLaunchActivity" />
         <activity android:name=".ui.containers.NotificationCenterActivity" />

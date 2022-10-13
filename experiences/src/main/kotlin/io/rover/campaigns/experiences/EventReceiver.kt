@@ -29,6 +29,7 @@ open class EventReceiver(
                 is RoverEvent.ScreenViewed -> eventQueueService.trackEvent(event.transformToEvent(), "rover")
                 is RoverEvent.ScreenPresented -> eventQueueService.trackEvent(event.transformToEvent(), "rover")
                 is RoverEvent.PollAnswered -> eventQueueService.trackEvent(event.transformToEvent(), "rover")
+                is RoverEvent.AppOpened -> { /* not tracked */ }
             }
         }
     }

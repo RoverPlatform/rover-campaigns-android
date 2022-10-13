@@ -1,2 +1,0 @@
-include 'core', 'location', 'notifications', 'debug', 'ticketmaster', 'advertising', 'experiences'
-include ':example-app'

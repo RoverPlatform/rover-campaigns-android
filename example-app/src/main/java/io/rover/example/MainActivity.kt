@@ -1,4 +1,4 @@
-package io.rover.Example
+package io.rover.example
 
 import android.Manifest
 import android.content.Intent
@@ -54,13 +54,12 @@ class MainActivity : ComponentActivity() {
                     )
                 }
             }
-
         }
 
         val backgroundPermissionRequest = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { permissionGranted ->
-            if(permissionGranted) {
+            if (permissionGranted) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     RoverCampaigns.shared?.resolveSingletonOrFail(PermissionsNotifierInterface::class.java)?.permissionGranted(
                         Manifest.permission.ACCESS_BACKGROUND_LOCATION
@@ -105,9 +104,9 @@ class MainActivity : ComponentActivity() {
                                 ) == PackageManager.PERMISSION_GRANTED
                             }
 
-                            if(allGranted) {
-                                Log.e("Rover Example","all permissions already granted")
-                               return@Button
+                            if (allGranted) {
+                                Log.e("Rover Example", "all permissions already granted")
+                                return@Button
                             }
 
                             locationPermissionRequest.launch(
@@ -121,7 +120,8 @@ class MainActivity : ComponentActivity() {
                                 if (ContextCompat.checkSelfPermission(
                                         this@MainActivity,
                                         Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                                    ) == PackageManager.PERMISSION_GRANTED) {
+                                    ) == PackageManager.PERMISSION_GRANTED
+                                ) {
                                     Log.e("Rover Example", "background permission already granted")
                                     return@Button
                                 }
