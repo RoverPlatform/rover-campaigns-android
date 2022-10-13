@@ -6,7 +6,6 @@ plugins {
 
 val roverCampaignsVersion: String by rootProject.extra
 val kotlinVersion: String by rootProject.extra
-val spekVersion: String by rootProject.extra
 
 android {
     compileSdk = 33
@@ -46,8 +45,6 @@ dependencies {
     testImplementation("junit:junit:4.12")
     // spek
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0")
-    testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
-    testImplementation("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     androidTestImplementation("androidx.test.ext:junit:1.1.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
 }
