@@ -199,7 +199,7 @@ class BeaconBroadcastReceiver : BroadcastReceiver() {
 }
 
 /**
- * We can tell Google Nearby to filter only on UUID, effectively wildcarding the major and minor.
+ * We can tell Google Nearby to filter only on UUID, effectively wildcarding the major and minor.b
  *
  * This allows us to use far fewer filters, avoiding hitting undocumented but existent limits.
  */
