@@ -242,7 +242,7 @@ class GoogleGeofenceService(
             log.v("Determining $geofenceMonitorLimit closest geofences for monitoring.")
             fences.iterator().use { it.asSequence().sortedBy { it.center.asLocation().distanceTo(location) }.take(geofenceMonitorLimit).toList() }
         }.observeOn(mainScheduler).subscribe { fences ->
-            log.v("Got location permission, geofences, and current location.  Ready to start monitoring.")
+            log.v("Got location permission, geofences, and current location.  Ready to start monitoring for ${fences.count()} geofence(s).")
             startMonitoringGeofences(fences)
         }
     }
