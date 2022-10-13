@@ -2,6 +2,7 @@ package io.rover.campaigns.core.assets
 
 import android.graphics.Bitmap
 import io.rover.campaigns.core.data.NetworkResult
+import io.rover.campaigns.core.logging.log
 import io.rover.campaigns.core.streams.PublishSubject
 import io.rover.campaigns.core.streams.Publishers
 import io.rover.campaigns.core.streams.Scheduler
@@ -59,7 +60,7 @@ internal class AndroidAssetService(
 
                 // ioExecutor is really only intended for I/O multiplexing only: it spawns many more
                 // threads than CPU cores.  However, I'm bending that rule a bit by having image
-                // decoding occur inband.  Thankfully, the risk of that spamming too many CPU-bound
+                // decoding occur in-band.  Thankfully, the risk of that spamming too many CPU-bound
                 // workloads across many threads is mitigated by the HTTP client library
                 // (HttpURLConnection, itself internally backed by OkHttp inside the Android
                 // standard library) limiting concurrent image downloads from the same origin, which
@@ -112,6 +113,9 @@ internal class AndroidAssetService(
                     is NetworkResult.Success -> receivedImages.onNext(
                         ImageReadyEvent(url, result.response)
                     )
+                    is NetworkResult.Error -> {
+                        log.w("Failed to fetch image: ${result.throwable.message}")
+                    }
                 }
             }
     }

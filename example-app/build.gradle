@@ -5,7 +5,7 @@ plugins {
 }
 
 ext {
-    compose_version = '1.2.1'
+    compose_version = '1.2.0'
 }
 
 android {
@@ -36,7 +36,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        useIR = true
     }
     buildFeatures {
         compose true

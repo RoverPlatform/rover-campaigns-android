@@ -5,7 +5,7 @@ buildscript {
     ext.rover_campaigns_sdk_version = '3.9.1'
     ext.rover_campaigns_sdk_version_code = 3
 
-    ext.kotlin_version = '1.6.21'
+    ext.kotlin_version = '1.7.0'
     ext.spek_version = '2.0.1'
 
     repositories {
