@@ -1,38 +1,29 @@
 # Rover Campaigns Android SDK
 
-## Rover Campaigns Android SDK 3.0
+The standlone Rover Campaigns SDK has been deprecated and merged with the Rover Experiences SDK.  In order to upgrade, please use the Rover SDK available on [GitHub](https://github.com/RoverPlatform/rover-android).
 
-The first step is to add the library dependencies. We’ll start with a default
-installation, featuring all of the Rover libraries.
+---
 
-Ensure that you have Rover's maven repository added to the `dependencies` →
-`repositories` block of your app-level `build.gradle`:
+## Transition to the Rover SDK
 
-```groovy
-dependencies {
-    // ...
-    repositories {
-        // ...
-        maven {
-            url "https://judoapp.github.io/judo-maven/maven"
-        }
-    }
-}
-```
-
-Then add the following to your application-level `build.gradle` file (not the
-top level `build.gradle`, but rather your app-level one) in the `dependencies`
-block.
+In your application-level 'build.gradle' file, remove the existing dependencies on the previous version of Rover Campaigns.  Then, replace it with new the Rover SDK, adding the dependencies as follows:
 
 ```groovy
 dependencies {
     // ...
-    implementation "io.rover.campaigns:core:3.10.0"
-    implementation "io.rover.campaigns:notifications:3.10.0"
-    implementation "io.rover.campaigns:location:3.10.0"
-    implementation "io.rover.campaigns:debug:3.10.0"
-    implementation "io.rover.campaigns:experiences:3.10.0"
+    implementation "io.rover.sdk:core:4.0.0"
+    implementation "io.rover.sdk:notifications:4.0.0"
+    implementation "io.rover.sdk:location:4.0.0"
+    implementation "io.rover.sdk:debug:4.0.0"
+    implementation "io.rover.sdk:experiences:4.0.0"
 }
 ```
 
-Please continue onwards from https://github.com/RoverPlatform/rover-campaigns-android/wiki.
+The new version of the Rover SDK requries the following changes to your codebase:
+
+* All packages have been changed from io.rover.campaigns.* to io.rover.sdk.*
+* The Rover Campaigns singleton has been renamed to Rover from RoverCampaigns
+* The Rover experiences singleton renamed to RoverExperiences from Rover
+
+Please continue onwards from [GitHub](https://github.com/RoverPlatform/rover-android).
+
